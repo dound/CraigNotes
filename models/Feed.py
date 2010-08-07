@@ -1,3 +1,5 @@
+import datetime
+
 from google.appengine.ext import db
 
 CATEGORIES = {
@@ -35,7 +37,8 @@ CITIES = {
 
 class Feed(db.Model):
     # primary key will contain URL query params which identify this feed
-    last_update = db.DateTimeProperty(required=True, indexed=False, auto_now_add=True)
+    last_update = db.DateTimeProperty(required=True, indexed=False, default=datetime.datetime(2000,1,1))
+    updating = db.BooleanProperty(required=True, indexed=False, default=False)
 
     # attribute not put in datastore (stores values decomposed from key_name)
     _values = db.ListProperty(str)
@@ -43,7 +46,7 @@ class Feed(db.Model):
     def extract_values(self):
         if self._values:
             return
-        self._values = self.key.name().split('|', 8)
+        self._values = self.key.name().split('|', 9)
         self._values[-1] = self._values[-1].split('+')
 
     @property
@@ -65,7 +68,7 @@ class Feed(db.Model):
         cabbr = self._values[2]
         try:
             return CATEGORIES[cabbr]
-        else:
+        except KeyError:
             return cabbr
 
     @property
@@ -99,30 +102,34 @@ class Feed(db.Model):
         return self._values[6]=='d'
 
     def pets_str(self):
-        if allow_cats and allow_dogs:
+        if self.allow_cats and self.allow_dogs:
             return 'Cats and Dogs OK'
-        elif allow_cats:
+        elif self.allow_cats:
             return 'Cats only'
-        elif allow dogs:
+        elif self.allow_dogs:
             return 'Dogs only'
         else:
             return 'Any'
 
     @property
-    def neighborhoods(self):
-        return self._values[7]
+    def pics_required(self):
+        return self._values[7]=='d'
 
     @property
-    def search_type(self):
+    def neighborhoods(self):
         return self._values[8]
 
     @property
-    def query(self):
+    def search_type(self):
         return self._values[9]
+
+    @property
+    def query(self):
+        return self._values[10]
 
     @staticmethod
     def make_key_name(city, category, min_ask, max_ask, num_bedrooms,
-                      allow_cats, allow_dogs, neighborhoods, search_type, query):
+                      allow_cats, allow_dogs, pics, neighborhoods, search_type, query):
         if allow_cats:
             cats = 'c'
         else:
@@ -131,9 +138,13 @@ class Feed(db.Model):
             dogs = 'd'
         else:
             dogs = ''
+        if pics:
+            pics = '1'
+        else:
+            pics = ''
         nstrs = '+'.join(str(n) for n in neighborhoods)
         return '|'.join(str(s) for s in [city, category, min_ask, max_ask,
-                                         num_bedrooms, cats, dogs, nstrs,
+                                         num_bedrooms, cats, dogs, pics, nstrs,
                                          search_type, query])
 
     def __repr__(self):

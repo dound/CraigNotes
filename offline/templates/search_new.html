@@ -1,0 +1,188 @@
+<%!
+    from gaesessions import get_current_session
+
+    def mark_selected(default_value, val, sel_val):
+        if (not sel_val and default_value==val) or sel_val==val:
+            return 'selected="selected"'
+        else:
+            return ''
+
+%>
+<%def name="title()">Track a new Craigslist Search</%def>
+<%inherit file="base.html"/>
+
+<form action="${request.path}" method="post" id="form">
+	<h1>Option 1: Enter your search information:</h1>
+	<table class="form">
+		<tr>
+			<th><label for="city">City/Region</label></th>
+			<td>
+				<select id="city" name="city">
+				% if request.get('city'):
+				<option value="${request.get('city')}" selected="selected">${request.get('city')}</option>
+				% else:
+				<option disabled="" value="">please choose one</option>
+				% endif
+					<option disabled="" value="">MAJOR US CITIES</option>
+						<option value="atlanta">atlanta</option>
+						<option value="austin">austin</option>
+						<option value="boston">boston</option>
+						<option value="chicago">chicago</option>
+						<option value="cleveland">cleveland</option>
+						<option value="dallas">dallas</option>
+						<option value="denver">denver</option>
+						<option value="detroit">detroit</option>
+						<option value="honolulu">honolulu</option>
+						<option value="houston">houston</option>
+						<option value="inlandempire">inland empire</option>
+						<option value="kansascity">kansas city</option>
+						<option value="lasvegas">las vegas</option>
+						<option value="losangeles">los angeles</option>
+						<option value="miami">miami</option>
+						<option value="minneapolis">minneapolis</option>
+						<option value="nashville">nashville</option>
+						<option value="newyork">new york</option>
+						<option value="orangecounty">orange co</option>
+						<option value="philadelphia">philadelphia</option>
+						<option value="phoenix">phoenix</option>
+						<option value="portland">portland</option>
+						<option value="raleigh">raleigh</option>
+						<option value="sacramento">sacramento</option>
+						<option value="sandiego">san diego</option>
+						<option value="seattle">seattle</option>
+						<option value="sfbay">sf bayarea</option>
+						<option value="stlouis">st louis</option>
+						<option value="tampa">tampa bay</option>
+						<option value="washingtondc">wash dc</option>
+
+					<option disabled="" value="">--</option>
+					<option disabled="" value="">MORE US CITIES</option>
+<%
+# TODO: fill in the rest of the city options
+%>
+
+					<option disabled="" value="">--</option>
+					<option disabled="" value="">CANADA</option>
+
+
+					<option disabled="" value="">--</option>
+					<option disabled="" value="">ASIA</option>
+
+
+					<option disabled="" value="">--</option>
+					<option disabled="" value="">EUROPE</option>
+
+
+					<option disabled="" value="">--</option>
+					<option disabled="" value="">INTERNATIONAL CITIES</option>
+
+				</select>
+			</td>
+			<td class="error">${request.get('error_city')}</td>
+		</tr>
+		<tr>
+			<th><label for="category">Category</label></th>
+			<td>
+				<select id="category" name="category">
+					<option value="ccc"${mark_selected('hhh', 'ccc', request.get('category'))}>all community</option>
+					<option value="eee"${mark_selected('hhh', 'eee', request.get('category'))}>all event</option>
+					<option value="sss"${mark_selected('hhh', 'sss', request.get('category'))}>all for sale / wanted</option>
+					<option value="ggg"${mark_selected('hhh', 'ggg', request.get('category'))}>all gigs</option>
+					<option value="hhh"${mark_selected('hhh', 'hhh', request.get('category'))}>all housing</option>
+					<option disabled="" value="">--</option>
+					<option value="aap"${mark_selected('hhh', 'aap', request.get('category'))}> all apartments</option>
+					<option value="nfa"${mark_selected('hhh', 'nfa', request.get('category'))}> all no fee apts</option>
+					<option value="hou"${mark_selected('hhh', 'hou', request.get('category'))}> apts wanted</option>
+					<option value="apa"${mark_selected('hhh', 'apa', request.get('category'))}> apts/housing for rent</option>
+					<option value="swp"${mark_selected('hhh', 'swp', request.get('category'))}> housing swap</option>
+					<option value="hsw"${mark_selected('hhh', 'hsw', request.get('category'))}> housing wanted</option>
+					<option value="off"${mark_selected('hhh', 'off', request.get('category'))}> office &amp; commercial</option>
+					<option value="prk"${mark_selected('hhh', 'prk', request.get('category'))}> parking &amp; storage</option>
+					<option value="reb"${mark_selected('hhh', 'reb', request.get('category'))}> real estate - by broker</option>
+					<option value="reo"${mark_selected('hhh', 'reo', request.get('category'))}> real estate - by owner</option>
+					<option value="rea"${mark_selected('hhh', 'rea', request.get('category'))}> real estate for sale</option>
+					<option value="rew"${mark_selected('hhh', 'rew', request.get('category'))}> real estate wanted</option>
+					<option value="roo"${mark_selected('hhh', 'roo', request.get('category'))}> rooms &amp; shares</option>
+					<option value="sha"${mark_selected('hhh', 'sha', request.get('category'))}> rooms wanted</option>
+					<option value="sbw"${mark_selected('hhh', 'sbw', request.get('category'))}> sublet/temp wanted</option>
+					<option value="sub"${mark_selected('hhh', 'sub', request.get('category'))}> sublets &amp; temporary</option>
+					<option value="vac"${mark_selected('hhh', 'vac', request.get('category'))}> vacation rentals</option>
+					<option disabled="" value="">--</option>
+					<option value="jjj"${mark_selected('hhh', 'jjj', request.get('category'))}>all jobs</option>
+					<option value="ppp"${mark_selected('hhh', 'ppp', request.get('category'))}>all personals</option>
+					<option value="res"${mark_selected('hhh', 'res', request.get('category'))}>all resume</option>
+					<option value="bbb"${mark_selected('hhh', 'bbb', request.get('category'))}>all services offered</option>
+				</select>
+			</td>
+			<td class="error">${request.get('error_category')}</td>
+		</tr>
+		<tr>
+			<th><label for="query">Search For</label></th>
+			<td>
+				<input class="text" type="text" name="query" id="query" maxlength="100" value="${request.get('query')|h}"/>
+				<input type="checkbox" id="title_only" name="title_only" value="checked" ${request.get('title_only')|h}/> <label for="title_only">only search titles</label>
+			</td>
+			<td class="error">${request.get('error_query')}</td>
+		</tr>
+		<tr>
+			<th><label for="cost_min">Min Cost</label></th>
+			<td><input class="text" type="text" name="cost_min" id="cost_min" maxlength="10" value="${request.get('cost_min')|h}"/></td>
+			<td class="error">${request.get('error_cost_min')}</td>
+		</tr>
+		<tr>
+			<th><label for="cost_max">Max Cost</label></th>
+			<td><input class="text" type="text" name="cost_max" id="cost_max" maxlength="10" value="${request.get('cost_max')|h}"/></td>
+			<td class="error">${request.get('error_cost_max')}</td>
+		</tr>
+		<tr>
+			<th><label for="num_bedrooms"># Bedrooms</label></th>
+			<td>
+				<select name="num_bedrooms">
+					<option value=""  ${mark_selected('', '', request.get('num_bedrooms'))}>0+</option>
+					<option value="1" ${mark_selected('0','1',request.get('num_bedrooms'))}>1</option>
+					<option value="2" ${mark_selected('0','2',request.get('num_bedrooms'))}>2 BR</option>
+					<option value="3" ${mark_selected('0','3',request.get('num_bedrooms'))}>3 BR</option>
+					<option value="4" ${mark_selected('0','4',request.get('num_bedrooms'))}>4 BR</option>
+					<option value="5" ${mark_selected('0','5',request.get('num_bedrooms'))}>5 BR</option>
+					<option value="6" ${mark_selected('0','6',request.get('num_bedrooms'))}>6 BR</option>
+					<option value="7" ${mark_selected('0','7',request.get('num_bedrooms'))}>7 BR</option>
+					<option value="8" ${mark_selected('0','8',request.get('num_bedrooms'))}>8 BR</option>
+				</select>
+			</td>
+			<td class="error">${request.get('error_num_bedrooms')}</td>
+		</tr>
+		<tr>
+			<th><label for="cats">Cats OK</label></th>
+			<td><input type="checkbox" id="cats" name="cats" value="checked" ${request.get('cats')|h}/></td>
+			<td> </td>
+		</tr>
+		<tr>
+			<th><label for="dogs">Dogs OK</label></th>
+			<td><input type="checkbox" id="dogs" name="dogs" value="checked" ${request.get('dogs')|h}/></td>
+			<td> </td>
+		</tr>
+		<tr>
+			<th><label for="pics">Must Have Image</label></th>
+			<td><input type="checkbox" id="pics" name="pics" value="checked" ${request.get('pics')|h}/></td>
+			<td> </td>
+		</tr>
+		<tr><td colspan="2">
+			<input class="button" id="submit" type="submit" value="Track Ads Matching this Criteria"/>
+		</td></tr>
+	</table>
+
+	<h1>Option 2: Enter a URL to a Craigslist RSS feed that you want to track</h1>
+	<table class="form">
+		<tr>
+			<th><label for="rss_url">RSS Feed URL</label></th>
+			<td><input class="text" type="text" name="rss_url" id="rss_url" value="${request.get('rss_url')|h}"/></td>
+			<td class="error">${request.get('error_rss_url')}</td>
+		</tr>
+		<tr><td colspan="2">
+			<input class="button" id="submit" type="submit" value="Track this RSS Feed"/>
+		</td></tr>
+	</table>
+	<p><i>Hint:</i> Craigslist puts a link to the RSS feed for the search you are
+	doing into the bottom-right corner of their results page.  You can right-click
+	on that link, and select &quot;Copy Link Address&quot; from the popup menu.</p>
+</form>
