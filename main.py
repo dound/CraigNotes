@@ -13,11 +13,12 @@ url_mappings = [
     ('/logout',               'controllers.Logout.Logout'),
     ('/rpx_response',         'controllers.RPX.RPX'),
     ('/profile/update',       'controllers.UserProfileEdit.UserProfileEdit'),
-    ('/profile',              'controllers.UserProfile.UserProfile'),
+    ('/tracker',              'controllers.UserProfile.UserProfile'),
 
     # main pages
-    ('/search/new',           'controllers.SearchNew.SearchNew'),
-    ('/search/view/(\d+)',    'controllers.SharePhotos.SharePhotos'),
+    ('/new',                  'controllers.SearchNew.SearchNew'),
+    ('/delete',               'controllers.SearchNew.SearchNew'),
+    ('/view/(\.+)',           'controllers.SharePhotos.SharePhotos'),
 
     # ajax pages
     ('/ajax/comment/(\d+)',   'controllers.ajax.Comment.Comment'),

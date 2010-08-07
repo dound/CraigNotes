@@ -17,13 +17,9 @@
             session.terminate()  # user no longer exists
             user_is_logged_in = False
 
-    nav_find_id = nav_race_id = nav_share_id = ""
-    if request.path.startswith('/find'):
-        nav_find_id = ' id="youarehere"'
-    elif request.path.startswith('/race'):
-        nav_race_id = ' id="youarehere"'
-    elif request.path.startswith('/share'):
-        nav_share_id = ' id="youarehere"'
+    nav_profile_id = ""
+    if request.path.startswith('/tracker'):
+        nav_profile_id = ' id="youarehere"'
 %>
 <%def name="title_sep()"> - </%def>
 <%def name="page_title()">${next.title()}</%def>
@@ -40,13 +36,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-    <title>${next.title() | h}${next.title_sep()}Race Photo Hub</title>
+    <title>${next.title() | h}${next.title_sep()}Craigslist Tracker</title>
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?3.1.0/build/cssreset/reset.css&amp;3.1.0/build/cssfonts/fonts.css&amp;3.1.0/build/cssbase/base.css"/>
     <link rel="stylesheet" type="text/css" href="/css/base.css"/>
 ${next.head()}
 </head>
 <body>
-    <noscript><div class="errmsg">Race Photo Hub works best with JavaScript enabled.</div></noscript>
+    <noscript><div class="errmsg">Craigslist Browser works best with JavaScript enabled.</div></noscript>
     <div id="wrap">
 		<a id="logo" href="/"></a>
         <div id="header">
@@ -58,9 +54,7 @@ ${next.head()}
         <div id="navwrap">
             <div id="nav">
             <ul>
-                <li${nav_share_id}><a href="/share/choose_race">Share Photos</a></li>
-                <li${nav_find_id}><a href="/find_photos">Find Photos</a></li>
-                <li${nav_race_id}><a href="/races">Browse Races</a></li>
+                <li${nav_profile_id}><a href="/tracker">Your Searches</a></li>
             </ul>
             </div>
         </div>
@@ -87,22 +81,12 @@ ${next.head()}
             <a href="/about">About</a>
             <a href="/contact">Contact Us</a>
             <a href="/faq">FAQ</a>
-            <a href="http://racephotohub.uservoice.com/forums/55956-general?lang=en" target="_blank">Give us Feedback!</a>
+            <a href="http://cltracker.uservoice.com/" target="_blank">Give us Feedback!</a>
             <a href="/legal">Legal</a>
             <a href="/privacy">Privacy</a>
         </div>
-        <p id="copyright">&copy; 2010 RacePhotoHub.com</p>
+        <p id="copyright">&copy; 2010 David Underhill</p>
     </div>
 ${next.footer()}
-<script type="text/javascript">
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-15571850-1']);
-  _gaq.push(['_trackPageview']);
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-</script>
 </body>
 </html>

@@ -233,9 +233,6 @@ ol, ul {
     color:red;
     font-style:italic;
 }
-.cal-container .yui-skin-sam .yui-calendar td.calcell.today {
-    background-color: white;
-}
 .text-block p {
     font-size: 138.5%;
 }
@@ -244,27 +241,11 @@ ol, ul {
     margin-left:8px;
 }
 
-.bib div {
-    margin-bottom: 4px;
-}
-.bib img {
-    margin-left: 4px;
-}
-
-.imgwborder {
-    border: 1px solid black;
-}
-
 .verb {
     font-weight: bold;
     font-size: 123.1%;
 }
 
-#next {
-    background: transparent url(/images/icons.png) no-repeat scroll -42px 0;
-    height: 70px;
-    width: 129px;
-}
 .rm {
     background: transparent url(/images/icons.png) no-repeat scroll -187px 0;
     cursor: pointer;
@@ -273,18 +254,6 @@ ol, ul {
 }
 .rm:hover {
     background: transparent url(/images/icons.png) no-repeat scroll -172px 0;
-}
-#flag {
-    background: transparent url(/images/icons.png) no-repeat scroll 0 0;
-    cursor: pointer;
-    display: inline-block;
-    height: 21px;
-    width: 20px;
-}
-#flag:hover {
-    background: transparent url(/images/icons.png) no-repeat scroll -21px 0;
-    height: 21px;
-    width: 20px;
 }
 #star {
     background: transparent url(/images/icons.png) no-repeat scroll -463px 0;

@@ -3,6 +3,7 @@
 %>
 <%def name="title_sep()"></%def>
 <%def name="title()"></%def>
+<%def name="page_title()">Home</%def>
 <%inherit file="base.html"/>
 <%
     user_is_logged_in = is_logged_in() is not False
@@ -10,13 +11,13 @@
 
 <p>
 This site helps you keep track of your favorite housing related ads on
-Craigslist.  You can rate ads, make notes about them, and get updates on the
-newest postings.
+Craigslist.  You can rate ads, make notes about them, and watch for the
+newest posts matching your needs.
 </p>
 
 <p>
 % if user_is_logged_in:
-	Go to <a href="/profile">your profile</a> to review your existing searches,
+	Go to <a href="/tracker">your tracker</a> to review your existing searches,
 	or to start a new one.
 % else:
 	<h2>Please sign-in to start using the site:</h2>

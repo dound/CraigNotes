@@ -50,7 +50,6 @@ class RPX(webapp.RequestHandler):
             session['my_dname'] = user.display_name
             session['my_id'] = hashed_id
             session['my_last_seen'] = int(time.mktime(user.last_seen.timetuple()))
-            session['my_rep'] = user.reputation
             session['my_email'] = user.email
 
             redir_to = self.request.get('redir_to')
