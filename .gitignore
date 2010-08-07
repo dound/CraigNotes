@@ -1,0 +1,9 @@
+clb.wpu
+*.kpf
+*.pyc
+compiled_templates
+.coverage
+covhtml
+.dev_appserver.pid
+static/css
+static/js

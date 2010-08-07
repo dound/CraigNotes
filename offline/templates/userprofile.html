@@ -1,0 +1,28 @@
+<%!
+    from gaesessions import get_current_session
+%>
+<%def name="title()">User: ${display_name|h}</%def>
+<%def name="page_title()">${display_name|h}</%def>
+<%def name="subtitle()"><a href="/user/update_profile">(edit your profile)</a></%def>
+<%inherit file="base.html"/>
+<%
+    sess = get_current_session()
+    is_own_profile = sess.get('my_id') == uid
+%>
+<table class="form">
+	<tr><th># Photos Shared</th><td>${counts.num_shared}</td></tr>
+	<tr><th># Photos Tagged</th><td>${counts.num_tagged}</td></tr>
+	<tr><th># Photos Claimed</th><td>${counts.num_claimed}</td></tr>
+	<tr><th>Reputation</th><td>${counts.rep}</td></tr>
+	<tr><th>Member Since</th><td>${date_reg}</td></tr>
+</table>
+
+<div style="clear:both"></div>
+<h2 class="subheading">Photos shared by ${display_name}:</h2>
+<ul>
+	% if is_own_profile:
+	<li><a href="http://photos.racephotohub.com/Favorites/${uid}/${sess['my_favs_id']}_${sess['my_favs_key']}">View your <b>favorites</b></a></li>
+	% endif
+	<li><a href="http://photos.racephotohub.com/keyword/user${uid}">All photos</a></li>
+	<li><a href="/untagged?uid=${uid}">Only untagged photos</a></li>
+</ul>

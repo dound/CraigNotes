@@ -1,0 +1,31 @@
+<%!
+    from controller_functions import is_logged_in
+%>
+<%def name="title_sep()"></%def>
+<%def name="title()"></%def>
+<%inherit file="base.html"/>
+<%
+    user_is_logged_in = is_logged_in() is not False
+%>
+
+<p>
+This site helps you keep track of your favorite housing related ads on
+Craigslist.  You can rate ads, make notes about them, and get updates on the
+newest postings.
+</p>
+
+<p>
+% if user_is_logged_in:
+	Go to <a href="/profile">your profile</a> to review your existing searches,
+	or to start a new one.
+% else:
+	<h2>Please sign-in to start using the site:</h2>
+	% if request.get('login_error'):
+	<div class="error">Login failed: ${request.get('login_error')}</div>
+	% endif
+	<iframe src="http://craigslist-browser.rpxnow.com/openid/embed?token_url=http%3A%2F%2F${base_url}%2Frpx_response?redir_to=${request.get('redir_to')}"
+			scrolling="no" frameBorder="no" allowtransparency="true"
+			style="width:400px;height:240px">
+	</iframe>
+% endif
+</p>

@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /ajax/
+Disallow: /logout
+Disallow: /rpx_response
+Disallow: /search

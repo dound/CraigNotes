@@ -1,0 +1,37 @@
+<%!
+    from gaesessions import get_current_session
+%>
+<%def name="title()">Edit Your Profile</%def>
+<%inherit file="base.html"/>
+<p><a href="http://www.gravatar.com" target="_blank" title="Your profile image is associated with your e-mail by Gravatar.">Click here to update your profile picture.</a><br/>
+<span class="minor">Note: It may take up to 24 hours for a new profile picture to appear.</span></p>
+
+<form action="/user/update_profile" method="post" id="form">
+	<table class="form">
+		<tr>
+			<th><label for="dname">Display Name</label></th>
+			<td><input class="text" type="text" name="dname" id="dname" maxlength="100" value="${request.get('dname', display_name)|h}"/></td>
+			<td class="error">${request.get('error_dname')}</td>
+		</tr>
+		<tr>
+			<th><label for="email">E-mail</label></th>
+			<td>
+				<input class="text" type="text" name="email" id="email" maxlength="100" value="${request.get('email', email)|h}"/>
+			</td>
+			<td class="error">${request.get('error_email')}</td>
+		</tr>
+		<tr>
+			<td style="padding-top:0"></td>
+			<td style="padding-top:0">
+				<div class="minor">
+				Your e-mail is <i>never</i> shared with others.<br/>
+				We'll e-mail you when photos <i>you</i> indicated an interest in are shared.<br/>
+				Your e-mail is also used for loading your profile image from Gravatar.
+				</div>
+			</td>
+		</tr>
+		<tr><td colspan="2">
+			<input class="button" id="submit" type="submit" value="Update Your Profile"/>
+		</td></tr>
+	</table>
+</form>

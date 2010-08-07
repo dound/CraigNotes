@@ -1,0 +1,49 @@
+application: dound
+version: test
+runtime: python
+api_version: 1
+derived_file_type:
+- python_precompiled
+
+handlers:
+- url: /css
+  static_dir: static/css
+
+- url: /images
+  static_dir: static/images
+
+- url: /js
+  static_dir: static/js
+
+- url: /favicon.ico
+  static_files: static/other/favicon.ico
+  upload: static/other/favicon.ico
+
+- url: /robots.txt
+  static_files: static/other/robots.txt
+  upload: static/other/robots.txt
+
+- url: /stats.*
+  script: $PYTHON_LIB/google/appengine/ext/appstats/ui.py
+
+- url: /_ah/queue/deferred
+  script: $PYTHON_LIB/google/appengine/ext/deferred/handler.py
+  login: admin
+
+- url: /.*
+  script: main.py
+
+# skip the default items as well as the tools folder
+skip_files:
+- ^app\.yaml
+- ^index\.yaml
+- ^(.*/)?#.*#
+- ^(.*/)?.*~
+- ^(.*/)?.*\.py[co]
+- ^(.*/)?.*/RCS/.*
+- ^(.*/)?\..*
+- ^offline/.*
+- ^clb.wpr
+- ^clb.wpu
+- ^setup.cfg
+- ^tests

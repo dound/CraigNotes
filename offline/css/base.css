@@ -1,0 +1,300 @@
+html {
+    background-color: #888888;
+}
+
+body {
+    background-color: #EEEEEE;
+    font-family: verdana,tahoma,helvetica,arial,sans-serif;
+}
+
+a:visited {
+    color: blue;
+}
+
+h1 {
+    font-size: 153.9%;
+    font-weight: bold;
+}
+h2,
+h3 {
+    margin-bottom: 0;
+}
+h3 {
+    margin-top: 0;
+}
+.subheading {
+    font-size: 138.5%; /* 18px */
+    font-style: italic;
+    margin-top: 1.5em;
+}
+
+ol, ul {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.errmsg,
+.infomsg {
+    border-bottom: 3px solid black;
+    border-top: 3px solid black;
+    font-size: 138.5%; /* 18px */
+    font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+    padding-left: 10px;
+}
+.errmsg {
+    background-color: #A44;
+    color: #FF0;
+}
+.infomsg {
+    background-color: #AFA;
+}
+
+#wrap {
+    background-color: white;
+    border: 1px solid #888888;
+    border-bottom: 0;
+    border-top: 0;
+    margin: 0 auto;
+    width: 960px;
+}
+
+#header {
+    padding-left: 10px;
+    padding-bottom: 20px;
+}
+
+#logo {
+    background: transparent url(/images/icons.png) no-repeat scroll -202px 0;
+    display: block;
+    float: left;
+    height: 64px;
+    margin: 11px 10px 0 5px;
+    width: 260px;
+}
+
+#header-links {
+    background-color: #EEEEEE;
+    border-left: 1px solid #888888;
+    border-bottom: 1px solid #888888;
+    color: #888888;
+    display: inline;
+    float: right;
+}
+.hf-links {
+    padding: 6px 0;
+}
+.hf-links a:link,
+.hf-links a:visited {
+    font-weight: bold;
+    font-size: 93%; /* 12px */
+    padding: 0.5em 1em;
+    text-decoration: none;
+}
+.hf-links a:active,
+.hf-links a:hover {
+    text-decoration: underline;
+}
+
+#mypoints {
+    color: #B00;
+    font-weight:bold;
+}
+
+#navwrap {
+    display:inline;
+}
+#nav {
+    padding-left: 10px;
+}
+#nav ul {
+    list-style-type: none;
+    margin:0;
+    padding:1em 0;
+}
+#nav ul li {
+    display: inline;
+    margin-right: 2px;
+}
+#nav a:link,
+#nav a:visited {
+    background-color: #DDDDFF;
+    border: 1px solid black;
+    font-weight: bold;
+    font-size: 123.1%; /* 16px */
+    padding: 0.5em 1em;
+    text-decoration:none;
+}
+#nav a:hover,
+#nav a:active {
+    background-color: #FFFFCC;
+}
+
+#youarehere a:link,
+#youarehere a:visited {
+    background-color: yellow;
+}
+
+#titles {
+    border-bottom: 1px solid #888888;
+    font-weight: bold;
+    height: 42px;
+    padding-left:10px;
+}
+#title {
+    font-size: 182%; /* 24px */
+    padding-top: 16px;
+    position: absolute;
+    top: 60px;
+}
+#subtitle {
+    font-size: 59.3%; /* adjusts parent's 24px to 14px */
+}
+
+#main {
+    background-color: white;
+    float:left;
+    min-height:450px;
+    padding: 10px;
+    width: 720px;
+}
+
+#sidebar {
+    background-color: white;
+    float:right;
+    padding:10px 10px 10px 0;
+    width:209px;
+}
+
+#base {
+    clear:both;
+}
+#footer {
+    background-color: #888888;
+    border-top: 1px solid black;
+    clear:both;
+    text-align: center;
+}
+#footer .hf-links a:link,
+#footer .hf-links a:visited {
+    color: #EEEEEE;
+}
+
+#copyright {
+    color: #CCCCCC;
+}
+.minor {
+    color: #444;
+    font-size: 77%; /* 10px */
+}
+
+
+/* CLASSES SHARED BY A FEW PAGES */
+.form td {
+    border:0;
+    text-align:left;
+}
+.form th {
+    border:0;
+    text-align:right;
+    vertical-align:middle;
+}
+.form .text {
+    padding: 2px;
+    width:15.5em;
+}
+.form .button,
+.form .button_small {
+    font-weight:bold;
+    text-align:center;
+}
+.form .button {
+    font-size:123.1%;
+    padding: 0.5em;
+    width:100%;
+}
+.form .button_small {
+    font-size:100.0%;
+    padding: 0.25em;
+}
+.form .select {
+    padding: 2px;
+    width:16em;
+}
+.form .optional {
+    color:#BBBBBB;
+    font-style:italic;
+}
+.form .radio {
+    margin: 0.25em;
+}
+.error {
+    color:red;
+    font-style:italic;
+}
+.cal-container .yui-skin-sam .yui-calendar td.calcell.today {
+    background-color: white;
+}
+.text-block p {
+    font-size: 138.5%;
+}
+
+.indent {
+    margin-left:8px;
+}
+
+.bib div {
+    margin-bottom: 4px;
+}
+.bib img {
+    margin-left: 4px;
+}
+
+.imgwborder {
+    border: 1px solid black;
+}
+
+.verb {
+    font-weight: bold;
+    font-size: 123.1%;
+}
+
+#next {
+    background: transparent url(/images/icons.png) no-repeat scroll -42px 0;
+    height: 70px;
+    width: 129px;
+}
+.rm {
+    background: transparent url(/images/icons.png) no-repeat scroll -187px 0;
+    cursor: pointer;
+    height: 14px;
+    width: 14px;
+}
+.rm:hover {
+    background: transparent url(/images/icons.png) no-repeat scroll -172px 0;
+}
+#flag {
+    background: transparent url(/images/icons.png) no-repeat scroll 0 0;
+    cursor: pointer;
+    display: inline-block;
+    height: 21px;
+    width: 20px;
+}
+#flag:hover {
+    background: transparent url(/images/icons.png) no-repeat scroll -21px 0;
+    height: 21px;
+    width: 20px;
+}
+#star {
+    background: transparent url(/images/icons.png) no-repeat scroll -463px 0;
+    cursor: pointer;
+    display: inline-block;
+    height: 23px;
+    width: 23px;
+}
+#star:hover {
+    background: transparent url(/images/icons.png) no-repeat scroll -487px 0;
+    height: 23px;
+    width: 23px;
+}
