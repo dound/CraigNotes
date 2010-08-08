@@ -18,7 +18,7 @@ url_mappings = [
     # main pages
     ('/new',                  'controllers.SearchNew.SearchNew'),
     ('/delete',               'controllers.SearchDelete.SearchDelete'),
-    ('/view',                 'controllers.SharePhotos.SharePhotos'),
+    ('/view',                 'controllers.SearchView.SearchView'),
 
     # ajax pages
     ('/ajax/comment/(\d+)',   'controllers.ajax.Comment.Comment'),
@@ -31,6 +31,9 @@ url_mappings = [
     ('/(faq)',                'controllers.DirectToTemplate.DirectToTemplate'),
     ('/(legal)',              'controllers.DirectToTemplate.DirectToTemplate'),
     ('/(privacy)',            'controllers.DirectToTemplate.DirectToTemplate'),
+
+    # tasks (admin-only URLs: protected by app.yaml)
+    ('/task/update_feed',     'controllers.task.UpdateFeed.UpdateFeed'),
 
     # send everything else to the page not found handler
     ('/.*',           'controllers.PageNotFound.PageNotFound'),

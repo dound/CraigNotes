@@ -26,8 +26,8 @@ handlers:
 - url: /stats.*
   script: $PYTHON_LIB/google/appengine/ext/appstats/ui.py
 
-- url: /_ah/queue/deferred
-  script: $PYTHON_LIB/google/appengine/ext/deferred/handler.py
+- url: /task/.*
+  script: main.py
   login: admin
 
 - url: /.*

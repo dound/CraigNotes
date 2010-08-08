@@ -1,8 +1,3 @@
-from cgi import parse_qs
-import logging
-import re
-import urllib
-
 from google.appengine.api import memcache
 from google.appengine.ext import webapp
 

@@ -12,7 +12,7 @@ class User(db.Model):
     email           = db.StringProperty(required=False,  indexed=True)
     date_registered = db.DateTimeProperty(required=True, indexed=False, auto_now_add=True)
     last_seen       = db.DateTimeProperty(required=True, indexed=False, auto_now_add=True)
-    feeds           = db.ListProperty(str)  # key_names of feeds the user is watching
+    feeds           = db.ListProperty(str, indexed=False)  # key_names of feeds the user is watching
 
     @staticmethod
     def make_key_name(oid):

@@ -1,12 +1,5 @@
-<%!
-    from gaesessions import get_current_session
-%>
 <%def name="title()">Your Tracker</%def>
 <%inherit file="base.html"/>
-<%
-    sess = get_current_session()
-    is_own_profile = sess.get('my_id') == uid
-%>
 % if feeds:
 <table>
 	<tr style="background-color:#EEE">

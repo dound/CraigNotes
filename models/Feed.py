@@ -1,4 +1,5 @@
 import datetime
+import hashlib
 
 from google.appengine.ext import db
 
@@ -35,6 +36,9 @@ CITIES = {
     'sfbay': 'San Francisco / Bay Area'
 }
 
+FID_LEN = 20
+MAX_AGE = datetime.timedelta(minutes=15)
+
 class Feed(db.Model):
     # primary key will contain URL query params which identify this feed
     last_update = db.DateTimeProperty(required=True, indexed=False, default=datetime.datetime(2000,1,1))
@@ -48,6 +52,19 @@ class Feed(db.Model):
             return
         self._values = self.key().name().split('|', 10)
         self._values[8] = self._values[8].split('+')
+
+    @property
+    def hashed_id(self):
+        return Feed.hashed_id_from_pk(self.key().name())
+
+    @staticmethod
+    def hashed_id_from_pk(pk):
+        m = hashlib.sha1(pk)
+        m.update('Su%jcc8W#') # SALT
+        return m.hexdigest()[:FID_LEN]
+
+    def needs_update(self):
+        return (self.last_update + MAX_AGE) <= datetime.datetime.now()
 
     @property
     def city(self):
