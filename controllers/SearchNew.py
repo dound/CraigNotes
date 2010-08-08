@@ -1,7 +1,7 @@
 from cgi import parse_qs
 import logging
 import re
-from urllib import urlencode
+import urllib
 
 from google.appengine.api import memcache
 from google.appengine.ext import webapp
@@ -12,7 +12,7 @@ from MakoLoader import MakoLoader
 from models.Feed import Feed, CATEGORIES
 from models.User import User
 
-GET_PARAMS = ('rss_url', 'city', 'category', 'query', 'title_only', 'min_cost', 'max_cost', 'num_bedrooms', 'cats', 'dogs')
+GET_PARAMS = ('rss_url', 'city', 'category', 'query', 'title_only', 'min_cost', 'max_cost', 'num_bedrooms', 'cats', 'dogs', 'pics')
 REDIR_URL = '/?redir_to=/new&info=Please%20login%20to%20start%20tracking%20a%20new%search.'
 RE_RSS_URL = re.compile(r'http://([^.]+).craigslist.org/(search/)?(...)/?[^?]*([?](.*))?')
 
@@ -62,7 +62,9 @@ class SearchNew(FormHandler):
                 return self.redirect_to_errors(GET_PARAMS, {'error_rss_url':'''This URL isn't in the expected form.  Please <a href="/contact">send it to us</a> if you think this is a bug.'''})
         else:
             city = validate_string(req, errors, 'city', 'city/region', max_len=50)
-            category = validate_string(req, errors, 'category', 'category', 3, CATEGORIES.keys())
+            category = validate_string(req, errors, 'category', 'category', 3)
+            if not CATEGORIES.has_key(category):
+                errors['error_category'] = 'Please choose a category.'
             query = validate_string(req, errors, 'query', 'search string', 100, required=False)
             title_only = req.get('title_only')=='checked'
             if title_only:
@@ -87,5 +89,23 @@ class SearchNew(FormHandler):
             logging.error('Unable to create new Feed (%s): %s' % (feed_key, e))
             return self.redirect_to_self(GET_PARAMS, {'err':'The service is temporarily unavailable - please try again later.'})
 
+        # update the User to note that they are now tracking this feed
+        user = User.get_by_key_name(session['my_id'])
+        if not user:
+            logging.error('Unable to retrieve user record for a logged in user: %s' % session['my_id'])
+            return self.redirect('/?err=The service is temporarily unavailable - please try again later.')
+        if feed_key in user.feeds:
+            return self.redirect('/view/%s?info=You%20were%20already%20tracking%20this%search.' % urllib.quote(feed_key))
+        user.feeds.append(feed_key)
+        try:
+            user.put()
+        except:
+            logging.error('Unable to retrieve user record for a logged in user: %s' % session['my_id'])
+            return self.redirect('/?err=The service is temporarily unavailable - please try again later.')
+
+        # update the memcache entry for this users' feeds
+        mckey = "user-feeds:%s" % uid
+        feeds = memcache.get(mckey, user.feeds, 30*60)
+
         # redirect the user to the feed page
-        self.redirect('/view/%s' % urlencode(feed_key))
+        self.redirect('/view?f=%s' % urllib.quote(feed_key))

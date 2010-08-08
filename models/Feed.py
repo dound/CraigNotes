@@ -46,8 +46,8 @@ class Feed(db.Model):
     def extract_values(self):
         if self._values:
             return
-        self._values = self.key.name().split('|', 9)
-        self._values[-1] = self._values[-1].split('+')
+        self._values = self.key().name().split('|', 10)
+        self._values[8] = self._values[8].split('+')
 
     @property
     def city(self):
@@ -65,7 +65,7 @@ class Feed(db.Model):
         return self._values[1]
 
     def category_str(self):
-        cabbr = self._values[2]
+        cabbr = self._values[1]
         try:
             return CATEGORIES[cabbr]
         except KeyError:
@@ -119,6 +119,11 @@ class Feed(db.Model):
     def neighborhoods(self):
         return self._values[8]
 
+    def neighborhoods_str(self):
+        if self.neighborhoods:
+            return ', '.join(n for n in self.neighborhoods)
+        return 'Any'
+
     @property
     def search_type(self):
         return self._values[9]
@@ -142,6 +147,8 @@ class Feed(db.Model):
             pics = '1'
         else:
             pics = ''
+        if not query:
+            search_type = ''
         nstrs = '+'.join(str(n) for n in neighborhoods)
         return '|'.join(str(s) for s in [city, category, min_ask, max_ask,
                                          num_bedrooms, cats, dogs, pics, nstrs,

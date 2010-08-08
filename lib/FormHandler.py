@@ -53,7 +53,7 @@ def validate_int(req, errors, param_name, desc, min_value=None, max_value=None, 
     if min_value and min_value > v:
         errors[param_name] = '%s must be greater than or equal to %s.' % (desc, min_value)
         return None
-    if max_value and max_value > v:
+    if max_value and max_value < v:
         errors[param_name] = '%s must be less than or equal to %s.' % (desc, max_value)
         return None
     return v

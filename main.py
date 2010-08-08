@@ -17,8 +17,8 @@ url_mappings = [
 
     # main pages
     ('/new',                  'controllers.SearchNew.SearchNew'),
-    ('/delete',               'controllers.SearchNew.SearchNew'),
-    ('/view/(\.+)',           'controllers.SharePhotos.SharePhotos'),
+    ('/delete',               'controllers.SearchDelete.SearchDelete'),
+    ('/view',                 'controllers.SharePhotos.SharePhotos'),
 
     # ajax pages
     ('/ajax/comment/(\d+)',   'controllers.ajax.Comment.Comment'),

@@ -22,8 +22,8 @@
 	% for f in feeds:
 	<% f.extract_values() %>
 	<tr>
-		<td><a href="/view/${f.key().name()|u}">View</a> |
-			<a href="/delete/${f.key().name()|u}">Delete</a>
+		<td><a href="/view?f=${f.key().name()|u}">View</a> |
+			<a href="/delete?f=${f.key().name()|u}">Delete</a>
 		</td>
 		<td>${f.city_str()}</td>
 		<td>${f.category_str()}</td>
@@ -32,15 +32,15 @@
 		<td>${f.pets_str()}</td>
 		<td>${f.query|h}
 		% if f.search_type == 'T':
-			<i>(must be in the title)</i>
+			<br/><i>(must be in the title)</i>
 		% endif
 		</td>
-		<td>${}</td>
+		<td>${f.neighborhoods_str()}</td>
 	</tr>
 	% endfor
 </table>
 % else:
-<p>You aren't tracking any searches yet.</p>
+<p>You aren't tracking any searches right now.</p>
 % endif
 
 <p><b><a href="/new">Start a new search</a></b></p>

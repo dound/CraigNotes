@@ -4,6 +4,7 @@ from google.appengine.ext import db, webapp
 from controller_functions import is_logged_in
 from controllers.PageNotFound import PageNotFound
 from MakoLoader import MakoLoader
+from models.Feed import Feed
 from models.User import User
 
 class UserProfile(webapp.RequestHandler):
@@ -27,6 +28,7 @@ class UserProfile(webapp.RequestHandler):
                 feeds = db.get(feed_keys)
             else:
                 feeds = []
+            memcache.set(mckey, feeds, 30*60)
 
         self.response.headers['Content-Type'] = 'text/html'
         self.response.out.write(MakoLoader.render('userprofile.html', request=self.request, feeds=feeds))
