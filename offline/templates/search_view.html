@@ -15,23 +15,24 @@
 			ignored = 'ignored&next=%s' % next
 		else:
 			reviewed = 'reviewed&next=%s' % next
+	f = request.get('f')
 %>
 
 <p style="margin-bottom:0"><h2 style="margin-top:0">View:
 	% if page_type == 'newest':
 	<b>Newest Ads</b> |
 	% else:
-	<a href="/view?t=newest">Newest Ads</a> |
+	<a href="/view?t=newest&f=${f}">Newest Ads</a> |
 	% endif
 	% if page_type != 'newest' and page_type != 'ignored':
 	<b>Ads I've Rated</b> |
 	% else:
-	<a href="/view?t=reviewed">Ads I've Rated</a> |
+	<a href="/view?t=reviewed&f=${f}">Ads I've Rated</a> |
 	% endif
 	% if page_type == 'ignored':
 	<b>Ignored Ads</b>
 	% else:
-	<a href="/view?t=ignored">Ignored Ads</a>
+	<a href="/view?t=ignored&f=${f}">Ignored Ads</a>
 	% endif
 	</h2>
 	<b>Searching:</b> ${search_desc}

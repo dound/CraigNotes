@@ -1,5 +1,6 @@
 import datetime
 import hashlib
+import urllib
 
 from google.appengine.api import memcache
 from google.appengine.api.labs import taskqueue
@@ -59,6 +60,30 @@ class Feed(db.Model):
             self._values[8] = []
         else:
             self._values[8] = self._values[8].split('+')
+
+    def make_url(self, rss=True):
+        url = 'http://%s.craigslist.org/search/%s?'
+        d = {}
+        if self.min_ask:
+            d['minAsk'] = self.min_ask
+        if self.max_ask:
+            d['maxAsk'] = self.max_ask
+        if self.num_bedrooms:
+            d['bedrooms'] = self.num_bedrooms
+        if self.allow_cats:
+            d['addTwo'] = 'purrrr'
+        if self.allow_dogs:
+            d['addThree'] = 'wooof'
+        if self.pics_required:
+            d['hasPic'] = '1'
+        if self.search_type != 'A' and self.query:
+            d['srchType'] = self.search_type
+        if self.query:
+            d['query'] = self.query
+        if rss:
+            d['format'] = rss
+        extra = ''.join('&nh=%s'%nh for nh in self.neighborhoods)
+        return 'http://%s.craigslist.org/search/%s?%s%s' % (self.city, self.category, urllib.urlencode(d), extra)
 
     @property
     def hashed_id(self):
