@@ -1,18 +1,24 @@
-import datetime
+from datetime import datetime, timedelta
+import logging
+import re
 
-from google.appengine.api import urlfetch
+from google.appengine.api import memcache, urlfetch
 from google.appengine.ext import db, webapp
 
 import feedparser
 from MakoLoader import MakoLoader
+from models.Ad import Ad
 from models.Feed import Feed
 
+RE_CID = re.compile(r'.*/(\d+)[.]html')
+
 class UpdateFeed(webapp.RequestHandler):
-    def get(self):
+    def post(self):
         feed_key_name = self.request.get('f')
         feed = Feed.get_by_key_name(feed_key_name)
         if not feed:
             return
+        feed.extract_values()
         feed_url = feed.make_url(rss=True)
 
         # get the feed from Craigslist
@@ -21,21 +27,77 @@ class UpdateFeed(webapp.RequestHandler):
         except urlfetch.Error, e:
             logging.warn('Failed to fetch Craigslist feed (%s) due to fetch failure: %s' % (feed_url, e))
             return self.error(500)
-        if resp.status_code < 200 or resp.status_code >= 300:
+        if resp.status_code != 200:
             logging.warn('Craigslist feed fetch (%s) returned an unexpected status code (%s): %s' % (feed_url, resp.status_code, resp.content))
             return self.error(500)
 
         # parse the feed
-        rss = feedparser.parse(resp.content)
+        ads = []
+        now = datetime.now()
+        try:
+            rss = feedparser.parse(resp.content)
+        except Exception,e:
+            logging.error('unable to parse RSS feed from %s: %s' % (feed_url, resp.content))
+            return
 
-        # TODO: create Ad entities from the rss dictionary!
+        for e in rss['entries']:
+            link = e['link']
+            m_cid = RE_CID.match(link)
+            if not m_cid:
+                logging.error('unable to extract CID from link: %s' % link)
+                continue
+            cid = int(m_cid.groups()[0])
+            ad_key = db.Key.from_path('Ad', cid)
+            title = e['title']
+            desc = e['summary']
+            updated_str = e['updated']
+            try:
+                offset = int(updated_str[-5:][:2])
+            except:
+                logging.error('unable to extract UTC offset for link=%s: %s' % (link, updated_str))
+                offset = 0
+            try:
+                dt = datetime.strptime(updated_str[:len(updated_str)-6], '%Y-%m-%dT%H:%M:%S')
+                updated = dt + timedelta(hours=offset/100)
+            except ValueError:
+                logging.error('unable to parse the datetime for link=%s: %s' % (link, updated_str))
+                updated = now
+            ad = Ad(key=ad_key, feeds=[feed_key_name], title=title, desc=desc, update_dt=updated, url=link)
+            ads.append(ad)
+
+        # determine which ads already exist in the datastore
+        ads_to_put = []
+        keys = [ad.key() for ad in ads]
+        existing_ads = db.get(keys)
+        for i in xrange(len(keys)):
+            ad = ads[i]
+            e_ad = existing_ads[i]
+            if e_ad is None:
+                ads_to_put.append(ad)
+            elif ad.feeds[0] not in e_ad.feeds:
+                # If the ad is not listed as being in feeds we already know it
+                # to be in, then ad the existing feed list to the new ad.  Do
+                # it this way so that we store the latest ad info just retrieved.
+                ad.feeds += e_ad.feeds
+                ads_to_put.append(ad)
+            elif ad.update_dt != e_ad.update_dt:
+                # If the ad was updated but the feed is already present in the
+                # existing ad entity's feeds
+                ad.feeds = e_ad.feeds
+                ads_to_put.append(ad)
+            # else: the add hasn't changed => no need to send it to the datastore
+
+        # create/update Ad entities
+        if ads_to_put:
+            db.put(ads_to_put)
 
         # update memcache key which specifies when a feed was last updated
         mc_key = 'feed-update-dt:%s' % feed_key_name
-        now = datetime.datetime.now()
         dt = memcache.set(mc_key, now)
 
         # update the Feed entity too
         feed.last_update = now
         feed.updating = False
         feed.put()
+
+        logging.info('FEED UPDATED: %d new/updated ads for %s' % (len(ads_to_put), feed_url))
