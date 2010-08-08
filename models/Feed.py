@@ -49,11 +49,8 @@ class Feed(db.Model):
     last_update = db.DateTimeProperty(required=True, indexed=False, default=datetime.datetime(2000,1,1))
     updating = db.BooleanProperty(required=True, indexed=False, default=False)
 
-    # attribute not put in datastore (stores values decomposed from key_name)
-    _values = db.ListProperty(str)
-
     def extract_values(self):
-        if self._values:
+        if hasattr(self, '_values'):
             return
         self._values = self.key().name().split('|', 10)
         if not self._values[8]:
@@ -71,7 +68,7 @@ class Feed(db.Model):
         if self.num_bedrooms:
             d['bedrooms'] = self.num_bedrooms
         if self.allow_cats:
-            d['addTwo'] = 'purrrr'
+            d['addTwo'] = 'purrr'
         if self.allow_dogs:
             d['addThree'] = 'wooof'
         if self.pics_required:
@@ -81,9 +78,14 @@ class Feed(db.Model):
         if self.query:
             d['query'] = self.query
         if rss:
-            d['format'] = rss
+            d['format'] = 'rss'
         extra = ''.join('&nh=%s'%nh for nh in self.neighborhoods)
         return 'http://%s.craigslist.org/search/%s?%s%s' % (self.city, self.category, urllib.urlencode(d), extra)
+
+    def put(self):
+        if hasattr(self, 'values'):
+            del self._values
+        super(Feed, self).put()
 
     @property
     def hashed_id(self):
