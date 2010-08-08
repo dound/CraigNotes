@@ -26,8 +26,7 @@ def parse_rss_url(url):
     cat2, min_ask, max_ask, nb, c, d, hp, n, st, q = parse_rss_url_params(qparams)
     if cat2:
         cat = cat2
-    #return Feed.make_key_name(city, cat, min_ask, max_ask, nb, c, d, hp, n, st, q)
-    return (city, cat, min_ask, max_ask, nb, c, d, hp, n, st, q)
+    return Feed.make_key_name(city, cat, min_ask, max_ask, nb, c, d, hp, n, st, q)
 
 def parse_rss_url_params(qparams):
     if not qparams:
