@@ -1,0 +1,54 @@
+<%!
+    from gaesessions import get_current_session
+%>
+<%def name="title()">Your Tracker - ${title_extra}</%def>
+<%inherit file="base.html"/>
+<%
+	sess = get_current_session()
+	page_type = request.get('t')
+	next = request.get('next')
+	newest, reviewed, ignored = 'newest', 'reviewed', 'ignored'
+	if next:
+		if page_type == 'newest':
+			newest = 'newest&next=%s' % next
+		elif page_type == 'ignored':
+			ignored = 'ignored&next=%s' % next
+		else:
+			reviewed = 'reviewed&next=%s' % next
+%>
+
+<p style="margin-bottom:0"><h2 style="margin-top:0">View:
+	% if page_type == 'newest':
+	<b>Newest Ads</b> |
+	% else:
+	<a href="/view?t=newest">Newest Ads</a> |
+	% endif
+	% if page_type != 'newest' and page_type != 'ignored':
+	<b>Ads I've Rated</b> |
+	% else:
+	<a href="/view?t=reviewed">Ads I've Rated</a> |
+	% endif
+	% if page_type == 'ignored':
+	<b>Ignored Ads</b>
+	% else:
+	<a href="/view?t=ignored">Ignored Ads</a>
+	% endif
+	</h2>
+	<b>Searching:</b> ${search_desc}
+	<div class="minor">(ads for this search last retrieved from Craigslist ${age})</div>
+</p>
+
+% if not ads:
+	<p>
+	% if page_type == 'newest':
+		No ads
+	% elif page_type == 'ignored':
+		You haven't ignored any ads which
+	% else:
+		You haven't reviewed any ads which
+	% endif
+	meet this criteria.
+	</p>
+% else:
+Ads will be listed here ... (not yet implemented TODO)
+% endif

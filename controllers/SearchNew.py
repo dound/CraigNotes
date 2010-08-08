@@ -64,16 +64,24 @@ class SearchNew(FormHandler):
             city = validate_string(req, errors, 'city', 'city/region', max_len=50)
             category = validate_string(req, errors, 'category', 'category', 3)
             if not CATEGORIES.has_key(category):
-                errors['error_category'] = 'Please choose a category.'
+                errors['category'] = 'Please choose a category.'
             query = validate_string(req, errors, 'query', 'search string', 100, required=False)
+            if not query:
+                query = ''
             title_only = req.get('title_only')=='checked'
             if title_only:
                 stype = 'T'
             else:
                 stype = 'A'
             min_cost = validate_int(req, errors, 'min_cost', 'Minimum Cost', 0, None, False)
+            if not min_cost:
+                min_cost = ''
             max_cost = validate_int(req, errors, 'max_cost', 'Maximum Cost', 0, None, False)
+            if not max_cost:
+                max_cost = ''
             num_bedrooms = validate_int(req, errors, 'num_bedrooms', 'Number of bedrooms', 1, 8, False)
+            if not num_bedrooms:
+                num_bedrooms = ''
             cats = req.get('cats')=='checked'
             dogs = req.get('dogs')=='checked'
             pics = req.get('pics')=='checked'
@@ -104,8 +112,8 @@ class SearchNew(FormHandler):
             return self.redirect('/?err=The service is temporarily unavailable - please try again later.')
 
         # update the memcache entry for this users' feeds
-        mckey = "user-feeds:%s" % uid
-        feeds = memcache.get(mckey, user.feeds, 30*60)
+        mckey = "user-feeds:%s" % session['my_id']
+        feeds = memcache.set(mckey, user.feeds, 30*60)
 
         # redirect the user to the feed page
-        self.redirect('/view?f=%s' % urllib.quote(feed_key))
+        self.redirect('/view?t=newest&f=%s' % urllib.quote(feed_key))

@@ -4,6 +4,7 @@ from models.User import UID_LEN
 
 class UserCmt(db.Model):
     # primary key will User ID + Craiglist ID
+    feeds = db.ListProperty(str, required=True, indexed=True) # denormalized copy of the related Ad
     rating = db.IntegerProperty(required=True, indexed=True)
     cmt = db.TextProperty(required=True)
     ignored = db.BooleanProperty(required=True, indexed=True)
