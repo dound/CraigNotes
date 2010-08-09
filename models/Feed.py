@@ -56,7 +56,7 @@ class Feed(db.Model):
         if not self._values[9]:
             self._values[9] = []
         else:
-            self._values[9] = self._values[9].split('+')
+            self._values[9] = self._values[9].split(',')
 
     def make_url(self, rss=True):
         url = 'http://%s.craigslist.org/search/%s?'
@@ -229,7 +229,7 @@ class Feed(db.Model):
             pics = ''
         if not query:
             search_type = ''
-        nstrs = '+'.join(str(n) for n in neighborhoods)
+        nstrs = ','.join(str(n) for n in neighborhoods)
         return '|'.join(str(s) for s in [city, category, area, min_ask, max_ask,
                                          num_bedrooms, cats, dogs, pics, nstrs,
                                          search_type, query])
