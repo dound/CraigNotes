@@ -92,7 +92,7 @@ class SearchNew(FormHandler):
 
         # make sure the feed is in the datastore
         try:
-            Feed.get_or_insert(key_name=feed_key)
+            feed = Feed.get_or_insert(key_name=feed_key)
         except Exception, e:
             logging.error('Unable to create new Feed (%s): %s' % (feed_key, e))
             return self.redirect_to_self(GET_PARAMS, {'err':'The service is temporarily unavailable - please try again later.'})
@@ -111,9 +111,12 @@ class SearchNew(FormHandler):
             logging.error('Unable to retrieve user record for a logged in user: %s' % session['my_id'])
             return self.redirect('/?err=The service is temporarily unavailable - please try again later.')
 
-        # update the memcache entry for this users' feeds
+        # update the memcache entry for this users' feeds if it exists
         mckey = "user-feeds:%s" % session['my_id']
-        feeds = memcache.set(mckey, user.feeds, 30*60)
+        feeds = memcache.get(mckey)
+        if feeds:
+            feeds.append(feed)
+            memcache.set(mckey, feeds, 30*60)
 
         # redirect the user to the feed page
         self.redirect('/view?t=newest&f=%s' % urllib.quote(feed_key))
