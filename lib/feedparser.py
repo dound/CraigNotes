@@ -1473,7 +1473,17 @@ class _BaseHTMLProcessor(sgmllib.SGMLParser):
         # called for each character reference, e.g. for '&#160;', ref will be '160'
         # Reconstruct the original character reference.
         self.pieces.append('&#%(ref)s;' % locals())
-        
+
+    # PATCH from http://code.google.com/p/feedparser/issues/detail?id=90
+    def convert_charref(self, ref):
+        # Convert character reference.
+        if ref[0] in ['x', 'X']:
+            data = unichr(int(ref[1:], 16)).encode(self.encoding)
+        else:
+            data = unichr(int(ref)).encode(self.encoding)
+
+        return data
+
     def handle_entityref(self, ref):
         # called for each entity reference, e.g. for '&copy;', ref will be 'copy'
         # Reconstruct the original entity reference.
