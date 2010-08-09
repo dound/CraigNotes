@@ -14,7 +14,7 @@ from models.User import User
 
 GET_PARAMS = ('rss_url', 'city', 'category', 'query', 'title_only', 'min_cost', 'max_cost', 'num_bedrooms', 'cats', 'dogs', 'pics')
 REDIR_URL = '/?redir_to=/new&info=Please%20login%20to%20start%20tracking%20a%20new%search.'
-RE_RSS_URL = re.compile(r'http://([^.]+).craigslist.org/(search/)?(...)/?[^?]*([?](.*))?')
+RE_RSS_URL = re.compile(r'http://([^.]+).craigslist.org/(search/)?(...)(/(...))?[^?]*([?](.*))?')
 
 def parse_rss_url(url):
     """Parses a RSS URL from Craigslist and returns the Feed key which describes it."""
@@ -22,11 +22,11 @@ def parse_rss_url(url):
     if not m:
         return None
     groups = m.groups()
-    city, cat, qparams = groups[0], groups[2], groups[4]
+    city, cat, area, qparams = groups[0], groups[2], groups[4], groups[5]
     cat2, min_ask, max_ask, nb, c, d, hp, n, st, q = parse_rss_url_params(qparams)
     if cat2:
         cat = cat2
-    return Feed.make_key_name(city, cat, min_ask, max_ask, nb, c, d, hp, n, st, q)
+    return Feed.make_key_name(city, cat, area, min_ask, max_ask, nb, c, d, hp, n, st, q)
 
 def parse_rss_url_params(qparams):
     if not qparams:
@@ -62,6 +62,7 @@ class SearchNew(FormHandler):
         else:
             city = validate_string(req, errors, 'city', 'city/region', max_len=50)
             category = validate_string(req, errors, 'category', 'category', 3)
+            area = '' # TODO: add area picker
             if not CATEGORIES.has_key(category):
                 errors['category'] = 'Please choose a category.'
             query = validate_string(req, errors, 'query', 'search string', 100, required=False)
@@ -86,7 +87,7 @@ class SearchNew(FormHandler):
             pics = req.get('pics')=='checked'
             if len(errors):
                 return self.redirect_to_self(GET_PARAMS, errors)
-            feed_key = Feed.make_key_name(city, category, min_cost, max_cost,
+            feed_key = Feed.make_key_name(city, category, area, min_cost, max_cost,
                                           num_bedrooms, cats, dogs, pics, [], stype, query)
 
         # make sure the feed is in the datastore

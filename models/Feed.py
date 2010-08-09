@@ -52,11 +52,11 @@ class Feed(db.Model):
     def extract_values(self):
         if hasattr(self, '_values'):
             return
-        self._values = self.key().name().split('|', 10)
-        if not self._values[8]:
-            self._values[8] = []
+        self._values = self.key().name().split('|', 11)
+        if not self._values[9]:
+            self._values[9] = []
         else:
-            self._values[8] = self._values[8].split('+')
+            self._values[9] = self._values[9].split('+')
 
     def make_url(self, rss=True):
         url = 'http://%s.craigslist.org/search/%s?'
@@ -123,12 +123,25 @@ class Feed(db.Model):
             return cabbr
 
     @property
-    def min_ask(self):
+    def area(self):
         return self._values[2]
+
+    def area_str(self, offset=False):
+        if self.area:
+            if offset:
+                return ' (area:%s)' % self.area
+            else:
+                return self.area
+        else:
+            return ''
+
+    @property
+    def min_ask(self):
+        return self._values[3]
 
     @property
     def max_ask(self):
-        return self._values[3]
+        return self._values[4]
 
     def cost_str(self):
         if self.min_ask and self.max_ask:
@@ -142,7 +155,7 @@ class Feed(db.Model):
 
     @property
     def num_bedrooms(self):
-        return self._values[4]
+        return self._values[5]
 
     def bedrooms_str(self):
         if self.num_bedrooms == '':
@@ -152,11 +165,11 @@ class Feed(db.Model):
 
     @property
     def allow_cats(self):
-        return self._values[5]=='c'
+        return self._values[6]=='c'
 
     @property
     def allow_dogs(self):
-        return self._values[6]=='d'
+        return self._values[7]=='d'
 
     def pets_str(self):
         if self.allow_cats and self.allow_dogs:
@@ -180,11 +193,11 @@ class Feed(db.Model):
 
     @property
     def pics_required(self):
-        return self._values[7]=='d'
+        return self._values[8]=='d'
 
     @property
     def neighborhoods(self):
-        return self._values[8]
+        return self._values[9]
 
     def neighborhoods_str(self):
         if self.neighborhoods:
@@ -193,14 +206,14 @@ class Feed(db.Model):
 
     @property
     def search_type(self):
-        return self._values[9]
+        return self._values[10]
 
     @property
     def query(self):
-        return self._values[10]
+        return self._values[11]
 
     @staticmethod
-    def make_key_name(city, category, min_ask, max_ask, num_bedrooms,
+    def make_key_name(city, category, area, min_ask, max_ask, num_bedrooms,
                       allow_cats, allow_dogs, pics, neighborhoods, search_type, query):
         if allow_cats:
             cats = 'c'
@@ -217,7 +230,7 @@ class Feed(db.Model):
         if not query:
             search_type = ''
         nstrs = '+'.join(str(n) for n in neighborhoods)
-        return '|'.join(str(s) for s in [city, category, min_ask, max_ask,
+        return '|'.join(str(s) for s in [city, category, area, min_ask, max_ask,
                                          num_bedrooms, cats, dogs, pics, nstrs,
                                          search_type, query])
 
@@ -231,8 +244,8 @@ class Feed(db.Model):
         ps = self.pets_str2()
         if ps != '':
             ps = '; %s' % ps
-        s = '%s in %s for %s bedroom(s) places%s%s' % (
-            self.category_str(), self.city_str(), self.bedrooms_str(), cs, ps)
+        s = '%s in %s%s for %s bedroom(s) places%s%s' % (
+            self.category_str(), self.city_str(), self.area_str(True), self.bedrooms_str(), cs, ps)
         if self.query:
             s += '; search terms: %s' % self.query
             if self.search_type == 'T':
@@ -242,8 +255,8 @@ class Feed(db.Model):
         return s
 
     def __repr__(self):
-        return 'Feed(city=%s cat=%s $=%s-%s num_br=%s cats=%s dogs=%s neighbs=%s q_type=%s q=%s updated=%s)' % \
-               (self.city, self.category, self.min_ask, self.max_ask, self.num_bedrooms, self.allow_cats, self.allow_dogs, self.neighborhoods, self.search_type, self.query, self.last_update)
+        return 'Feed(city=%s cat=%s area=%s $=%s-%s num_br=%s cats=%s dogs=%s neighbs=%s q_type=%s q=%s updated=%s)' % \
+               (self.city, self.category, self.area, self.min_ask, self.max_ask, self.num_bedrooms, self.allow_cats, self.allow_dogs, self.neighborhoods, self.search_type, self.query, self.last_update)
 
 def dt_feed_last_updated(feed_key_name):
     """Returns the datetime when the specified feed was last updated.  This
