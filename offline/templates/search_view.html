@@ -51,5 +51,21 @@
 	meet this criteria.
 	</p>
 % else:
-Ads will be listed here ... (not yet implemented TODO)
+	<table>
+	% for ad,cmt in ads:
+	<tr>
+		<td><a href="${ad.url}" target="_blank">${ad.cid()}</a></td>
+		<td>${ad.title}</td>
+		<td>${cmt.rating}</td>
+		<td>${ad.update}</td>
+	</tr>
+	<tr>
+		<td colspan="4">${cmt.cmt}</td>
+	</tr>
+	% endfor
+	</table>
+
+	% if more:
+	<a href="${request.path}&next=${more}">Next page</a>
+	% endif
 % endif

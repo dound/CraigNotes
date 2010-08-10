@@ -20,6 +20,7 @@ class UpdateFeed(webapp.RequestHandler):
             return
         feed.extract_values()
         feed_url = feed.make_url(rss=True)
+        fhid = feed.hashed_id()
 
         # get the feed from Craigslist
         try:
@@ -62,7 +63,7 @@ class UpdateFeed(webapp.RequestHandler):
             except ValueError:
                 logging.error('unable to parse the datetime for link=%s: %s' % (link, updated_str))
                 updated = now
-            ad = Ad(key=ad_key, feeds=[feed_key_name], title=title, desc=desc, update_dt=updated, url=link)
+            ad = Ad(key=ad_key, feeds=[fhid], title=title, desc=desc, update_dt=updated, url=link)
             ads.append(ad)
 
         # determine which ads already exist in the datastore

@@ -79,6 +79,8 @@ class SearchView(webapp.RequestHandler):
 
         # whether there may be more ads
         more = (len(ads) == ADS_PER_PAGE)
+        if more:
+            more = q.cursor()
 
         # get a description of the search we're viewing
         tmp_feed = Feed(key_name=feed_key_name)
