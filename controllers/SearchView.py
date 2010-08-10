@@ -25,6 +25,8 @@ class SearchView(webapp.RequestHandler):
 
         # compute how old the data is
         feed_dt_updated = dt_feed_last_updated(feed_key_name)
+        if not feed_dt_updated:
+            return self.redirect('/tracker?err=That%20feed%20no%20longer%20exists.')
         now = datetime.datetime.now()
         td = now - feed_dt_updated
         if td.days > 365:
@@ -48,7 +50,7 @@ class SearchView(webapp.RequestHandler):
         t = self.request.get('t')
         if t == 'newest':
             # show the newest ads (regardless of whether the user has commented on them or not)
-            q = Ad.all().filter('feeds =', fhid)
+            q = Ad.all().filter('feeds =', fhid).order('-update_dt')
             if next:
                 q.with_cursor(self.request.get())
             ads = q.fetch(ADS_PER_PAGE)
@@ -59,7 +61,7 @@ class SearchView(webapp.RequestHandler):
             title_extra = 'Newest Ads'
         else:
             # show ads this user has commented on/rated (whether to show ignored ads or not depends on t)
-            q = UserCmt.all().filter('feeds =', fhid).filter('ignored =', t=='ignored')
+            q = UserCmt.all().filter('feeds =', fhid).filter('ignored =', t=='ignored').order('-rating')
             if next:
                 q.with_cursor(self.request.get())
             user_ad_notes = q.fetch(ADS_PER_PAGE)

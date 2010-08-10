@@ -20,7 +20,7 @@ class UpdateFeed(webapp.RequestHandler):
             return
         feed.extract_values()
         feed_url = feed.make_url(rss=True)
-        fhid = feed.hashed_id()
+        fhid = feed.hashed_id
 
         # get the feed from Craigslist
         try:

@@ -54,13 +54,25 @@
 	<table>
 	% for ad,cmt in ads:
 	<tr>
-		<td><a href="${ad.url}" target="_blank">${ad.cid()}</a></td>
+		<td><a href="${ad.url}" target="_blank">${ad.cid}</a></td>
 		<td>${ad.title}</td>
-		<td>${cmt.rating}</td>
-		<td>${ad.update}</td>
+		<td>
+		% if cmt:
+		${cmt.rating}
+		% else:
+		unrated
+		% endif
+		</td>
+		<td>${ad.update_dt}</td>
 	</tr>
 	<tr>
-		<td colspan="4">${cmt.cmt}</td>
+		<td colspan="4">
+		% if cmt:
+		${cmt.cmt}
+		% else:
+		no comment yet
+		% endif
+		</td>
 	</tr>
 	% endfor
 	</table>
