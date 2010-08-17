@@ -59,4 +59,4 @@ def make_user_header_html(user_is_logged_in, session, path):
     if not user_is_logged_in:
         return '<a href="/?redir_to=%s">login</a>' % path
     else:
-        return '&nbsp; logged in as ' + html_escape(session['my_dname'])
+        return '&nbsp; logged in as ' + html_escape(session['my_dname']) + ' | <a href="/logout">logout</a>'
