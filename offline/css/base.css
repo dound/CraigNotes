@@ -267,3 +267,39 @@ ol, ul {
     height: 23px;
     width: 23px;
 }
+
+/* CLASSES FOR THE MAIN VIEW */
+.adheader {
+    background-color: yellow;
+}
+.cidplus {
+    border-left:0;
+    width:130px;
+}
+.cid {
+    font-weight:bold;
+}
+.descval {
+    max-height: 250px;
+    overflow-y: auto;
+}
+.descval table,
+.descval td {
+    border:0;
+}
+.gap {
+    border:0;
+    padding-bottom: 20px;
+}
+.rating {
+    border-right:0;
+}
+.title {
+    border-left:0;
+    border-right:0;
+    font-size: 138.5%;
+    font-weight:bold;
+}
+.updated {
+    font-style:italic;
+}
