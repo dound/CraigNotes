@@ -1,5 +1,6 @@
 <%!
     from gaesessions import get_current_session
+    from view_functions import str_age
 %>
 <%def name="title()">Your Tracker - ${title_extra}</%def>
 <%inherit file="base.html"/>
@@ -54,7 +55,7 @@
 	<table>
 	% for ad,cmt in ads:
 	<tr>
-		<td rowspan="2"><a href="${ad.url}" target="_blank">${ad.cid}</a></td>
+		<td rowspan="3"><a href="${ad.url}" target="_blank">${ad.cid}</a></td>
 		<td>${ad.title.encode('ISO-8859-1')}</td>
 		<td>
 		% if cmt:
@@ -63,7 +64,7 @@
 		unrated
 		% endif
 		</td>
-		<td>${ad.update_dt}</td>
+		<td>updated ${str_age(ad.update_dt, now)}</td>
 	</tr>
 	<tr>
 		<td colspan="3">
