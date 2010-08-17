@@ -47,7 +47,7 @@ ${next.head()}
 		<a id="logo" href="/"></a>
         <div id="header">
             <div class="hf-links" id="header-links">
-                <b>${make_user_header_html(user_is_logged_in, session, request.path)}</b> |
+                ${make_user_header_html(user_is_logged_in, session, request.path)} |
                 <a href="/about">about</a>
             </div>
         </div>
