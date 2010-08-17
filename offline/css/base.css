@@ -284,10 +284,14 @@ ol, ul {
     border:0;
     padding-bottom: 20px;
 }
+.editbtn,
 .hidebtn {
     color:#800;
     font-weight:bold;
     width:100%;
+}
+.editbtn {
+    color:#008;
 }
 .rating {
     border-right:0;

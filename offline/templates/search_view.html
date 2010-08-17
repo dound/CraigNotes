@@ -89,12 +89,15 @@
 		</td>
 	</tr>
 	<tr class="cmt">
-		<td colspan="3">
+		<td colspan="2" style="border-right:0">
 		% if cmt:
 		${cmt.cmt}
 		% else:
-		no comment yet
+		no comments yet
 		% endif
+		</td>
+		<td style="border-left:0">
+			<button class="editbtn" id="edit${ad.cid}">Edit Comments</button>
 		</td>
 	</tr>
 	<tr><td class="gap" colspan="3">&nbsp;</td></tr>
