@@ -66,12 +66,12 @@ ol, ul {
 }
 
 #logo {
-    background: transparent url(/images/icons.png) no-repeat scroll -202px 0;
+    background: transparent url(/images/icons.png) no-repeat scroll 0 0;
     display: block;
     float: left;
     height: 64px;
     margin: 11px 10px 0 5px;
-    width: 260px;
+    width: 266px;
 }
 
 #header-links {
@@ -247,23 +247,23 @@ ol, ul {
 }
 
 .rm {
-    background: transparent url(/images/icons.png) no-repeat scroll -187px 0;
+    background: transparent url(/images/icons.png) no-repeat scroll -282px 0;
     cursor: pointer;
     height: 14px;
     width: 14px;
 }
 .rm:hover {
-    background: transparent url(/images/icons.png) no-repeat scroll -172px 0;
+    background: transparent url(/images/icons.png) no-repeat scroll -267px 0;
 }
 #star {
-    background: transparent url(/images/icons.png) no-repeat scroll -463px 0;
+    background: transparent url(/images/icons.png) no-repeat scroll -297px 0;
     cursor: pointer;
-    display: inline-block;
     height: 23px;
     width: 23px;
 }
-#star:hover {
-    background: transparent url(/images/icons.png) no-repeat scroll -487px 0;
+#starsel {
+    background: transparent url(/images/icons.png) no-repeat scroll -321px 0;
+    cursor: pointer;
     height: 23px;
     width: 23px;
 }
