@@ -54,8 +54,8 @@
 	<table>
 	% for ad,cmt in ads:
 	<tr>
-		<td><a href="${ad.url}" target="_blank">${ad.cid}</a></td>
-		<td>${ad.title}</td>
+		<td rowspan="2"><a href="${ad.url}" target="_blank">${ad.cid}</a></td>
+		<td>${ad.title.encode('ISO-8859-1')}</td>
 		<td>
 		% if cmt:
 		${cmt.rating}
@@ -66,7 +66,14 @@
 		<td>${ad.update_dt}</td>
 	</tr>
 	<tr>
-		<td colspan="4">
+		<td colspan="3">
+		<%
+			context.write(ad.desc.encode('ISO-8859-1'))
+		%>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3">
 		% if cmt:
 		${cmt.cmt}
 		% else:
