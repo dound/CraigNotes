@@ -6,6 +6,7 @@ from google.appengine.api import memcache, urlfetch
 from google.appengine.ext import db, webapp
 
 import feedparser
+from HTMLCleanup import clean_html
 from MakoLoader import MakoLoader
 from models.Ad import Ad
 from models.Feed import Feed
@@ -49,8 +50,8 @@ class UpdateFeed(webapp.RequestHandler):
                 continue
             cid = int(m_cid.groups()[0])
             ad_key = db.Key.from_path('Ad', cid)
-            title = e['title']
-            desc = e['summary']
+            title = clean_html(e['title'], [], [])  # not tags allowed
+            desc = clean_html(e['summary'])         # default tags allowed
             updated_str = e['updated']
             try:
                 offset = int(updated_str[-5:][:2])
