@@ -59,7 +59,7 @@ def _copy_files(files, src_path, dst_path, minify):
         fp.write(code)
         fp.close()
         print 'copied ' + f
-JS_FILES = []
+JS_FILES = ['view.js']
 CSS_FILES = ['base.css']
 def copy_js(minify):
     _copy_files(JS_FILES, 'offline/js/', 'static/js/', minify)

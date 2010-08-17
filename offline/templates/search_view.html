@@ -1,6 +1,6 @@
 <%!
     from gaesessions import get_current_session
-    from view_functions import str_age
+    from view_functions import get_yui_script_tag, str_age
 %>
 <%def name="title()">Your Tracker - ${title_extra}</%def>
 <%inherit file="base.html"/>
@@ -108,3 +108,11 @@
 	<a href="${request.path}&next=${more}">Next page</a>
 	% endif
 % endif
+
+<%def name="footer()">
+${get_yui_script_tag() | n}
+<script  type="text/javascript">//<![CDATA[
+cids = ${str([str(ad.cid) for ad,cmt in ads])};
+//]]></script>
+<script type="text/javascript" src="/js/view.js"></script>
+</%def>
