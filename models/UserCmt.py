@@ -7,7 +7,7 @@ class UserCmt(db.Model):
     feeds = db.ListProperty(str, required=True, indexed=True) # denormalized copy of the related Ad
     rating = db.IntegerProperty(required=True, indexed=True)
     cmt = db.TextProperty(required=True)
-    ignored = db.BooleanProperty(required=True, indexed=True)
+    hidden = db.BooleanProperty(required=True, indexed=True)
 
     @property
     def uid(self):
@@ -18,5 +18,5 @@ class UserCmt(db.Model):
         return int(self.key().name()[UID_LEN:])
 
     def __repr__(self):
-        return 'UserCmt(uid=%s, cid=%s rating=%s ignored=%s)' % \
-               (self.uid, self.cid, self.rating, self.ignored)
+        return 'UserCmt(uid=%s, cid=%s rating=%s hidden=%s)' % \
+               (self.uid, self.cid, self.rating, self.hidden)

@@ -54,8 +54,8 @@ class SearchView(webapp.RequestHandler):
             user_ad_notes = db.get(user_ad_keys)
             title_extra = 'Newest Ads'
         else:
-            # show ads this user has commented on/rated (whether to show ignored ads or not depends on t)
-            q = UserCmt.all().filter('feeds =', fhid).filter('ignored =', t=='ignored').order('-rating')
+            # show ads this user has commented on/rated (whether to show hidden ads or not depends on t)
+            q = UserCmt.all().filter('feeds =', fhid).filter('hidden =', t=='hidden').order('-rating')
             if next:
                 q.with_cursor(self.request.get())
             user_ad_notes = q.fetch(ADS_PER_PAGE)
@@ -64,7 +64,7 @@ class SearchView(webapp.RequestHandler):
             ad_keys = [db.Key.from_path('Ad', uan.cid) for uan in user_ad_notes]
             ads = db.get(ad_keys)
 
-            if t == 'ignored':
+            if t == 'hidden':
                 title_extra = "Ads I've Rated"
             else:
                 title_extra = "Ignored Ads"

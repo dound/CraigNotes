@@ -8,12 +8,12 @@
 	sess = get_current_session()
 	page_type = request.get('t')
 	next = request.get('next')
-	newest, reviewed, ignored = 'newest', 'reviewed', 'ignored'
+	newest, reviewed, hidden = 'newest', 'reviewed', 'hidden'
 	if next:
 		if page_type == 'newest':
 			newest = 'newest&next=%s' % next
-		elif page_type == 'ignored':
-			ignored = 'ignored&next=%s' % next
+		elif page_type == 'hidden':
+			hidden = 'hidden&next=%s' % next
 		else:
 			reviewed = 'reviewed&next=%s' % next
 	f = request.get('f')
@@ -25,15 +25,15 @@
 	% else:
 	<a href="/view?t=newest&f=${f}">Newest Ads</a> |
 	% endif
-	% if page_type != 'newest' and page_type != 'ignored':
+	% if page_type != 'newest' and page_type != 'hidden':
 	<b>Ads I've Rated</b> |
 	% else:
 	<a href="/view?t=reviewed&f=${f}">Ads I've Rated</a> |
 	% endif
-	% if page_type == 'ignored':
-	<b>Ignored Ads</b>
+	% if page_type == 'hidden':
+	<b>Hidden Ads</b>
 	% else:
-	<a href="/view?t=ignored&f=${f}">Ignored Ads</a>
+	<a href="/view?t=hidden&f=${f}">Hidden Ads</a>
 	% endif
 	</h2>
 	<b>Searching:</b> ${search_desc}
@@ -44,8 +44,8 @@
 	<p>
 	% if page_type == 'newest':
 		No ads
-	% elif page_type == 'ignored':
-		You haven't ignored any ads which
+	% elif page_type == 'hidden':
+		You haven't hidden any ads which
 	% else:
 		You haven't reviewed any ads which
 	% endif
