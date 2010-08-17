@@ -56,16 +56,27 @@
 	% for ad,cmt in ads:
 	<tr class="adheader">
 		<td class="rating">
-			% if cmt:
-			${cmt.rating}
-			% else:
-			unrated
-			% endif
+			<%
+				if cmt:
+					rating = cmt.rating
+				else:
+					rating = 0
+				for i in xrange(1,6):
+					if rating >= i:
+						context.write('<span class="starsel" id="star%d_%s"></span>' % (i,ad.cid))
+					else:
+						context.write('<span class="star" id="star%d_%s"></span>' % (i,ad.cid))
+			%>
 		</td>
 		<td class="title">${ad.title.encode('ISO-8859-1')}</td>
 		<td class="cidplus">
 			<div class="cid">Ad #<a href="${ad.url}" target="_blank">${ad.cid}</a></div>
 			<div class="updated">updated ${str_age(ad.update_dt, now)}</div>
+			% if page_type == 'hidden':
+			<button id="unhide${ad.cid}" class="hidebtn">Don't Hide This Ad</button>
+			% else:
+			<button id="hide${ad.cid}" class="hidebtn">Hide This Ad</button>
+			% endif
 		</td>
 	</tr>
 	<tr class="desc">

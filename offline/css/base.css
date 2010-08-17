@@ -267,7 +267,7 @@ ol, ul {
 }
 .cidplus {
     border-left:0;
-    width:130px;
+    width:140px;
 }
 .cid {
     font-weight:bold;
@@ -283,6 +283,11 @@ ol, ul {
 .gap {
     border:0;
     padding-bottom: 20px;
+}
+.hidebtn {
+    color:#800;
+    font-weight:bold;
+    width:100%;
 }
 .rating {
     border-right:0;
