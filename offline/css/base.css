@@ -246,26 +246,19 @@ ol, ul {
     font-size: 123.1%;
 }
 
-.rm {
-    background: transparent url(/images/icons.png) no-repeat scroll -282px 0;
+.star,
+.starsel {
     cursor: pointer;
+    display: inline-block;
     height: 14px;
+    padding-right:2px;
     width: 14px;
 }
-.rm:hover {
+.star {
     background: transparent url(/images/icons.png) no-repeat scroll -267px 0;
 }
-#star {
-    background: transparent url(/images/icons.png) no-repeat scroll -297px 0;
-    cursor: pointer;
-    height: 23px;
-    width: 23px;
-}
-#starsel {
-    background: transparent url(/images/icons.png) no-repeat scroll -321px 0;
-    cursor: pointer;
-    height: 23px;
-    width: 23px;
+.starsel {
+    background: transparent url(/images/icons.png) no-repeat scroll -282px 0;
 }
 
 /* CLASSES FOR THE MAIN VIEW */
@@ -293,6 +286,7 @@ ol, ul {
 }
 .rating {
     border-right:0;
+    width: 80px;
 }
 .title {
     border-left:0;
