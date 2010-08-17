@@ -8,6 +8,7 @@ from MakoLoader import MakoLoader
 from models.Ad import Ad
 from models.Feed import Feed, dt_feed_last_updated, update_feed_if_needed, MAX_AGE_MIN
 from models.UserCmt import UserCmt
+from view_functions import str_age
 
 ADS_PER_PAGE = 25
 
@@ -28,15 +29,8 @@ class SearchView(webapp.RequestHandler):
         if not feed_dt_updated:
             return self.redirect('/tracker?err=That%20feed%20no%20longer%20exists.')
         now = datetime.datetime.now()
+        age = str_age(feed_dt_updated, now)
         td = now - feed_dt_updated
-        if td.days > 365:
-            age = 'never'
-        elif td.days > 0:
-            age = 'about %d days ago' % td.days
-        elif td.seconds >= 3540: # 59 minutes
-            age = 'about %d hours ago' % ((td.seconds+60)/3600)
-        else:
-            age = 'less than %d minutes ago' % (td.seconds/60 + 1)
         if td.days>0 or td.seconds>15*60:
             age += ' - will update shortly'
 
@@ -91,4 +85,4 @@ class SearchView(webapp.RequestHandler):
 
         self.response.headers['Content-Type'] = 'text/html'
         self.response.out.write(MakoLoader.render('search_view.html', request=self.request,
-                                                  ads=ad_infos, more=more, age=age, search_desc=desc, title_extra=title_extra))
+                                                  ads=ad_infos, more=more, age=age, now=now, search_desc=desc, title_extra=title_extra))

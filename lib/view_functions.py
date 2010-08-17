@@ -6,6 +6,28 @@ from mako.filters import html_escape, url_escape
 
 from settings import DOMAIN
 
+def str_age(a, now):
+    td = now - a
+    if td.days > 365:
+        return 'never'
+    elif td.days > 0:
+        if td.days > 1:
+            return '%d days ago' % td.days
+        else:
+            return '1 day ago'
+    elif td.seconds >= 3540: # 59 minutes
+        h = ((td.seconds+60)/3600)
+        if h > 1:
+            return '%d hours ago' % h
+        else:
+            return '1 hour ago'
+    else:
+        m = (td.seconds/60 + 1)
+        if m > 1:
+            return 'less than %d minutes ago' % m
+        else:
+            return 'less than 1 minute ago'
+
 def format_float(n, max_dec_places=2):
     """Returns a string representation of the float n with up to max_dec_places decimal places."""
     sigfigs = 1 + max_dec_places + int(log10(n))
