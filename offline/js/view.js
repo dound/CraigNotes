@@ -27,7 +27,7 @@ YUI().use('event-base', 'event-key', 'json-parse', 'io-base', 'node-base', 'node
         var txt = Y.one('cmttxt'+cid);
         if(state.editing) {
             // save the new comment (if it hasn't changed)
-            btn.set('innerHTML', 'Edit Comments');
+            btn.set('innerHTML', 'Edit Notes');
             state.editing = false;
             var new_text = Y.one('#cmtedit' + cid).get('innerHTML');
             if(new_text !== state.old_text) {
@@ -38,7 +38,7 @@ YUI().use('event-base', 'event-key', 'json-parse', 'io-base', 'node-base', 'node
         }
         else {
             // start editing the comment
-            btn.set('innerHTML', 'Save Comments');
+            btn.set('innerHTML', 'Save Notes');
             state.editing = true;
             state.old_text = txt.get('innerHTML');
             txt.set('innerHTML', '<textarea id="cmtedit' + cid + '" rows="5" cols="100">' + state.old_text + '</textarea>');

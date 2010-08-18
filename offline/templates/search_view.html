@@ -26,9 +26,9 @@
 	<a href="/view?t=newest&f=${f}">Newest Ads</a> |
 	% endif
 	% if page_type != 'newest' and page_type != 'hidden':
-	<b>Ads I've Rated</b> |
+	<b>Ads I've Rated/Noted</b> |
 	% else:
-	<a href="/view?t=reviewed&f=${f}">Ads I've Rated</a> |
+	<a href="/view?t=reviewed&f=${f}">Ads I've Rated/Noted</a> |
 	% endif
 	% if page_type == 'hidden':
 	<b>Hidden Ads</b>
@@ -98,7 +98,7 @@
 		</div>
 		</td>
 		<td style="border-left:0">
-			<button class="editbtn" id="edit${ad.cid}">Edit Comments</button>
+			<button class="editbtn" id="edit${ad.cid}">Edit Notes</button>
 		</td>
 	</tr>
 	<tr><td class="gap" colspan="3" id="gap${ad.cid}">&nbsp;</td></tr>
