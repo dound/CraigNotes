@@ -23,6 +23,8 @@ url_mappings = [
     # ajax pages
     ('/ajax/comment/(\d+)',   'controllers.ajax.Comment.Comment'),
     ('/ajax/email/(\d+)',     'controllers.ajax.Email.Email'),
+    ('/ajax/(un)?hide/(\d+)', 'controllers.ajax.Hide.Hide'),
+    ('/ajax/rate/(\d+)/(\d+)', 'controllers.ajax.Rate.Rate'),
     ('/ajax/refresh_results', 'controllers.ajax.RefreshAds.RefreshAds'),
 
     # simple pages

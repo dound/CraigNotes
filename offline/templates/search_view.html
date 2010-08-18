@@ -19,7 +19,7 @@
 	f = request.get('f')
 %>
 
-<p style="margin-bottom:0"><h2 style="margin-top:0">View:
+<h2 style="margin-top:0">View:
 	% if page_type == 'newest':
 	<b>Newest Ads</b> |
 	% else:
@@ -35,10 +35,9 @@
 	% else:
 	<a href="/view?t=hidden&f=${f}">Hidden Ads</a>
 	% endif
-	</h2>
-	<b>Searching:</b> ${search_desc}
-	<div class="minor">(ads for this search last retrieved from Craigslist ${age})</div>
-</p>
+</h2>
+<p style="margin-bottom:0"><b>Searching:</b> ${search_desc}</p>
+<div class="minor">(ads for this search last retrieved from Craigslist ${age})</div>
 
 % if not ads:
 	<p>
@@ -54,7 +53,7 @@
 % else:
 	<table>
 	% for ad,cmt in ads:
-	<tr class="adheader">
+	<tr class="adheader" id="header${ad.cid}">
 		<td class="rating">
 			<%
 				if cmt:
@@ -73,13 +72,13 @@
 			<div class="cid">Ad #<a href="${ad.url}" target="_blank">${ad.cid}</a></div>
 			<div class="updated">updated ${str_age(ad.update_dt, now)}</div>
 			% if page_type == 'hidden':
-			<button id="unhide${ad.cid}" class="hidebtn">Don't Hide This Ad</button>
+			<button id="hide${ad.cid}" class="hidebtn">Don't Hide This Ad</button>
 			% else:
 			<button id="hide${ad.cid}" class="hidebtn">Hide This Ad</button>
 			% endif
 		</td>
 	</tr>
-	<tr class="desc">
+	<tr class="desc" id="desc${ad.cid}">
 		<td colspan="3">
 			<div class="descval">
 			<%
@@ -88,19 +87,21 @@
 			</div>
 		</td>
 	</tr>
-	<tr class="cmt">
+	<tr class="cmt" id="cmtrow${ad.cid}">
 		<td colspan="2" style="border-right:0">
+		<div id="cmttxt${ad.cid}">
 		% if cmt:
 		${cmt.cmt}
 		% else:
 		no comments yet
 		% endif
+		</div>
 		</td>
 		<td style="border-left:0">
 			<button class="editbtn" id="edit${ad.cid}">Edit Comments</button>
 		</td>
 	</tr>
-	<tr><td class="gap" colspan="3">&nbsp;</td></tr>
+	<tr><td class="gap" colspan="3" id="gap${ad.cid}">&nbsp;</td></tr>
 	% endfor
 	</table>
 
@@ -112,7 +113,8 @@
 <%def name="footer()">
 ${get_yui_script_tag() | n}
 <script  type="text/javascript">//<![CDATA[
-cids = ${str([str(ad.cid) for ad,cmt in ads])};
+CIDS = ${str([str(ad.cid) for ad,cmt in ads])};
+SHOW_HIDDEN_ADS = ${int(page_type == 'hidden')};
 //]]></script>
 <script type="text/javascript" src="/js/view.js"></script>
 </%def>
