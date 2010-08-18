@@ -3,53 +3,33 @@ import logging
 from google.appengine.ext import webapp
 
 from controller_functions import is_logged_in
-from models.Photo import get_photo_by_smid, Photo
+from models.Ad import Ad
+from models.UserCmt import UserCmt
 from rate_limit import RateLimiter, RL_DROP, RL_HANDLE_BUT_SEND_CAPTCHA, RL_HANDLE_NORMALLY
 
-RL = RateLimiter('act', 2.0, 3)
+RL = RateLimiter('act', 2.0, 5)
 
 class ActionHandler(webapp.RequestHandler):
     """Generic base class for action handlers.  Handles verifying that the user
     is logged in and rate limiting the action.
     """
     def do_output(self, resp):
-        cb = self.request.get('callback')
-        if cb:
-            self.response.headers['Content-Type'] = 'text/javascript'
-            cbid = self.request.get('cbid')
-            self.response.out.write('%s({"cbid":"%s", "resp":"%s"});' % (cb, cbid, resp))
-        else:
-            self.response.headers['Content-Type'] = 'text/plain'
-            self.response.out.write(resp)
+        self.response.headers['Content-Type'] = 'text/plain'
+        self.response.out.write(resp)
 
-    def get_photo_from_pid_or_smid(self, str_pid, str_smid, uid):
-        if str_pid:
-            try:
-                pid = int(str_pid)
-            except ValueError:
-                logging.warn('invalid pid format: pid=%s from_uid=%s' % (str_pid, uid))
-                self.error(400)
+    def get_cmt_from_cid(self, str_cid, uid):
+        key_name = uid + str_cid
+        cmt = UserCmt.get_by_key_name(key_name)
+        if not cmt:
+            ad = Ad.get_by_id(int(str_cid))
+            if not ad:
+                logging.warn('%s for unknown Ad cid=%s from_uid=%s' % (self.get_action_name(), str_cid, uid))
                 return False
-            photo = Photo.get_by_id(pid)
-        else:
-            try:
-                smid = int(str_smid)
-            except ValueError:
-                logging.warn('invalid smid format: smid=%s from_uid=%s' % (str_smid, uid))
-                self.error(400)
-                return False
-            photo = get_photo_by_smid(smid)
+            # create a new user comment entity for this Ad
+            return UserCmt(key_name=key_name, feeds=ad.feeds)
+        return cmt
 
-        if not photo:
-            logging.warn('%s for unknown photo pid=%s smid=%s from_uid=%s' % (self.get_action_name(), str_pid, str_smid, uid))
-            # not a "bad request", so just return as normal
-            return False
-        return photo
-
-    def get(self):
-        return self.post()
-
-    def post(self):
+    def post(self, *args, **kwargs):
         """Ensures the user is logged in and rate-limits requests if
         self.is_rate_limited() is truthy.  Then calls self.handle_action() to
         execute the requested action.
@@ -80,7 +60,7 @@ class ActionHandler(webapp.RequestHandler):
             self.do_output('')
 
         # perform the action
-        self.handle_action(uid)
+        self.handle_action(uid, *args, **kwargs)
 
     @staticmethod
     def get_action_name():
