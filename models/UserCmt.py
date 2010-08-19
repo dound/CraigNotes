@@ -4,6 +4,7 @@ from models.User import UID_LEN
 
 MIN_RATING = 0
 MAX_RATING = 5
+MAX_NOTE_LEN = 1024 * 10
 
 class UserCmt(db.Model):
     # primary key will User ID + Craiglist ID

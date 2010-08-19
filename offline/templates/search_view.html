@@ -101,16 +101,18 @@
 	</tr>
 	<tr class="cmt" id="cmtrow${ad.cid}"${infoRowStyle}>
 		<td colspan="2" style="border-right:0">
-		<div id="cmttxt${ad.cid}">
-		% if cmt and cmt.cmt:
-		${cmt.cmt}
-		% else:
-		no comments yet
-		% endif
-		</div>
+		<%
+			context.write('<div id="cmttxt%s">' % ad.cid)
+			if cmt and cmt.cmt:
+				context.write(cmt.cmt)
+			else:
+				context.write('no notes yet')
+			context.write('</div>')
+		%>
 		</td>
 		<td style="border-left:0">
 			<button class="editbtn" id="edit${ad.cid}">Edit Notes</button>
+			<div id="charsleft${ad.cid}" style="display:none"></div>
 		</td>
 	</tr>
 	<tr><td class="gap" colspan="3" id="gap${ad.cid}">&nbsp;</td></tr>

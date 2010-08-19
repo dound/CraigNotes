@@ -24,24 +24,63 @@ YUI().use('event-base', 'event-key', 'json-parse', 'io-base', 'node-base', 'node
     /** show the editing pane if it is hidden, otherwise update the cmt with the edit pane text */
     function edit_ad_cmt(cid, btn) {
         var state = COMMENT_STATES[cid];
-        var txt = Y.one('cmttxt'+cid);
+        var txt = Y.one('#cmttxt'+cid);
         if(state.editing) {
-            // save the new comment (if it hasn't changed)
+            // save the new comment (if it changed)
             btn.set('innerHTML', 'Edit Notes');
             state.editing = false;
-            var new_text = Y.one('#cmtedit' + cid).get('innerHTML');
+            var new_text = Y.one('#cmtedit' + cid).get('value');
             if(new_text !== state.old_text) {
-                do_ajax('POST', 'cmt='+encodeURIComponent(new_text), '/ajax/comment/' + cid);
-                txt.set('innerHTML', new_text);
+                do_ajax('POST', 'note='+encodeURIComponent(new_text), '/ajax/comment/' + cid);
+                if(new_text === '') {
+                    txt.set('innerHTML', 'no notes yet');
+                }
+                else {
+                    txt.set('innerHTML', new_text);
+                }
             }
             state.old_text = null;
+
+            var div_charsleft = Y.one('#charsleft'+cid);
+            div_charsleft.setStyle('display', 'none');
         }
         else {
             // start editing the comment
             btn.set('innerHTML', 'Save Notes');
             state.editing = true;
             state.old_text = txt.get('innerHTML');
-            txt.set('innerHTML', '<textarea id="cmtedit' + cid + '" rows="5" cols="100">' + state.old_text + '</textarea>');
+            if(state.old_text === 'no notes yet') {
+                state.old_text = '';
+            }
+            txt.set('innerHTML', '<textarea id="cmtedit' + cid + '" rows="5" style="width:100%">' + state.old_text + '</textarea>');
+
+            // monitor the text area to make sure it does not get too long
+            (function (btn, cid) {
+                var cmtedit = Y.one('#cmtedit'+cid);
+                var div_charsleft = Y.one('#charsleft'+cid);
+                div_charsleft.setStyle('display', '');
+                cmtedit.on('key', function(e) {
+                    var n = cmtedit.get('value').length;
+                    var left = 10000 - n;
+                    if(left < 1000) {
+                        if(left < 0) {
+                            div_charsleft.setStyle('color', 'red');
+                            btn.setStyle('display', 'none');
+							var extra = -left;
+							div_charsleft.set('innerHTML', extra + ' characters too long.');
+                        }
+                        else {
+                            div_charsleft.setStyle('color', '');
+                            btn.setStyle('display', '');
+                          	div_charsleft.set('innerHTML', left + ' characters left');
+                        }
+                    }
+                    else {
+                        div_charsleft.set('innerHTML', '');
+                        btn.setStyle('display', '');
+                    }
+                }, 'up:');
+            })(btn, cid);
         }
     }
 
