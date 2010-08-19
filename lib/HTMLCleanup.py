@@ -18,7 +18,7 @@ acceptable_attributes = ['abbr', 'accept', 'accept-charset', 'accesskey',
   'id', 'ismap', 'label', 'lang', 'longdesc', 'maxlength', 'method',
   'multiple', 'name', 'nohref', 'noshade', 'nowrap', 'prompt',
   'rel', 'rev', 'rows', 'rowspan', 'rules', 'scope', 'shape', 'size',
-  'span', 'src', 'start', 'summary', 'tabindex', 'target', 'title', 'type',
+  'span', 'src', 'start', 'style', 'summary', 'tabindex', 'target', 'title', 'type',
   'usemap', 'valign', 'value', 'vspace', 'width']
 
 def cleanup(soup, ok_elts, ok_attrs):
