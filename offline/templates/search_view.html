@@ -50,7 +50,11 @@
 	meet this criteria.
 	</p>
 % else:
+	% if page_type == 'hidden':
+	<table class="hiddenpage">
+	% else:
 	<table>
+	% endif
 	% for ad,cmt in ads:
 	<%
 		if page_type=='newest' and cmt and cmt.hidden:

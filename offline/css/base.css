@@ -265,6 +265,11 @@ ol, ul {
 .adheader {
     background-color: yellow;
 }
+.hiddenpage .adheader {
+    background-color: #DDD;
+    color: #888;
+    font-size: 93%;
+}
 .cidplus {
     border-left:0;
     width:140px;
@@ -297,6 +302,14 @@ ol, ul {
     background-color: #DDD;
     color: #888;
     font-size: 93%;
+}
+.hiddenpage .lessprom td {
+    background-color: yellow;
+    color: black;
+    font-size: 100%;
+}
+.hiddenpage .lessprom .title {
+    font-size: 138.5%;
 }
 .lessprom .cid,
 .lessprom .updated {
