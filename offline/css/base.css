@@ -277,13 +277,23 @@ ol, ul {
 .cid {
     font-weight:bold;
 }
+.cmtval {
+    border-right:0;
+    overflow: auto;
+}
 .descval {
     max-height: 250px;
+    overflow-x: hidden;
     overflow-y: auto;
 }
 .descval table,
 .descval td {
     border:0;
+}
+.descval *,
+.cmtval * {
+    /* prevent contents of desc/comment from being too wide */
+    max-width:100%;
 }
 .gap {
     border:0;

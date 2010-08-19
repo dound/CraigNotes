@@ -104,7 +104,7 @@
 		</td>
 	</tr>
 	<tr class="cmt" id="cmtrow${ad.cid}"${infoRowStyle}>
-		<td colspan="2" style="border-right:0">
+		<td colspan="2" class="cmtval">
 		<%
 			context.write('<div id="cmttxt%s">' % ad.cid)
 			if cmt and cmt.cmt:
@@ -114,7 +114,7 @@
 			context.write('</div>')
 		%>
 		</td>
-		<td style="border-left:0">
+		<td style="border-left:0;width:146px">
 			<button class="editbtn" id="edit${ad.cid}">Edit Notes</button>
 			<div id="charsleft${ad.cid}" style="display:none"></div>
 		</td>
