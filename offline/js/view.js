@@ -1,4 +1,4 @@
-YUI().use('event-base', 'event-key', 'io-base', 'node-base', 'node-style', function(Y) {
+YUI().use('event-base', 'event-key', 'io-base', 'node-base', 'node-style', 'yui2-editor', function(Y) {
     // AJAX request constants
     var REQUEST_HEADERS = {"Pragma":"no-cache",
                            "Cache-Control":"no-store, no-cache, must-revalidate, post-check=0, pre-check=0",
@@ -18,28 +18,30 @@ YUI().use('event-base', 'event-key', 'io-base', 'node-base', 'node-style', funct
     }
     Y.on('io:complete', complete, Y);
 
-    var COMMENT_STATES = {}; // maps cid -> (btn, editing)
+    var COMMENT_STATES = {}; // maps cid -> (btn, editor)
     var RATINGS = {};        // maps cid -> (rating, star nodes)
 
     /** show the editing pane if it is hidden, otherwise update the cmt with the edit pane text */
     function edit_ad_cmt(cid, btn) {
         var state = COMMENT_STATES[cid];
         var txt = Y.one('#cmttxt'+cid);
-        if(state.editing) {
+        if(state.editor) {
             // save the new comment (if it changed)
             btn.set('innerHTML', 'Edit Notes');
-            state.editing = false;
-            var new_text = Y.one('#cmtedit' + cid).get('value');
+			state.editor.saveHTML();
+			var new_text = state.editor.get('element').value;
+            state.editor = null;
             if(new_text !== state.old_text) {
                 do_ajax('POST', 'note='+encodeURIComponent(new_text), '/ajax/comment/' + cid);
-                if(new_text === '') {
-                    txt.set('innerHTML', 'no notes yet');
-                }
-                else {
-                    txt.set('innerHTML', new_text);
-                }
-            }
-            state.old_text = null;
+	            state.old_text = null;
+			}
+
+			if(new_text === '') {
+				txt.set('innerHTML', 'no notes yet');
+			}
+			else {
+				txt.set('innerHTML', new_text);
+			}
 
             var div_charsleft = Y.one('#charsleft'+cid);
             div_charsleft.setStyle('display', 'none');
@@ -54,13 +56,27 @@ YUI().use('event-base', 'event-key', 'io-base', 'node-base', 'node-style', funct
             }
             txt.set('innerHTML', '<textarea id="cmtedit' + cid + '" rows="5" style="width:100%">' + state.old_text + '</textarea>');
 
-            // monitor the text area to make sure it does not get too long
             (function (btn, cid) {
-                var cmtedit = Y.one('#cmtedit'+cid);
+				var Dom = Y.YUI2.util.Dom, Event = Y.YUI2.util.Event;
+				var cfg = {
+					height: '100px',
+					width: '100%',
+					animate: false,
+					dompath: false,
+					focusAtStart: true,
+					autoHeight: true
+				};
+				var editor = new Y.YUI2.widget.Editor('cmtedit' + cid, cfg);
+				state.editor = editor;
+				editor.render();
+
+		        // monitor the text area to make sure it does not get too long
+	            var cmtedit = Y.one('#cmtedit'+cid);
                 var div_charsleft = Y.one('#charsleft'+cid);
                 div_charsleft.setStyle('display', '');
-                cmtedit.on('key', function(e) {
-                    var n = cmtedit.get('value').length;
+				editor.on('editorKeyUp', function(e) {
+					editor.saveHTML();
+                    var n = editor.get('element').value.length;
                     var left = 10000 - n;
                     if(left < 1000) {
                         if(left < 0) {
@@ -161,6 +177,6 @@ YUI().use('event-base', 'event-key', 'io-base', 'node-base', 'node-style', funct
         // initalize the edit comments button
         var btn = Y.one('#edit' + cid);
         btn.on('click', function(e) { edit_ad_cmt(cid, btn); } );
-        COMMENT_STATES[cid] = {'btn':btn, 'editing':false};
+        COMMENT_STATES[cid] = {'btn':btn, 'editor':null};
     })();}
 });
