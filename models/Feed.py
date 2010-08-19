@@ -47,7 +47,8 @@ MAX_AGE = datetime.timedelta(minutes=MAX_AGE_MIN)
 class Feed(db.Model):
     # primary key will contain URL query params which identify this feed
     last_update = db.DateTimeProperty(required=True, indexed=False, default=datetime.datetime(2000,1,1))
-    updating = db.BooleanProperty(required=True, indexed=False, default=False)
+    updating = db.BooleanProperty(required=True, indexed=True, default=False)
+    update_start_time = db.DateTimeProperty(required=True, indexed=True, default=datetime.datetime(2000,1,1))
 
     def extract_values(self):
         if hasattr(self, '_values'):
@@ -295,6 +296,7 @@ def update_feed_if_needed(feed_key_name):
         if feed.needs_update():
             if not feed.updating:
                 feed.updating = True
+                feed.update_start_time = datetime.datetime.now()
                 feed.put()
                 # enqueue a task to do the updating
                 taskqueue.add(url='/task/update_feed', params=dict(f=feed_key_name),
