@@ -145,7 +145,7 @@ YUI().use('event-base', 'event-key', 'io-base', 'node-base', 'node-style', 'yui2
 				editor.on('editorKeyUp', function(e) {
 					editor.saveHTML();
                     var n = editor.get('element').value.length;
-                    var left = 10000 - n;
+                    var left = 32000 - n;
                     if(left < 1000) {
                         if(left < 0) {
                             div_charsleft.setStyle('color', 'red');
