@@ -1,7 +1,4 @@
-import datetime
 import logging
-
-from google.appengine.ext import db
 
 from Action import ActionHandler
 from models.UserCmt import UserCmt, MIN_RATING, MAX_RATING
