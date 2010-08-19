@@ -15,7 +15,7 @@
 	% for f in feeds:
 	<% f.extract_values() %>
 	<tr>
-		<td><a href="/view?f=${f.key().name()|u}">View</a> |
+		<td><a href="/view?t=newest&f=${f.key().name()|u}">View</a> |
 			<a href="/delete?f=${f.key().name()|u}">Delete</a>
 		</td>
 		<td>${f.city_str()}${f.area_str(True)}</td>
