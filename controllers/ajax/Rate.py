@@ -30,5 +30,6 @@ class Rate(ActionHandler):
             return
 
         # update the rating
-        cmt.rating = rating
-        cmt.put()
+        if cmt.rating != rating:
+            cmt.rating = rating
+            cmt.put()
