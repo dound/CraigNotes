@@ -53,6 +53,7 @@
 % else:
 	<table>
 	% for ad,cmt in ads:
+	% if (not cmt) or (not cmt.hidden) or (page_type=='hidden'):  # don't show hidden results unless we're on the hidden ads page
 	<tr class="adheader" id="header${ad.cid}">
 		<td class="rating">
 			<%
@@ -102,6 +103,7 @@
 		</td>
 	</tr>
 	<tr><td class="gap" colspan="3" id="gap${ad.cid}">&nbsp;</td></tr>
+	% endif
 	% endfor
 	</table>
 
