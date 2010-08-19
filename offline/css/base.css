@@ -311,6 +311,7 @@ ol, ul {
     border-right:0;
     font-size: 138.5%;
     font-weight:bold;
+    width:456px;
 }
 .updated {
     font-style:italic;
