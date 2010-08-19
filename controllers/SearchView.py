@@ -85,6 +85,14 @@ class SearchView(webapp.RequestHandler):
         tmp_feed.extract_values()
         desc = tmp_feed.desc()
 
+        if not next:
+            page = 1
+        else:
+            try:
+                page = int(self.request.get('page', 1))
+            except ValueError:
+                page = 1;
+
         self.response.headers['Content-Type'] = 'text/html'
         self.response.out.write(MakoLoader.render('search_view.html', request=self.request,
-                                                  ads=ad_infos, more=more, age=age, now=now, search_desc=desc, title_extra=title_extra))
+                                                  ads=ad_infos, more=more, age=age, now=now, search_desc=desc, title_extra=title_extra, page=page))

@@ -8,14 +8,6 @@
 	sess = get_current_session()
 	page_type = request.get('t')
 	next = request.get('next')
-	newest, reviewed, hidden = 'newest', 'reviewed', 'hidden'
-	if next:
-		if page_type == 'newest':
-			newest = 'newest&next=%s' % next
-		elif page_type == 'hidden':
-			hidden = 'hidden&next=%s' % next
-		else:
-			reviewed = 'reviewed&next=%s' % next
 	f = request.get('f')
 %>
 <h2 style="margin-top:0">View:
@@ -36,11 +28,19 @@
 	% endif
 </h2>
 <p style="margin-bottom:0"><b>Searching:</b> ${search_desc}</p>
-<div class="minor" style="margin-bottom:10px">(ads for this search last retrieved from Craigslist ${age})</div>
+<div>
+	<span class="minor">(ads for this search last retrieved from Craigslist ${age})</span>
+
+	<p id="viewing">Viewing ads ${(page-1)*25+1} to ${page*25} (page ${page}):
+	% if more:
+		(<a href="${request.path}?t=${page_type}&f=${f}&next=${more}&page=${page+1}">next 25 results</a>)
+	% endif
+	</p>
+</div>
 
 % if not ads:
 	% if more:
-		<p>No more results.  <a href="${request.path}?t=${request.get('t')}&f=${request.get('f')}">Go back to the beginning.</a></p>
+		<p>No more results.  <a href="${request.path}?t=${page_type}&f=${f}">Go back to the beginning.</a></p>
 	% else:
 	<p>
 	% if page_type == 'newest':
@@ -124,16 +124,16 @@
 	</table>
 % endif
 
-% if request.get('next') or more:
+% if next or more:
 <p class="pages">
-	% if request.get('next'):
-		<a href="${request.path}?t=${request.get('t')}&f=${request.get('f')}">Back to page 1</a>
+	% if next:
+		<a href="${request.path}?t=${page_type}&f=${f}">Back to page 1</a>
 		% if more:
 		|
 		% endif
 	% endif
 	% if more:
-		<a href="${request.path}?t=${request.get('t')}&f=${request.get('f')}&next=${more}">Next 25 results</a>
+		<a href="${request.path}?t=${page_type}&f=${f}&next=${more}&page=${page+1}">Next 25 results</a>
 	% endif
 </p>
 % endif

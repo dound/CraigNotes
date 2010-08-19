@@ -346,3 +346,8 @@ ol, ul {
 .updated {
     font-style:italic;
 }
+#viewing {
+    margin-bottom:10px;
+    margin-top: 10px;
+    font-style:italic;
+}
