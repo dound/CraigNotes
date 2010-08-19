@@ -39,24 +39,25 @@ def format_date(dt):
 
 YUI3_LIBS = '3.1.1/build/' + '-min.js&amp;3.1.1/build/'.join([
     'yui/yui',
-    'oop/oop',
-    'event-custom/event-custom',
     'event/event-base',
     'event/event-key',
-    'json/json-parse',
-    'querystring/querystring-stringify-simple',
+    'event-custom/event-custom-base',  # required by io/io-base
     'io/io-base',
-    'dom/dom-base',
-    'dom/selector-native',
-    'dom/selector-css2',
+    'oop/oop',                         # required by dom/dom
+    'dom/dom',
     'node/node-base',
     'node/node-style',
     ]) + '-min.js&amp;'
-YUI2IN3_LIBS = '2in3.1/2.8.0/build/' + '-min.js&amp;2in3.1/2.8.0/build/'.join([
-    'yui2-calendar/yui2-calendar',
+YUI2IN3_LIBS = '2in3.1/2.8.1/build/' + '-min.js&amp;2in3.1/2.8.1/build/'.join([
     'yui2-yahoo/yui2-yahoo',
     'yui2-dom/yui2-dom',
     'yui2-event/yui2-event',
+    'yui2-element/yui2-element',
+    'yui2-editor/yui2-editor',
+    # optional (adds 35KB gzipped):
+    #'yui2-containercore/yui2-containercore',
+    #'yui2-menu/yui2-menu',
+    #'yui2-button/yui2-button',
     ]) + '-min.js'
 YUI_SCRIPTS = '<script type="text/javascript" src="http://yui.yahooapis.com/combo?%s"></script>' % (YUI3_LIBS + YUI2IN3_LIBS)
 

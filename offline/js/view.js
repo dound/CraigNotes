@@ -1,4 +1,4 @@
-YUI().use('event-base', 'event-key', 'json-parse', 'io-base', 'node-base', 'node-style', function(Y) {
+YUI().use('event-base', 'event-key', 'io-base', 'node-base', 'node-style', function(Y) {
     // AJAX request constants
     var REQUEST_HEADERS = {"Pragma":"no-cache",
                            "Cache-Control":"no-store, no-cache, must-revalidate, post-check=0, pre-check=0",
