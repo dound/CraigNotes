@@ -293,6 +293,15 @@ ol, ul {
 .editbtn {
     color:#008;
 }
+.lessprom td {
+    background-color: #DDD;
+    color: #888;
+    font-size: 93%;
+}
+.lessprom .cid,
+.lessprom .updated {
+    display:none;
+}
 .rating {
     border-right:0;
     width: 80px;

@@ -69,18 +69,32 @@ YUI().use('event-base', 'event-key', 'json-parse', 'io-base', 'node-base', 'node
 
     /** hide or unhide an ad */
     function toggle_hide_ad(cid) {
-        // hide the rows corresponding to this ad (no longer in this result set)
-        Y.one('#header'+cid).setStyle('display', 'none');
-        Y.one('#desc'+cid).setStyle('display', 'none');
-        Y.one('#cmtrow'+cid).setStyle('display', 'none');
-        Y.one('#gap'+cid).setStyle('display', 'none');
+        var div_header = Y.one('#header'+cid);
+        var row_desc = Y.one('#desc'+cid);
+        var row_cmt = Y.one('#cmtrow'+cid);
+        var hide_btn = Y.one('#hide'+cid);
 
-        // reverse the hidden value
-        var action = 'hide';
-        if(SHOW_HIDDEN_ADS) {
-            action = 'unhide'
+        var less_prom = div_header.hasClass('lessprom');
+        var hidden = (SHOW_HIDDEN_ADS ? !less_prom : less_prom);
+        if(hidden) {
+            do_ajax('POST', '', '/ajax/unhide/' + cid);
+            hide_btn.set('innerHTML', "Hide This Ad");
+        } else {
+            do_ajax('POST', '', '/ajax/hide/' + cid);
+            hide_btn.set('innerHTML', "Don't Hide This Ad");
         }
-        do_ajax('POST', '', '/ajax/' + action + '/' + cid);
+
+        if(less_prom) {
+            div_header.removeClass('lessprom');
+            row_desc.setStyle('display', '');
+            row_cmt.setStyle('display', '');
+
+        }
+        else {
+            div_header.addClass('lessprom');
+            row_desc.setStyle('display', 'none');
+            row_cmt.setStyle('display', 'none');
+        }
     }
 
     // hookup each ad's widgets
