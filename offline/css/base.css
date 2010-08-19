@@ -315,6 +315,13 @@ ol, ul {
 .lessprom .updated {
     display:none;
 }
+.pages,
+.pages a {
+    font-size: 123.1%; /* 16px */
+}
+.pages a {
+    font-weight:bold;
+}
 .rating {
     border-right:0;
     width: 80px;

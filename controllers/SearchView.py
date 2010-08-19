@@ -46,7 +46,7 @@ class SearchView(webapp.RequestHandler):
             # show the newest ads (regardless of whether the user has commented on them or not)
             q = Ad.all().filter('feeds =', fhid).order('-update_dt')
             if next:
-                q.with_cursor(self.request.get())
+                q.with_cursor(next)
             ads = q.fetch(ADS_PER_PAGE)
 
             # get user comments on these ads, if any
@@ -57,7 +57,7 @@ class SearchView(webapp.RequestHandler):
             # show ads this user has commented on/rated (whether to show hidden ads or not depends on t)
             q = UserCmt.all().filter('feeds =', fhid).filter('hidden =', t=='hidden').order('-rating')
             if next:
-                q.with_cursor(self.request.get())
+                q.with_cursor(next)
             user_ad_notes = q.fetch(ADS_PER_PAGE)
 
             # get the ads associated with these comments
@@ -77,6 +77,8 @@ class SearchView(webapp.RequestHandler):
         more = (len(ads) == ADS_PER_PAGE)
         if more:
             more = q.cursor()
+        if not more or more==str(next):
+            more = None
 
         # get a description of the search we're viewing
         tmp_feed = Feed(key_name=feed_key_name)

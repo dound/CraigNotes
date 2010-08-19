@@ -36,9 +36,12 @@
 	% endif
 </h2>
 <p style="margin-bottom:0"><b>Searching:</b> ${search_desc}</p>
-<div class="minor">(ads for this search last retrieved from Craigslist ${age})</div>
+<div class="minor" style="margin-bottom:10px">(ads for this search last retrieved from Craigslist ${age})</div>
 
 % if not ads:
+	% if more:
+		<p>No more results.  <a href="${request.path}?t=${request.get('t')}&f=${request.get('f')}">Go back to the beginning.</a></p>
+	% else:
 	<p>
 	% if page_type == 'newest':
 		No ads
@@ -49,6 +52,7 @@
 	% endif
 	meet this criteria.
 	</p>
+	% endif
 % else:
 	% if page_type == 'hidden':
 	<table class="hiddenpage yui-skin-sam">
@@ -118,10 +122,20 @@
 	<tr><td class="gap" colspan="3" id="gap${ad.cid}">&nbsp;</td></tr>
 	% endfor
 	</table>
+% endif
 
-	% if more:
-	<a href="${request.path}&next=${more}">Next page</a>
+% if request.get('next') or more:
+<p class="pages">
+	% if request.get('next'):
+		<a href="${request.path}?t=${request.get('t')}&f=${request.get('f')}">Back to page 1</a>
+		% if more:
+		|
+		% endif
 	% endif
+	% if more:
+		<a href="${request.path}?t=${request.get('t')}&f=${request.get('f')}&next=${more}">Next 25 results</a>
+	% endif
+</p>
 % endif
 
 <%def name="footer()">
