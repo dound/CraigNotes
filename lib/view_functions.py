@@ -54,10 +54,9 @@ YUI2IN3_LIBS = '2in3.1/2.8.1/build/' + '-min.js&amp;2in3.1/2.8.1/build/'.join([
     'yui2-event/yui2-event',
     'yui2-element/yui2-element',
     'yui2-editor/yui2-editor',
-    # optional (adds 35KB gzipped):
-    #'yui2-containercore/yui2-containercore',
-    #'yui2-menu/yui2-menu',
-    #'yui2-button/yui2-button',
+    'yui2-containercore/yui2-containercore',
+    'yui2-menu/yui2-menu',
+    'yui2-button/yui2-button',
     ]) + '-min.js'
 YUI_SCRIPTS = '<script type="text/javascript" src="http://yui.yahooapis.com/combo?%s"></script>' % (YUI3_LIBS + YUI2IN3_LIBS)
 
