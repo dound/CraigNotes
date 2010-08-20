@@ -48,17 +48,17 @@ ${next.head()}
                 <a href="/">about</a>
             </div>
         </div>
-        % if request.get('err'):
-        <div class="errmsg">${request.get('err') | h}</div>
-        % endif
-        % if request.get('msg'):
-        <div class="infomsg">${request.get('msg') | h}</div>
-        % endif
         <div id="titles">
 			<div id="title">${next.page_title() | h}
 				<span id="subtitle">${next.subtitle() | h}</span>
 			</div>
 		</div>
+        % if request.get('err'):
+        <div class="errmsg">${request.get('err') | h}</div>
+        % endif
+        % if request.get('info'):
+        <div class="infomsg">${request.get('info') | h}</div>
+        % endif
 		${next.header2()}
         <div id="main">
             ${next.body()}
