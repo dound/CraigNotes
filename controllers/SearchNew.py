@@ -103,7 +103,7 @@ class SearchNew(FormHandler):
             logging.error('Unable to retrieve user record for a logged in user: %s' % session['my_id'])
             return self.redirect('/?err=The service is temporarily unavailable - please try again later.')
         if feed_key in user.feeds:
-            return self.redirect('/view/%s?info=You%20were%20already%20tracking%20this%search.' % urllib.quote(feed_key))
+            return self.redirect('/view?f=' + urllib.quote(feed_key) + '&info=You%20were%20already%20tracking%20this%20search.')
         user.feeds.append(feed_key)
         try:
             user.put()
