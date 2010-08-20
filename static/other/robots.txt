@@ -1,5 +1,6 @@
 User-agent: *
 Disallow: /ajax/
 Disallow: /logout
+Disallow: /profile/update
 Disallow: /rpx_response
 Disallow: /search

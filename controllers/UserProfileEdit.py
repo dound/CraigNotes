@@ -51,4 +51,6 @@ class UserProfileEdit(FormHandler):
             session['my_email'] = email
             logging.info("Updated user profile: " + str_update)
             memcache.delete('u+c%s' % uid) # clear saved user_info
-        self.redirect('/user/%s/%s' % (uid, user.get_nice_name()))
+            self.redirect('/profile/update?info=Your%20profile%20has%20been%20updated.')
+        else:
+            self.redirect('/profile/update?info=You%20did%20not%20make%20any%20changes%20to%20your%20profile.')

@@ -3,10 +3,7 @@
 %>
 <%def name="title()">Edit Your Profile</%def>
 <%inherit file="base.html"/>
-<p><a href="http://www.gravatar.com" target="_blank" title="Your profile image is associated with your e-mail by Gravatar.">Click here to update your profile picture.</a><br/>
-<span class="minor">Note: It may take up to 24 hours for a new profile picture to appear.</span></p>
-
-<form action="/user/update_profile" method="post" id="form">
+<form action="/profile/update" method="post" id="form">
 	<table class="form">
 		<tr>
 			<th><label for="dname">Display Name</label></th>
@@ -25,8 +22,6 @@
 			<td style="padding-top:0">
 				<div class="minor">
 				Your e-mail is <i>never</i> shared with others.<br/>
-				We'll e-mail you when photos <i>you</i> indicated an interest in are shared.<br/>
-				Your e-mail is also used for loading your profile image from Gravatar.
 				</div>
 			</td>
 		</tr>
@@ -34,4 +29,5 @@
 			<input class="button" id="submit" type="submit" value="Update Your Profile"/>
 		</td></tr>
 	</table>
+	<p><a href="/tracker">Go back to your Craigslist search tracker.</a></p>
 </form>
