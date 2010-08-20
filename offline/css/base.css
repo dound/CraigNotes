@@ -164,7 +164,7 @@ ol, ul {
     background-color: white;
     float:right;
     padding:10px 10px 10px 0;
-    width:209px;
+    width:160px;
 }
 
 #base {
@@ -347,7 +347,5 @@ ol, ul {
     font-style:italic;
 }
 #viewing {
-    margin-bottom:10px;
-    margin-top: 10px;
     font-style:italic;
 }

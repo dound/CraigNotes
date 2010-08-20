@@ -10,33 +10,39 @@
 	next = request.get('next')
 	f = request.get('f')
 %>
-<h2 style="margin-top:0">View:
-	% if page_type == 'newest':
-	<b>Newest Ads</b> |
-	% else:
-	<a href="/view?t=newest&f=${f}">Newest Ads</a> |
-	% endif
-	% if page_type != 'newest' and page_type != 'hidden':
-	<b>Ads I've Rated/Noted</b> |
-	% else:
-	<a href="/view?t=reviewed&f=${f}">Ads I've Rated/Noted</a> |
-	% endif
-	% if page_type == 'hidden':
-	<b>Hidden Ads</b>
-	% else:
-	<a href="/view?t=hidden&f=${f}">Hidden Ads</a>
-	% endif
-</h2>
-<p style="margin-bottom:0"><b>Searching:</b> ${search_desc}</p>
-<div>
-	<span class="minor">(ads for this search last retrieved from Craigslist ${age})</span>
 
-	<p id="viewing">Viewing ads ${(page-1)*25+1} to ${page*25} (page ${page}):
-	% if more:
-		(<a href="${request.path}?t=${page_type}&f=${f}&next=${more}&page=${page+1}">next 25 results</a>)
-	% endif
-	</p>
-</div>
+<%def name="header2()">
+	<%
+		page_type = request.get('t')
+		f = request.get('f')
+		newest_id = hidden_id = reviewed_id = ""
+		if page_type == 'newest':
+			newest_id = ' id="youarehere"'
+		elif page_type == 'hidden':
+			hidden_id = ' id="youarehere"'
+		else:
+			reviewed_id = ' id="youarehere"'
+	%>
+	<div style="border-bottom: 1px solid #888888;text-align:center">
+		<div id="nav">
+			<ul>
+				<li${newest_id}><a href="/view?t=newest&f=${f}">Newest Ads</a></li>
+				<li${reviewed_id}><a href="/view?t=reviewed&f=${f}">Ads I've Rated/Noted</a></li>
+				<li${hidden_id}><a href="/view?t=hidden&f=${f}">Hidden Ads</a></li>
+			</ul>
+		</div>
+		<p id="viewing">Viewing ads ${(page-1)*25+1} to ${page*25} (page ${page}):
+		% if more:
+			(<a href="${request.path}?t=${page_type}&f=${f}&next=${more}&page=${page+1}">next 25 results</a>)
+		% endif
+		</p>
+
+		<p style="margin:auto;max-width:750px">
+			<b>Searching:</b> ${search_desc}
+			<span class="minor">(ads for this search last retrieved from Craigslist ${age})</span>
+		</p>
+	</div>
+</%def>
 
 % if not ads:
 	% if more:
