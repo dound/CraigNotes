@@ -1,8 +1,13 @@
 import datetime
 import hashlib
+import logging
 import time
 
+from google.appengine.api import memcache
 from google.appengine.ext import db
+
+from controller_functions import is_logged_in
+from models.Feed import Feed
 
 MAX_FEED_NAME_LEN = 30
 UID_LEN = 20
@@ -46,3 +51,29 @@ class User(db.Model):
 
     def __repr__(self):
         return 'User(uid=%s dname=%s email=%s gender=%s last_seen=%s rep=%s date_reg=%s)' % (self.hashed_id(), self.display_name, self.email, self.gender, self.last_seen, self.reputation, self.date_registered)
+
+def get_feed_infos():
+    """Returns an array of 2-tuples (feed_name, feed_key) for the current user,
+    or False on failure.
+    """
+    session = is_logged_in(self)
+    if not session:
+        return False
+    uid = session['my_id']
+
+    mckey = "user-feeds:%s" % uid
+    feed_infos = memcache.get(mckey)
+    if not feed_infos:
+        user = User.get_by_key_name(uid)
+        if not user:
+            logging.error('cannot find the profile for a logged in user (%s)' % uid)
+            session.terminate()
+            return False
+        feed_keys = [db.Key.from_path('Feed', f) for f in user.feeds]
+        if feed_keys:
+            feeds = db.get(feed_keys)
+        else:
+            feeds = []
+        feed_infos = zip(user.feed_names, feeds)
+        memcache.set(mckey, feed_infos, 30*60)
+    return feed_infos
