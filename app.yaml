@@ -1,5 +1,5 @@
 application: cltrck
-version: test
+version: beta
 runtime: python
 api_version: 1
 derived_file_type:
