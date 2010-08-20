@@ -29,6 +29,7 @@
 	Go to <a href="/tracker">your search tracker</a> to review your existing searches,
 	or to start a new one.
 % else:
+</p>
 	<h2>Please sign-in to start using the site:</h2>
 	% if request.get('login_error'):
 	<div class="error">Login failed: ${request.get('login_error')}</div>
@@ -38,5 +39,4 @@
 			style="width:400px;height:240px">
 	</iframe>
 % endif
-</p>
 </div>
