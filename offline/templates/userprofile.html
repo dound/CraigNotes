@@ -16,7 +16,7 @@
 	% for fname,f in feed_infos:
 	<% f.extract_values() %>
 	<tr>
-		<td><a href="/view?t=newest&f=${f.key().name()|u}">${fname}</a></td>
+		<td><a href="/view?t=newest&f=${f.key().name()|u}">${fname|h}</a></td>
 		<td>${f.city_str()}${f.area_str(True)}</td>
 		<td>${f.category_str()}</td>
 		<td>${f.cost_str()}</td>

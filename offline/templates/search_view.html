@@ -2,7 +2,8 @@
     from gaesessions import get_current_session
     from view_functions import get_yui_script_tag, str_age
 %>
-<%def name="title()">Your Tracker - ${title_extra}</%def>
+<%def name="title()">${name|h}</%def>
+<%def name="page_title()"><a href="/tracker">Your Tracker</a> - ${name|h}</%def>
 <%inherit file="base.html"/>
 <%
 	sess = get_current_session()

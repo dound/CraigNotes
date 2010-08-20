@@ -7,6 +7,7 @@ from controller_functions import is_logged_in
 from MakoLoader import MakoLoader
 from models.Ad import Ad
 from models.Feed import Feed, dt_feed_last_updated, update_feed_if_needed, MAX_AGE_MIN
+from models.User import get_search_name
 from models.UserCmt import UserCmt
 from view_functions import str_age
 
@@ -23,6 +24,13 @@ class SearchView(webapp.RequestHandler):
         if not feed_key_name:
             return self.redirect('/tracker')
         fhid = Feed.hashed_id_from_pk(feed_key_name)
+
+        # get the user's name for this feed
+        name = get_search_name(self, feed_key_name)
+        if name is None:
+            return self.redirect('/tracker')  # user is no longer tracking this feed
+        elif name is False:
+            return self.redirect('/') # login related error
 
         # compute how old the data is
         feed_dt_updated = dt_feed_last_updated(feed_key_name)
@@ -94,4 +102,4 @@ class SearchView(webapp.RequestHandler):
 
         self.response.headers['Content-Type'] = 'text/html'
         self.response.out.write(MakoLoader.render('search_view.html', request=self.request,
-                                                  ADS_PER_PAGE=ADS_PER_PAGE, ads=ad_infos, more=more, age=age, now=now, search_desc=desc, title_extra=title_extra, page=page))
+                                                  ADS_PER_PAGE=ADS_PER_PAGE, ads=ad_infos, more=more, age=age, now=now, search_desc=desc, title_extra=title_extra, page=page, name=name))

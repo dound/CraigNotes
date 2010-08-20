@@ -52,11 +52,11 @@ class User(db.Model):
     def __repr__(self):
         return 'User(uid=%s dname=%s email=%s gender=%s last_seen=%s rep=%s date_reg=%s)' % (self.hashed_id(), self.display_name, self.email, self.gender, self.last_seen, self.reputation, self.date_registered)
 
-def get_feed_infos():
+def get_feed_infos(handler):
     """Returns an array of 2-tuples (feed_name, feed_key) for the current user,
     or False on failure.
     """
-    session = is_logged_in(self)
+    session = is_logged_in(handler)
     if not session:
         return False
     uid = session['my_id']
@@ -77,3 +77,16 @@ def get_feed_infos():
         feed_infos = zip(user.feed_names, feeds)
         memcache.set(mckey, feed_infos, 30*60)
     return feed_infos
+
+def get_search_name(handler, feed_key_name):
+    """Returns what the user has named the feed with the specified name.  If the
+    user is not logged in or an error occurs, False is returned.  If the user is
+    not watching a feed with this key then None is returned.
+    """
+    feed_infos = get_feed_infos(handler)
+    if not feed_infos:
+        return False
+    for name,feed in feed_infos:
+        if feed.key().name() == feed_key_name:
+            return name
+    return None

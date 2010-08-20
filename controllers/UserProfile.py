@@ -8,7 +8,7 @@ from models.User import get_feed_infos
 
 class UserProfile(webapp.RequestHandler):
     def get(self):
-        feed_infos = get_feed_infos()
+        feed_infos = get_feed_infos(self)
         if feed_infos is False:
             return self.redirect('/') # user not logged in, or error (handled already)
 
