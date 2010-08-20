@@ -12,7 +12,21 @@
 <%inherit file="base.html"/>
 
 <form action="${request.path}" method="post" id="form">
-	<h1>Option 1: Enter your search information:</h1>
+	<h1>Option 1: Enter a URL to a Craigslist search that you want to track</h1>
+	<table class="form">
+		<tr>
+			<th><label for="rss_url">Search or RSS Feed URL</label></th>
+			<td><input class="text" type="text" name="rss_url" id="rss_url" value="${request.get('rss_url')|h}"/></td>
+			<td class="error">${request.get('error_rss_url')}</td>
+		</tr>
+		<tr><td colspan="2">
+			<input class="button" id="submit" type="submit" value="Track this RSS Feed"/>
+		</td></tr>
+	</table>
+	<p><i>Hint:</i> Do your search on Craigslist, and then copy the URL of their
+	search results page into the above box.</p>
+
+	<h1 style="margin-top:2.5em">Option 2: Enter your search here</h1>
 	<table class="form">
 		<tr>
 			<th><label for="city">City/Region</label></th>
@@ -170,19 +184,4 @@
 			<input class="button" id="submit" type="submit" value="Track Ads Matching this Criteria"/>
 		</td></tr>
 	</table>
-
-	<h1>Option 2: Enter a URL to a Craigslist RSS feed that you want to track</h1>
-	<table class="form">
-		<tr>
-			<th><label for="rss_url">RSS Feed URL</label></th>
-			<td><input class="text" type="text" name="rss_url" id="rss_url" value="${request.get('rss_url')|h}"/></td>
-			<td class="error">${request.get('error_rss_url')}</td>
-		</tr>
-		<tr><td colspan="2">
-			<input class="button" id="submit" type="submit" value="Track this RSS Feed"/>
-		</td></tr>
-	</table>
-	<p><i>Hint:</i> Craigslist puts a link to the RSS feed for the search you are
-	doing into the bottom-right corner of their results page.  You can right-click
-	on that link, and select &quot;Copy Link Address&quot; from the popup menu.</p>
 </form>
