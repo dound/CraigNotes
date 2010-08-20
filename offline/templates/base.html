@@ -16,10 +16,6 @@
             logging.warn("terminating session which specified an invalid user ID %s (should only happen if a user is deleted and then they access the site w/o clearing their cookies)" % session['my_id'])
             session.terminate()  # user no longer exists
             user_is_logged_in = False
-
-    nav_profile_id = ""
-    if request.path.startswith('/tracker'):
-        nav_profile_id = ' id="youarehere"'
 %>
 <%def name="title_sep()"> - </%def>
 <%def name="page_title()">${next.title()}</%def>
@@ -49,13 +45,6 @@ ${next.head()}
             <div class="hf-links" id="header-links">
                 ${make_user_header_html(user_is_logged_in, session, request.path)} |
                 <a href="/about">about</a>
-            </div>
-        </div>
-        <div id="navwrap">
-            <div id="nav">
-            <ul>
-                <li${nav_profile_id}><a href="/tracker">Your Searches</a></li>
-            </ul>
             </div>
         </div>
         % if request.get('err'):

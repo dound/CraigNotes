@@ -61,6 +61,7 @@ ol, ul {
 }
 
 #header {
+    height: 30px;
     padding-left: 10px;
     padding-bottom: 20px;
 }
@@ -70,7 +71,7 @@ ol, ul {
     display: block;
     float: left;
     height: 64px;
-    margin: 11px 10px 0 5px;
+    margin: 0 10px 0 5px;
     width: 266px;
 }
 
@@ -144,9 +145,8 @@ ol, ul {
 }
 #title {
     font-size: 182%; /* 24px */
-    padding-top: 16px;
-    position: absolute;
-    top: 60px;
+    padding-top: 14px;
+    text-align:center;
 }
 #subtitle {
     font-size: 59.3%; /* adjusts parent's 24px to 14px */
