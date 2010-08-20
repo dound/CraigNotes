@@ -26,7 +26,6 @@ url_mappings = [
     ('/ajax/rate/(\d+)/(\d+)', 'controllers.ajax.Rate.Rate'),
 
     # simple pages
-    ('/(about)',              'controllers.DirectToTemplate.DirectToTemplate'),
     ('/(contact)',            'controllers.DirectToTemplate.DirectToTemplate'),
     ('/(faq)',                'controllers.DirectToTemplate.DirectToTemplate'),
     ('/(legal)',              'controllers.DirectToTemplate.DirectToTemplate'),
