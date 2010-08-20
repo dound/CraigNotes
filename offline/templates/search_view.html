@@ -22,6 +22,13 @@
 			hidden_id = ' id="youarehere"'
 		else:
 			reviewed_id = ' id="youarehere"'
+
+		first_ad_num = (page-1) * ADS_PER_PAGE + 1
+		last_ad_num  = first_ad_num + len(ads) - 1
+		if more:
+			page_txt = page
+		else:
+			page_txt = 'page %s of %s' % (page, page)
 	%>
 	<div style="border-bottom: 1px solid #888888;text-align:center">
 		<div id="nav">
@@ -31,9 +38,9 @@
 				<li${hidden_id}><a href="/view?t=hidden&f=${f}">Hidden Ads</a></li>
 			</ul>
 		</div>
-		<p id="viewing">Viewing ads ${(page-1)*25+1} to ${page*25} (page ${page}):
+		<p id="viewing">Viewing ${page_type} ads ${first_ad_num} to ${last_ad_num} (${page_txt}):
 		% if more:
-			(<a href="${request.path}?t=${page_type}&f=${f}&next=${more}&page=${page+1}">next 25 results</a>)
+			(<a href="${request.path}?t=${page_type}&f=${f}&next=${more}&page=${page+1}">next ${ADS_PER_PAGE} results</a>)
 		% endif
 		</p>
 
@@ -139,7 +146,7 @@
 		% endif
 	% endif
 	% if more:
-		<a href="${request.path}?t=${page_type}&f=${f}&next=${more}&page=${page+1}">Next 25 results</a>
+		<a href="${request.path}?t=${page_type}&f=${f}&next=${more}&page=${page+1}">Next ${ADS_PER_PAGE} results</a>
 	% endif
 </p>
 % endif

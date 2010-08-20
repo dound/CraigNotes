@@ -94,4 +94,4 @@ class SearchView(webapp.RequestHandler):
 
         self.response.headers['Content-Type'] = 'text/html'
         self.response.out.write(MakoLoader.render('search_view.html', request=self.request,
-                                                  ads=ad_infos, more=more, age=age, now=now, search_desc=desc, title_extra=title_extra, page=page))
+                                                  ADS_PER_PAGE=ADS_PER_PAGE, ads=ad_infos, more=more, age=age, now=now, search_desc=desc, title_extra=title_extra, page=page))
