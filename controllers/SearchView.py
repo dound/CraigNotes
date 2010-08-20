@@ -65,10 +65,9 @@ class SearchView(webapp.RequestHandler):
             ads = db.get(ad_keys)
 
             if t == 'hidden':
-                title_extra = "Ads I've Rated"
-            else:
                 title_extra = "Ignored Ads"
-
+            else:
+                title_extra = "Ads I've Rated"
 
         # put the ads and their comments together
         ad_infos = zip(ads, user_ad_notes)
