@@ -5,5 +5,5 @@ ON_LOCALHOST = ('Development' == os.environ.get('SERVER_SOFTWARE','')[:11])
 if ON_LOCALHOST:
     DOMAIN = 'localhost:8080'
 else:
-    DOMAIN = 'craignotes.org'
+    DOMAIN = 'www.craignotes.org'
 USE_APP_STATS = True
