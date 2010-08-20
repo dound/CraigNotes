@@ -9,3 +9,16 @@ indexes:
 # manually, move them above the marker line.  The index.yaml file is
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
+
+- kind: Ad
+  properties:
+  - name: feeds
+  - name: update_dt
+    direction: desc
+
+- kind: UserCmt
+  properties:
+  - name: feeds
+  - name: hidden
+  - name: rating
+    direction: desc
