@@ -10,9 +10,9 @@ from controller_functions import is_logged_in
 from FormHandler import FormHandler, validate_int, validate_string
 from MakoLoader import MakoLoader
 from models.Feed import Feed, CATEGORIES
-from models.User import User
+from models.User import User, MAX_FEED_NAME_LEN
 
-GET_PARAMS = ('rss_url', 'city', 'category', 'query', 'title_only', 'min_cost', 'max_cost', 'num_bedrooms', 'cats', 'dogs', 'pics')
+GET_PARAMS = ('name', 'rss_url', 'city', 'category', 'query', 'title_only', 'min_cost', 'max_cost', 'num_bedrooms', 'cats', 'dogs', 'pics')
 REDIR_URL = '/?redir_to=/new&info=Please%20login%20to%20start%20tracking%20a%20new%search.'
 RE_RSS_URL = re.compile(r'http://([^.]+).craigslist.org/(search/)?(...)(/(...))?[^?]*([?](.*))?')
 
@@ -54,11 +54,18 @@ class SearchNew(FormHandler):
 
         req = self.request
         errors = {}
+
+        name = validate_string(req, errors, 'name', 'search name', MAX_FEED_NAME_LEN)
+        if not name:
+            name = ''
+
         rss_url = req.get('rss_url')
         if rss_url:
             feed_key = parse_rss_url(rss_url)
             if not feed_key:
                 return self.redirect_to_errors(GET_PARAMS, {'error_rss_url':'''This URL isn't in the expected form.  Please <a href="/contact">send it to us</a> if you think this is a bug.'''})
+            if len(errors):
+                return self.redirect_to_self(GET_PARAMS, errors)
         else:
             city = validate_string(req, errors, 'city', 'city/region', max_len=50)
             category = validate_string(req, errors, 'category', 'category', 3)
@@ -105,6 +112,7 @@ class SearchNew(FormHandler):
         if feed_key in user.feeds:
             return self.redirect('/view?f=' + urllib.quote(feed_key) + '&info=You%20were%20already%20tracking%20this%20search.')
         user.feeds.append(feed_key)
+        user.feed_names.append(name)
         try:
             user.put()
         except:
@@ -113,10 +121,10 @@ class SearchNew(FormHandler):
 
         # update the memcache entry for this users' feeds if it exists
         mckey = "user-feeds:%s" % session['my_id']
-        feeds = memcache.get(mckey)
-        if feeds:
-            feeds.append(feed)
-            memcache.set(mckey, feeds, 30*60)
+        feed_infos = memcache.get(mckey)
+        if feed_infos:
+            feed_infos = zip(user.feed_names, user.feeds)
+            memcache.set(mckey, feed_infos, 30*60)
 
         # redirect the user to the feed page
-        self.redirect('/view?t=newest&f=%s' % urllib.quote(feed_key))
+        self.redirect('/view?t=newest&f=%s&name=%s' % (urllib.quote(feed_key), urllib.quote(name)))

@@ -4,6 +4,7 @@ import time
 
 from google.appengine.ext import db
 
+MAX_FEED_NAME_LEN = 30
 UID_LEN = 20
 
 class User(db.Model):
@@ -13,6 +14,7 @@ class User(db.Model):
     date_registered = db.DateTimeProperty(required=True, indexed=False, auto_now_add=True)
     last_seen       = db.DateTimeProperty(required=True, indexed=False, auto_now_add=True)
     feeds           = db.ListProperty(str, indexed=False)  # key_names of feeds the user is watching
+    feed_names      = db.ListProperty(str, indexed=False)  # user-specified names of feeds the user is watching
 
     @staticmethod
     def make_key_name(oid):

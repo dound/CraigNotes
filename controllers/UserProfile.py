@@ -18,8 +18,8 @@ class UserProfile(webapp.RequestHandler):
         uid = session['my_id']
 
         mckey = "user-feeds:%s" % uid
-        feeds = memcache.get(mckey)
-        if not feeds:
+        feed_infos = memcache.get(mckey)
+        if not feed_infos:
             user = User.get_by_key_name(uid)
             if not user:
                 logging.error('cannot find the profile for a logged in user (%s)' % uid)
@@ -30,7 +30,8 @@ class UserProfile(webapp.RequestHandler):
                 feeds = db.get(feed_keys)
             else:
                 feeds = []
-            memcache.set(mckey, feeds, 30*60)
+            feed_infos = zip(user.feed_names, feeds)
+            memcache.set(mckey, feed_infos, 30*60)
 
         self.response.headers['Content-Type'] = 'text/html'
-        self.response.out.write(MakoLoader.render('userprofile.html', request=self.request, feeds=feeds))
+        self.response.out.write(MakoLoader.render('userprofile.html', request=self.request, feed_infos=feed_infos))

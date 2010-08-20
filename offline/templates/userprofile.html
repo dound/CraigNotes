@@ -1,9 +1,9 @@
 <%def name="title()">Your Tracker</%def>
 <%inherit file="base.html"/>
-% if feeds:
+% if feed_infos:
 <table>
 	<tr style="background-color:#EEE">
-		<th>Actions</th>
+		<th>Search Name</th>
 		<th>City/Region</th>
 		<th>Category</th>
 		<th>Cost</th>
@@ -11,13 +11,12 @@
 		<th>Pets</th>
 		<th>Search Keywords</th>
 		<th>Neighborhoods</th>
+		<th>Delete</th>
 	</tr>
-	% for f in feeds:
+	% for fname,f in feed_infos:
 	<% f.extract_values() %>
 	<tr>
-		<td><a href="/view?t=newest&f=${f.key().name()|u}">View</a> |
-			<a href="/delete?f=${f.key().name()|u}">Delete</a>
-		</td>
+		<td><a href="/view?t=newest&f=${f.key().name()|u}">${fname}</a></td>
 		<td>${f.city_str()}${f.area_str(True)}</td>
 		<td>${f.category_str()}</td>
 		<td>${f.cost_str()}</td>
@@ -29,6 +28,7 @@
 		% endif
 		</td>
 		<td>${f.neighborhoods_str()}</td>
+		<td><a href="/delete?f=${f.key().name()|u}">Delete</a></td>
 	</tr>
 	% endfor
 </table>

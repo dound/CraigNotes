@@ -12,7 +12,20 @@
 <%inherit file="base.html"/>
 
 <form action="${request.path}" method="post" id="form">
-	<h1>Option 1: Enter a URL to a Craigslist search that you want to track</h1>
+	<table class="form">
+		<tr>
+			<th><label for="name">What do you want to name this search?</label></th>
+			<td><input class="text" type="text" name="name" id="name" value="${request.get('name')|h}"/></td>
+			<td class="error">${request.get('error_name')}</td>
+		</tr>
+		<tr>
+			<th style="text-align:left">Describe what you're looking for:</th>
+			<td colspan="2">&nbsp;</td>
+		</tr>
+	</table>
+
+	<div style="padding-left:2em">
+	<h1 style="color:#080">Option 1: Enter a URL to a Craigslist search that you want to track</h1>
 	<table class="form">
 		<tr>
 			<th><label for="rss_url">Search or RSS Feed URL</label></th>
@@ -26,7 +39,7 @@
 	<p><i>Hint:</i> Do your search on Craigslist, and then copy the URL of their
 	search results page into the above box.</p>
 
-	<h1 style="margin-top:2.5em">Option 2: Enter your search here</h1>
+	<h1 style="color:#080;margin-top:2.5em">Option 2: Enter your search here</h1>
 	<table class="form">
 		<tr>
 			<th><label for="city">City/Region</label></th>
@@ -184,4 +197,5 @@
 			<input class="button" id="submit" type="submit" value="Track Ads Matching this Criteria"/>
 		</td></tr>
 	</table>
+	</div>
 </form>
