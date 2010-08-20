@@ -44,6 +44,7 @@ skip_files:
 - ^(.*/)?\..*
 - ^offline/.*
 - ^clb.wpr
+- ^clb-dev.db
 - ^clb.wpu
 - ^setup.cfg
 - ^tests
