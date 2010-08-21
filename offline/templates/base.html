@@ -58,8 +58,12 @@ ${next.head()}
 <body>
     <noscript><div class="errmsg">CraigNotes works best with JavaScript enabled.</div></noscript>
     <div id="wrap">
-		<a id="logo" href="/"></a>
-        <div id="header">
+		% if user_is_logged_in:
+			<a id="logo" href="/tracker"></a>
+		% else:
+			<a id="logo" href="/"></a>
+		% endif
+		<div id="header">
             <div class="hf-links" id="header-links">
                 ${make_user_header_html(user_is_logged_in, session, request.path)} |
                 <a href="/">about</a> |
