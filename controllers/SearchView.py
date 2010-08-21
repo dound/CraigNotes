@@ -11,7 +11,7 @@ from models.User import get_search_name
 from models.UserCmt import UserCmt
 from view_functions import str_age
 
-ADS_PER_PAGE = 25
+ADS_PER_PAGE = 20
 DT_PRESITE = datetime.datetime(2000, 1, 1)  # arbitrary date preceding this site
 
 class SearchView(webapp.RequestHandler):
