@@ -21,8 +21,8 @@ class SearchDelete(webapp.RequestHandler):
         if n > len(user.feeds):
             self.redirect('/tracker?info=Success', 30*60)
 
-            # update the memcache entry for this users' feeds
+            # clear the memcache entry for this users' feeds
             mckey = "user-feeds:%s" % session['my_id']
-            feeds = memcache.set(mckey, user.feeds)
+            memcache.delete(mckey)
         else:
-            self.redirect('/tracker?info=The%20feed%20you%20asked%20to%20stop%20tracking%20was%20not%20being%20tracked.', 30*60)
+            self.redirect('/tracker?info=The%20feed%20you%20asked%20to%20stop%20tracking%20was%20not%20being%20tracked.')
