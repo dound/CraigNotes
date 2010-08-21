@@ -21,7 +21,7 @@ url_mappings = [
     ('/view',                 'controllers.SearchView.SearchView'),
 
     # ajax pages
-    ('/ajax/is_feed_ready/(.+)', 'controllers.ajax.IsFeedReady.IsFeedReady'),
+    ('/ajax/is_feed_ready',   'controllers.ajax.IsFeedReady.IsFeedReady'),
     ('/ajax/comment/(\d+)',   'controllers.ajax.Comment.Comment'),
     ('/ajax/(un)?hide/(\d+)', 'controllers.ajax.Hide.Hide'),
     ('/ajax/rate/(\d+)/(\d+)', 'controllers.ajax.Rate.Rate'),

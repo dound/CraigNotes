@@ -39,7 +39,7 @@ YUI().use('event-base', 'event-key', 'io-base', 'node-base', 'node-style', 'yui2
 	function check_for_ads() {
 		// only do 3 checks if we have no results, or 1 check if we have some results
 		if((REFRESH_WHEN_RESULTS_AVAIL && check_count < 3) || check_count==0) {
-			do_ajax('POST', '', '/ajax/is_feed_ready/' + encodeURIComponent(FEED));
+			do_ajax('POST', 'feed='+encodeURIComponent(FEED), '/ajax/is_feed_ready);
 			check_count += 1;
 		}
 		else if(REFRESH_WHEN_RESULTS_AVAIL) {

@@ -14,7 +14,10 @@ class IsFeedReady(ActionHandler):
     def is_rate_limited():
         return True
 
-    def handle_action(self, uid, feed_key_name):
+    def handle_action(self, uid):
+        feed_key_name = self.request.get('feed')
+        if not feed_key_name:
+            return
         ret = memcache.get('feed-update-result:%s' % feed_key_name)
         if ret is None:
             self.do_output('not-ready')
