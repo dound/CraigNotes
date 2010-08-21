@@ -56,6 +56,16 @@ YUI().use('event-base', 'event-key', 'io-base', 'node-base', 'node-style', 'yui2
 
     var COMMENT_STATES = {}; // maps cid -> (btn, editor)
     var RATINGS = {};        // maps cid -> (rating, star nodes)
+	var num_comments_being_edited = 0;
+	window.onbeforeunload = function() {
+		if(num_comments_being_edited > 0) {
+			if(num_comments_being_edited === 1) {
+				return "You are currently editing a note.  If you leave this page without saving it then any changes will be lost.";
+			} else {
+				return "You are currently editing " + num_comments_being_edited + " notes.  If you leave this page without saving these notes then any changes will be lost.";
+			}
+		}
+	};
 
 	var EDITOR_CFG = {
 		height: '100px',
@@ -140,6 +150,7 @@ YUI().use('event-base', 'event-key', 'io-base', 'node-base', 'node-style', 'yui2
         var txt = Y.one('#cmttxt'+cid);
         if(state.editor) {
             // save the new comment (if it changed)
+            num_comments_being_edited -= 1;
             btn.set('innerHTML', 'Edit Notes');
 			state.editor.saveHTML();
 			var new_text = state.editor.get('element').value;
@@ -161,6 +172,7 @@ YUI().use('event-base', 'event-key', 'io-base', 'node-base', 'node-style', 'yui2
         }
         else {
             // start editing the comment
+            num_comments_being_edited += 1;
             btn.set('innerHTML', 'Save Notes');
             state.editing = true;
             state.old_text = txt.get('innerHTML');
