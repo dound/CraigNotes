@@ -54,7 +54,7 @@ class RPX(webapp.RequestHandler):
 
             redir_to = self.request.get('redir_to')
             if not redir_to:
-                self.redirect('/')
+                self.redirect('/tracker')
             else:
                 self.redirect(redir_to.replace('@$@', '&'))
         else:
