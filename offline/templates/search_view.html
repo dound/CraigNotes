@@ -164,7 +164,7 @@ ${get_yui_script_tag() | n}
 CIDS = ${str([str(ad.cid) for ad,cmt in ads])};
 FEED = '${request.get("f").replace("\'", "\\\'")}';
 SHOW_HIDDEN_ADS = ${int(request.get('t') == 'hidden')};
-REFRESH_WHEN_RESULTS_AVAIL = ${int(updating_shortly and not next and not ads and request.get('t')!='newest')};
+REFRESH_WHEN_RESULTS_AVAIL = ${int(updating_shortly and not request.get('next') and not ads and request.get('t')=='newest')};
 UPDATING_SHORTLY = ${int(updating_shortly)};
 //]]></script>
 <script type="text/javascript" src="/js/view.js"></script>
