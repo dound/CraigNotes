@@ -29,7 +29,7 @@ YUI().use('event-base', 'event-key', 'io-base', 'node-base', 'node-style', 'yui2
 			if(REFRESH_WHEN_RESULTS_AVAIL) {
 				window.location.reload();
 			}
-			Y.one('#age').set('innerHTML', '<span id="newresults">there are ' + ret.substring(5) + ' new/updated ads - <a href="/view?t=newest&f=' + encodeURIComponent(FEED) + '">click here to see them</a></span>');
+			Y.one('#agewrap').set('innerHTML', '(ads for this search were just retrieved from Craigslist <span id="newresults">there are ' + ret.substring(5) + ' new/updated ads - <a href="/view?t=newest&f=' + encodeURIComponent(FEED) + '">click here to see them</a></span>)');
 		}
 	}
 	Y.on('io:complete', complete, Y);
@@ -51,7 +51,7 @@ YUI().use('event-base', 'event-key', 'io-base', 'node-base', 'node-style', 'yui2
 	}
 	else if(UPDATING_SHORTLY) {
 		// check in 2 minutes to see if the update resulted in any new results
-		setTimeout(function () { check_for_ads(); }, 120000);
+		setTimeout(function () { check_for_ads(); }, 60000);
 	}
 
     var COMMENT_STATES = {}; // maps cid -> (btn, editor)
