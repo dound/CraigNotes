@@ -88,6 +88,12 @@ class UpdateFeed(webapp.RequestHandler):
                 # it this way so that we store the latest ad info just retrieved.
                 ad.feeds += e_ad.feeds
                 ads_to_put.append(ad)
+
+                # EFFICIENCY: Technically, we need to update all UserCmt objects
+                # which have a denormalized copy of this value too.  However,
+                # this would be mostly worthless since this new feed is probably
+                # only used a single/few users - better to just do it on-demand.
+                # (search view does this on-demand updating)
             elif ad.update_dt != e_ad.update_dt:
                 # If the ad was updated but the feed is already present in the
                 # existing ad entity's feeds

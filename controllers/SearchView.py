@@ -87,6 +87,16 @@ class SearchView(webapp.RequestHandler):
         # put the ads and their comments together
         ad_infos = zip(ads, user_ad_notes)
 
+        # check that each UserCmt.feeds field is up to date with Ad.feeds (can
+        # only do this when we're searching by Ad, i.e., t=newest)
+        if t == 'newest':
+            outdated = [(ad,cmt) for ad, cmt in ad_infos if cmt and ad.feeds!=cmt.feeds]
+            if outdated:
+                # update any out of date comments
+                for ad,cmt in outdated:
+                    cmt.feeds = ad.feeds
+                db.put([cmt for ad,cmt in outdated])
+
         # whether there may be more ads
         more = (len(ads) == ADS_PER_PAGE)
         if more:
