@@ -25,7 +25,11 @@
 			reviewed_id = ' id="youarehere"'
 
 		first_ad_num = (page-1) * ADS_PER_PAGE + 1
-		last_ad_num  = first_ad_num + len(ads) - 1
+		if len(ads):
+			last_ad_num  = first_ad_num + len(ads) - 1
+		else:
+			last_ad_num = first_ad_num
+
 		if more:
 			page_txt = page
 		else:
