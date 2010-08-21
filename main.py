@@ -15,9 +15,10 @@ url_mappings = [
     ('/profile/update',       'controllers.UserProfileEdit.UserProfileEdit'),
     ('/tracker',              'controllers.UserProfile.UserProfile'),
 
-    # main pages
+    # search pages
     ('/new',                  'controllers.SearchNew.SearchNew'),
     ('/delete',               'controllers.SearchDelete.SearchDelete'),
+    ('/search/rename',        'controllers.SearchRename.SearchRename'),
     ('/view',                 'controllers.SearchView.SearchView'),
 
     # ajax pages

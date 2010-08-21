@@ -1,0 +1,22 @@
+<%def name="title()">Rename Search</%def>
+<%inherit file="base.html"/>
+<form action="/search/rename?f=${request.get('f')|h}&amp;current_name=${request.get('current_name')|h}" method="post" id="form">
+	<table class="form">
+		<tr>
+			<th>Current Name</th>
+			<td>${request.get('current_name')|h}</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<th><label for="new_name">New Name</label></th>
+			<td>
+				<input class="text" type="text" name="new_name" id="new_name" maxlength="30" value="${request.get('new_name')|h}"/>
+			</td>
+			<td class="error">${request.get('error_new_name')}</td>
+		</tr>
+		<tr><td colspan="2">
+			<input class="button" id="submit" type="submit" value="Update Search Name"/>
+		</td></tr>
+	</table>
+	<p><a href="/tracker">Cancel</a></p>
+</form>

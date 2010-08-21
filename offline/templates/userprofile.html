@@ -16,7 +16,7 @@
 	% for fname,f in feed_infos:
 	<% f.extract_values() %>
 	<tr>
-		<td><a href="/view?t=newest&amp;f=${f.key().name()|u}">${fname|h}</a></td>
+		<td><b><a href="/view?t=newest&amp;f=${f.key().name()|h}">${fname|h}</a></b></td>
 		<td>${f.city_str()}${f.area_str(True)}</td>
 		<td>${f.category_str()}</td>
 		<td>${f.cost_str()}</td>
@@ -28,7 +28,10 @@
 		% endif
 		</td>
 		<td>${f.neighborhoods_str()}</td>
-		<td><a href="/delete?f=${f.key().name()|u}">Delete</a></td>
+		<td>
+			<a href="/delete?f=${f.key().name()|h}">Delete</a><br/>
+			<a href="/search/rename?f=${f.key().name()|h}&amp;current_name=${fname|h}">Rename</a>
+		</td>
 	</tr>
 	% endfor
 	<tr style="background-color:#EFE">
