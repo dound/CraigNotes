@@ -60,7 +60,7 @@
 	<p>
 	% if next:
 		No more results.  <a href="${request.path}?t=${page_type}&f=${f}">Go back to the beginning.</a>
-	% elif updating_shortly and not page_type == 'newest':
+	% elif updating_shortly and page_type == 'newest':
 		<span id="soon">We're fetching the latest ads now - we'll automatically refresh the page as soon as they're ready!</span>
 	% else:
 		% if page_type == 'newest':
