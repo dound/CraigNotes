@@ -31,6 +31,13 @@
 		<td><a href="/delete?f=${f.key().name()|u}">Delete</a></td>
 	</tr>
 	% endfor
+	<tr style="background-color:#EFE">
+		<th>Combined Views</th>
+		<td colspan="8">
+			<a href="/view?t=reviewed&f=">View ALL ads you've rated/noted</a><br/>
+			<a href="/view?t=hidden&f=">View ALL ads you've hidden</a>
+		</td>
+	</tr>
 </table>
 % else:
 <p>You aren't tracking any searches right now.</p>
