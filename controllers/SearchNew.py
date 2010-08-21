@@ -123,7 +123,8 @@ class SearchNew(FormHandler):
         mckey = "user-feeds:%s" % session['my_id']
         feed_infos = memcache.get(mckey)
         if feed_infos:
-            feed_infos = zip(user.feed_names, user.feeds)
+            old_names, old_feeds = zip(*feed_infos)
+            feed_infos = zip(user.feed_names, list(old_feeds) + [feed])
             memcache.set(mckey, feed_infos, 30*60)
 
         # redirect the user to the feed page
