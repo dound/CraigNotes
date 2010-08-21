@@ -128,9 +128,11 @@
 	<tr class="desc" id="desc${ad.cid}"${infoRowStyle}>
 		<td colspan="3">
 			<div class="descval">
-			<%
-				context.write(ad.desc.encode('ISO-8859-1'))
+			<table style="margin:0"><tr><td style="padding:0">
+			<% # NOTE: this crap is to try to contain broken HTML in ad.desc
 			%>
+			${ad.desc}
+			</td></tr></table>
 			</div>
 		</td>
 	</tr>
