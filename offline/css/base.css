@@ -283,18 +283,15 @@ ol, ul {
 }
 .descval {
     max-height: 250px;
-    overflow-x: hidden;
+    overflow-x: auto;
     overflow-y: auto;
+    width: 720px;
 }
 .descval table,
 .descval td {
     border:0;
 }
-.descval *,
-.cmtval * {
-    /* prevent contents of desc/comment from being too wide */
-    max-width:100%;
-}
+
 .gap {
     border:0;
     padding-bottom: 20px;
