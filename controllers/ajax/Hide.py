@@ -1,3 +1,4 @@
+import datetime
 import logging
 
 from Action import ActionHandler
@@ -19,5 +20,8 @@ class Hide(ActionHandler):
             return
 
         if cmt.hidden != hide:
-            cmt.hidden = hide
+            if hide:
+                cmt.dt_hidden = datetime.datetime.now()
+            else:
+                cmt.dt_hidden = None
             cmt.put()

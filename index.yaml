@@ -18,7 +18,13 @@ indexes:
 
 - kind: UserCmt
   properties:
+  - name: dt_hidden
   - name: feeds
-  - name: hidden
   - name: rating
+    direction: desc
+
+- kind: UserCmt
+  properties:
+  - name: feeds
+  - name: dt_hidden
     direction: desc

@@ -12,6 +12,7 @@ from models.UserCmt import UserCmt
 from view_functions import str_age
 
 ADS_PER_PAGE = 25
+DT_PRESITE = datetime.datetime(2000, 1, 1)  # arbitrary date preceding this site
 
 class SearchView(webapp.RequestHandler):
     def get(self):
@@ -64,7 +65,12 @@ class SearchView(webapp.RequestHandler):
             title_extra = 'Newest Ads'
         else:
             # show ads this user has commented on/rated (whether to show hidden ads or not depends on t)
-            q = UserCmt.all().filter('feeds =', fhid).filter('hidden =', t=='hidden').order('-rating')
+            hidden = (t == 'hidden')
+            q = UserCmt.all().filter('feeds =', fhid)
+            if hidden:
+                q.filter('dt_hidden >', DT_PRESITE).order('-dt_hidden')
+            else:
+                q.filter('dt_hidden =', None).order('-rating')
             if next:
                 q.with_cursor(next)
             user_ad_notes = q.fetch(ADS_PER_PAGE)

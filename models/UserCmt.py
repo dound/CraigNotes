@@ -6,12 +6,12 @@ MIN_RATING = 0
 MAX_RATING = 5
 MAX_NOTE_LEN = 1024 * 32
 
-class UserCmt(db.Model):
+class UserCmt(db.Expando):
     # primary key will User ID + Craiglist ID
     feeds = db.ListProperty(str, required=True, indexed=True) # denormalized copy of the related Ad
     rating = db.IntegerProperty(required=True, indexed=True, default=0)
     cmt = db.TextProperty(required=False, default='')
-    hidden = db.BooleanProperty(required=True, indexed=True, default=False)
+    dt_hidden = db.DateTimeProperty(required=False, indexed=True)  # None if not hidden
 
     @property
     def uid(self):
@@ -21,6 +21,10 @@ class UserCmt(db.Model):
     def cid(self):
         return int(self.key().name()[UID_LEN:])
 
+    @property
+    def hidden(self):
+        return self.dt_hidden is not None
+
     def __repr__(self):
-        return 'UserCmt(uid=%s, cid=%s rating=%s hidden=%s)' % \
-               (self.uid, self.cid, self.rating, self.hidden)
+        return 'UserCmt(uid=%s, cid=%s rating=%s dt_hidden=%s)' % \
+               (self.uid, self.cid, self.rating, self.dt_hidden)
