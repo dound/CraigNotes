@@ -42,7 +42,7 @@ class SearchView(webapp.RequestHandler):
         td = now - feed_dt_updated
         updating_shortly = td.days>0 or td.seconds>MAX_AGE_MIN*60
         if updating_shortly:
-            age += ' - will update shortly'
+            age += ' - update in progress'
 
         # update the feed if we haven't retrieved the latest ads recently
         updating = update_feed_if_needed(feed_key_name)
