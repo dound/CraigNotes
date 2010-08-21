@@ -93,9 +93,11 @@ class UpdateFeed(webapp.RequestHandler):
         if ads_to_put:
             db.put(ads_to_put)
 
-        # update memcache key which specifies when a feed was last updated
-        mc_key = 'feed-update-dt:%s' % feed_key_name
-        dt = memcache.set(mc_key, now)
+        # update memcache entries which specify when a feed was last updated and the number of updated ads
+        mc_dict = {'feed-update-dt:%s'     % feed_key_name : now,
+                   'feed-update-result:%s' % feed_key_name : len(ads_to_put)
+                  }
+        memcache.set_multi(mc_dict)
 
         # update the Feed entity too
         feed.last_update = now

@@ -12,11 +12,47 @@ YUI().use('event-base', 'event-key', 'io-base', 'node-base', 'node-style', 'yui2
         Y.io(uri, REQUEST_CFG);
     }
 
-    /** callback issued when an AJAX call completes */
-    function complete(id, o) {
-        // no-op
-    }
-    Y.on('io:complete', complete, Y);
+	/** callback issued when an AJAX call completes */
+	function complete(id, o) {
+		var ret = o.responseText;
+		if(ret === 'not-ready') {
+			// check for new ads again (in a little bit)
+			setTimeout(function () { check_for_ads(); }, 10000);
+		}
+		else if(ret === 'ready0') {
+			if(REFRESH_WHEN_RESULTS_AVAIL) {
+				Y.one('#soon').innerHTML = "No ads meet this criteria.";
+			}
+			Y.one('#age') = 'less than 1 minute ago';
+		}
+		else if(ret.substring(0,5) === 'ready') {
+			if(REFRESH_WHEN_RESULTS_AVAIL) {
+				window.location.reload();
+			}
+			Y.one('#age') = '<span id="newresults">there are ' + ret.substring(5) + ' new/updated ads - refresh to see them</span>';
+		}
+	}
+	Y.on('io:complete', complete, Y);
+
+	// check for ads asynchronously if we know the feed is being updated and we don't have any ads yet
+	var check_count = 0;
+	function check_for_ads() {
+		// only do 3 checks if we have no results, or 1 check if we have some results
+		if((REFRESH_WHEN_RESULTS_AVAIL && check_count < 3) || check_count==0) {
+			do_ajax('GET', '', '/ajax/is_feed_ready/' + encodeURIComponent(FEED));
+			check_count += 1;
+		}
+		else {
+			Y.one('#soon').innerHTML = "No ads meet this criteria.";
+		}
+	}
+	if(REFRESH_WHEN_RESULTS_AVAIL) {
+		check_for_ads();
+	}
+	else if(UPDATING_SHORTLY) {
+		// check in 2 minutes to see if the update resulted in any new results
+		setTimeout(function () { check_for_ads(); }, 120000);
+	}
 
     var COMMENT_STATES = {}; // maps cid -> (btn, editor)
     var RATINGS = {};        // maps cid -> (rating, star nodes)

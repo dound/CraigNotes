@@ -51,26 +51,28 @@
 
 		<p style="margin:auto;max-width:750px">
 			<b>Searching:</b> ${search_desc}
-			<span class="minor">(ads for this search last retrieved from Craigslist ${age})</span>
+			<span class="minor">(ads for this search last retrieved from Craigslist <span id="age">${age}</span>)</span>
 		</p>
 	</div>
 </%def>
 
 % if not ads:
-	% if more:
-		<p>No more results.  <a href="${request.path}?t=${page_type}&f=${f}">Go back to the beginning.</a></p>
-	% else:
 	<p>
-	% if page_type == 'newest':
-		No ads
-	% elif page_type == 'hidden':
-		You haven't hidden any ads which
+	% if next:
+		No more results.  <a href="${request.path}?t=${page_type}&f=${f}">Go back to the beginning.</a>
+	% elif updating_shortly and not page_type == 'newest':
+		<span id="soon">We're fetching the latest ads now - we'll automatically refresh the page as soon as they're ready!</span>
 	% else:
-		You haven't reviewed any ads which
+		% if page_type == 'newest':
+			No ads
+		% elif page_type == 'hidden':
+			You haven't hidden any ads which
+		% else:
+			You haven't reviewed any ads which
+		% endif
+		meet this criteria.
 	% endif
-	meet this criteria.
 	</p>
-	% endif
 % else:
 	% if page_type == 'hidden':
 	<table class="hiddenpage yui-skin-sam">
@@ -160,7 +162,10 @@
 ${get_yui_script_tag() | n}
 <script  type="text/javascript">//<![CDATA[
 CIDS = ${str([str(ad.cid) for ad,cmt in ads])};
+FEED = '${f.replace("\'", "\\\'")}';
 SHOW_HIDDEN_ADS = ${int(request.get('t') == 'hidden')};
+REFRESH_WHEN_RESULTS_AVAIL = ${int(updating_shortly and not next and not ads and request.get('t')!='newest')};
+UPDATING_SHORTLY = ${int(updating_shortly)};
 //]]></script>
 <script type="text/javascript" src="/js/view.js"></script>
 </%def>

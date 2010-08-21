@@ -39,7 +39,8 @@ class SearchView(webapp.RequestHandler):
         now = datetime.datetime.now()
         age = str_age(feed_dt_updated, now)
         td = now - feed_dt_updated
-        if td.days>0 or td.seconds>15*60:
+        updating_shortly = td.days>0 or td.seconds>MAX_AGE_MIN*60
+        if updating_shortly:
             age += ' - will update shortly'
 
         # update the feed if we haven't retrieved the latest ads recently
@@ -102,4 +103,4 @@ class SearchView(webapp.RequestHandler):
 
         self.response.headers['Content-Type'] = 'text/html'
         self.response.out.write(MakoLoader.render('search_view.html', request=self.request,
-                                                  ADS_PER_PAGE=ADS_PER_PAGE, ads=ad_infos, more=more, age=age, now=now, search_desc=desc, title_extra=title_extra, page=page, name=name))
+                                                  ADS_PER_PAGE=ADS_PER_PAGE, ads=ad_infos, more=more, age=age, now=now, search_desc=desc, title_extra=title_extra, page=page, name=name, updating_shortly=updating_shortly))

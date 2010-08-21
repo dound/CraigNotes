@@ -325,6 +325,10 @@ ol, ul {
 .lessprom .updated {
     display:none;
 }
+#newresults {
+    color:red;
+    font-weight:bold
+}
 .pages,
 .pages a {
     font-size: 123.1%; /* 16px */

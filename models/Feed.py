@@ -301,6 +301,7 @@ def update_feed_if_needed(feed_key_name):
                 # enqueue a task to do the updating
                 taskqueue.add(url='/task/update_feed', params=dict(f=feed_key_name),
                               transactional=True)
+                memcache.set('feed-update-result:%s' % feed_key_name, None)
             return True
         return False
     return db.run_in_transaction(txn)
