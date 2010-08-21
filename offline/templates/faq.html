@@ -1,3 +1,29 @@
 <%def name="title()">FAQ</%def>
+<%def name="page_title()">Frequently Asked Questions</%def>
 <%inherit file="base.html"/>
-<p>Coming soon!</p>
+
+<div class="pages faq">
+
+<h2 style="border-top:0;margin-top:0;padding-top:0">How often are search results updated?</h2>
+<p>
+Whenever you look at a search, if its results are more than 15 minutes old then
+we'll automatically ask Craigslist if there are any new ads which match your
+search criteria.
+</p>
+<p>
+When viewing search results, the top of the page contains a blurb about how old
+the results are.  If the results are currently being updated, then it will say
+"update in progress".  This text will <i>automatically</i> refresh when the new
+results are available.  If new or updated ads were retrieved, then the text will
+turn red to alert you to these new ads.
+</p>
+
+
+<h2>Do I need to login or create an account?</h2>
+<p>
+We ask our users to login so that we can save your searches and notes for you.
+However, there's no need to create yet another account - you can login using
+an <a href="http://openid.net/">OpenID</a>.
+</p>
+
+</div>

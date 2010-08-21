@@ -334,6 +334,21 @@ ol, ul {
 .pages a {
     font-weight:bold;
 }
+.pages h2 {
+    font-style: italic;
+}
+.faq h2 {
+    border-top: 1px solid #888888;
+    margin-bottom: 0.5em;
+    margin-top: 2em;
+    padding-top: 0.5em;
+}
+.faq p {
+    margin-left: 1em;
+}
+.faq a {
+    font-weight: normal;
+}
 .rating {
     border-right:0;
     width: 90px;
