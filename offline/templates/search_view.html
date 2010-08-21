@@ -49,15 +49,15 @@
 		<div id="nav">
 			<ul>
 				% if not overall_view:
-				<li${newest_id}><a href="/view?t=newest&f=${f}">Newest Ads</a></li>
+				<li${newest_id}><a href="/view?t=newest&amp;f=${f}">Newest Ads</a></li>
 				% endif
-				<li${reviewed_id}><a href="/view?t=reviewed&f=${f}">${txt_all}Ads Rated/Noted Ads</a></li>
-				<li${hidden_id}><a href="/view?t=hidden&f=${f}">${txt_all}Hidden Ads</a></li>
+				<li${reviewed_id}><a href="/view?t=reviewed&amp;f=${f}">${txt_all}Ads Rated/Noted Ads</a></li>
+				<li${hidden_id}><a href="/view?t=hidden&amp;f=${f}">${txt_all}Hidden Ads</a></li>
 			</ul>
 		</div>
 		<p id="viewing">Viewing ${page_type} ads ${first_ad_num} to ${last_ad_num} (page ${page_txt}):
 		% if more:
-			(<a href="${request.path}?t=${page_type}&f=${f}&next=${more}&page=${page+1}">next ${ADS_PER_PAGE} results</a>)
+			(<a href="${request.path}?t=${page_type}&amp;f=${f}&amp;next=${more}&amp;page=${page+1}">next ${ADS_PER_PAGE} results</a>)
 		% endif
 		</p>
 		% if not overall_view:
@@ -70,7 +70,7 @@
 % if not ads:
 	<p>
 	% if next:
-		No more results.  <a href="${request.path}?t=${page_type}&f=${f}">Go back to the beginning.</a>
+		No more results.  <a href="${request.path}?t=${page_type}&amp;f=${f}">Go back to the beginning.</a>
 	% elif updating_shortly and page_type == 'newest':
 		<span id="soon">We're fetching the latest ads now - we'll automatically refresh the page as soon as they're ready!</span>
 	% else:
@@ -158,13 +158,13 @@
 % if next or more:
 <p class="pages">
 	% if next:
-		<a href="${request.path}?t=${page_type}&f=${f}">Back to page 1</a>
+		<a href="${request.path}?t=${page_type}&amp;f=${f}">Back to page 1</a>
 		% if more:
 		|
 		% endif
 	% endif
 	% if more:
-		<a href="${request.path}?t=${page_type}&f=${f}&next=${more}&page=${page+1}">Next ${ADS_PER_PAGE} results</a>
+		<a href="${request.path}?t=${page_type}&amp;f=${f}&amp;next=${more}&amp;page=${page+1}">Next ${ADS_PER_PAGE} results</a>
 	% endif
 </p>
 % endif

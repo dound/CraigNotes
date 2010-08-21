@@ -16,7 +16,7 @@
 	% for fname,f in feed_infos:
 	<% f.extract_values() %>
 	<tr>
-		<td><a href="/view?t=newest&f=${f.key().name()|u}">${fname|h}</a></td>
+		<td><a href="/view?t=newest&amp;f=${f.key().name()|u}">${fname|h}</a></td>
 		<td>${f.city_str()}${f.area_str(True)}</td>
 		<td>${f.category_str()}</td>
 		<td>${f.cost_str()}</td>
@@ -34,8 +34,8 @@
 	<tr style="background-color:#EFE">
 		<th>Combined Views</th>
 		<td colspan="8">
-			<a href="/view?t=reviewed&f=">View ALL ads you've rated/noted</a><br/>
-			<a href="/view?t=hidden&f=">View ALL ads you've hidden</a>
+			<a href="/view?t=reviewed&amp;f=">View ALL ads you've rated/noted</a><br/>
+			<a href="/view?t=hidden&amp;f=">View ALL ads you've hidden</a>
 		</td>
 	</tr>
 </table>
