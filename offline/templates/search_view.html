@@ -43,7 +43,7 @@
 				<li${hidden_id}><a href="/view?t=hidden&f=${f}">Hidden Ads</a></li>
 			</ul>
 		</div>
-		<p id="viewing">Viewing ${page_type} ads ${first_ad_num} to ${last_ad_num} (${page_txt}):
+		<p id="viewing">Viewing ${page_type} ads ${first_ad_num} to ${last_ad_num} (page ${page_txt}):
 		% if more:
 			(<a href="${request.path}?t=${page_type}&f=${f}&next=${more}&page=${page+1}">next ${ADS_PER_PAGE} results</a>)
 		% endif
