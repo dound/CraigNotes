@@ -13,6 +13,12 @@ from models.Feed import Feed
 
 RE_CID = re.compile(r'.*/(\d+)[.]html')
 
+def onlyascii(char):
+    if ord(char) < 0 or ord(char) > 127:
+        return ''
+    else:
+        return char
+
 class UpdateFeed(webapp.RequestHandler):
     def post(self):
         feed_key_name = self.request.get('f')
@@ -64,7 +70,7 @@ class UpdateFeed(webapp.RequestHandler):
             except ValueError:
                 logging.error('unable to parse the datetime for link=%s: %s' % (link, updated_str))
                 updated = now
-            ad = Ad(key=ad_key, feeds=[fhid], title=title, desc=desc, update_dt=updated, url=link)
+            ad = Ad(key=ad_key, feeds=[fhid], title=filter(onlyascii,title), desc=filter(onlyascii,desc), update_dt=updated, url=link)
             ads.append(ad)
 
         # determine which ads already exist in the datastore
