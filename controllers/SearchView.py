@@ -1,4 +1,5 @@
 import datetime
+import urllib
 
 from google.appengine.api import memcache
 from google.appengine.ext import db, webapp
@@ -18,7 +19,7 @@ class SearchView(webapp.RequestHandler):
     def get(self):
         session = is_logged_in(self)
         if not session:
-            return self.redirect(REDIR_URL)
+            return self.redirect('/')
         uid = session['my_id']
 
         now = datetime.datetime.now()
