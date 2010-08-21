@@ -282,7 +282,7 @@ ol, ul {
     overflow: auto;
 }
 .descval {
-    max-height: 250px;
+    max-height: 255px;
     overflow-x: auto;
     overflow-y: auto;
     width: 720px;
