@@ -4,6 +4,7 @@
 %>
 <%def name="title()">${name|h}</%def>
 <%def name="page_title()"><a href="/tracker">Your Tracker</a> - ${name|h}</%def>
+<%def name="sidebar()"></%def>
 <%inherit file="base.html"/>
 <%
 	sess = get_current_session()

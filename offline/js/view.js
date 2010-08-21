@@ -21,15 +21,15 @@ YUI().use('event-base', 'event-key', 'io-base', 'node-base', 'node-style', 'yui2
 		}
 		else if(ret === 'ready0') {
 			if(REFRESH_WHEN_RESULTS_AVAIL) {
-				Y.one('#soon').innerHTML = "No ads meet this criteria.";
+				Y.one('#soon').set('innerHTML', "No ads meet this criteria.");
 			}
-			Y.one('#age').innerHTML = 'less than 1 minute ago (no new ads)';
+			Y.one('#age').set('innerHTML', 'less than 1 minute ago (no new ads)');
 		}
 		else if(ret.substring(0,5) === 'ready') {
 			if(REFRESH_WHEN_RESULTS_AVAIL) {
 				window.location.reload();
 			}
-			Y.one('#age').innerHTML = '<span id="newresults">there are ' + ret.substring(5) + ' new/updated ads - refresh to see them</span>';
+			Y.one('#age').set('innerHTML', '<span id="newresults">there are ' + ret.substring(5) + ' new/updated ads - refresh to see them</span>');
 		}
 	}
 	Y.on('io:complete', complete, Y);
@@ -43,7 +43,7 @@ YUI().use('event-base', 'event-key', 'io-base', 'node-base', 'node-style', 'yui2
 			check_count += 1;
 		}
 		else if(REFRESH_WHEN_RESULTS_AVAIL) {
-			Y.one('#soon').innerHTML = "No ads meet this criteria.";
+			Y.one('#soon').set('innerHTML', "No ads meet this criteria.");
 		}
 	}
 	if(REFRESH_WHEN_RESULTS_AVAIL) {
