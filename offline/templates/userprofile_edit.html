@@ -1,6 +1,3 @@
-<%!
-    from gaesessions import get_current_session
-%>
 <%def name="title()">Edit Your Profile</%def>
 <%inherit file="base.html"/>
 <form action="/profile/update" method="post" id="form">
@@ -29,5 +26,5 @@
 			<input class="button" id="submit" type="submit" value="Update Your Profile"/>
 		</td></tr>
 	</table>
-	<p><a href="/tracker">Go back to your Craigslist search tracker.</a></p>
+	<p><a href="/tracker">Cancel</a></p>
 </form>

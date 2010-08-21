@@ -15,7 +15,7 @@
 	<table class="form">
 		<tr>
 			<th><label for="name">What do you want to name this search?</label></th>
-			<td><input class="text" type="text" name="name" id="name" value="${request.get('name')|h}"/></td>
+			<td><input class="text" type="text" name="name" id="name" maxlength="30" value="${request.get('name')|h}"/></td>
 			<td class="error">${request.get('error_name')}</td>
 		</tr>
 		<tr>

@@ -116,7 +116,7 @@ class SearchNew(FormHandler):
         try:
             user.put()
         except:
-            logging.error('Unable to retrieve user record for a logged in user: %s' % session['my_id'])
+            logging.error('Unable to update user record for a logged in user: %s' % session['my_id'])
             return self.redirect('/?err=The service is temporarily unavailable - please try again later.')
 
         # update the memcache entry for this users' feeds if it exists
@@ -128,4 +128,4 @@ class SearchNew(FormHandler):
             memcache.set(mckey, feed_infos, 30*60)
 
         # redirect the user to the feed page
-        self.redirect('/view?t=newest&f=%s&name=%s' % (urllib.quote(feed_key), urllib.quote(name)))
+        self.redirect('/view?t=newest&f=%s' % urllib.quote(feed_key))
