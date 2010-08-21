@@ -3,7 +3,12 @@
     from view_functions import get_yui_script_tag, str_age
 %>
 <%def name="title()">${name|h}</%def>
-<%def name="page_title()"><a href="/tracker">Your Tracker</a> - ${name|h}</%def>
+<%def name="page_title()">
+	% if not overall_view:
+	Search:
+	% endif
+	${name|h}
+</%def>
 <%inherit file="base.html"/>
 <%
 	sess = get_current_session()
@@ -34,13 +39,20 @@
 			page_txt = page
 		else:
 			page_txt = 'page %s of %s' % (page, page)
+
+		if f:
+			txt_all = ''
+		else:
+			txt_all = 'All '
 	%>
 	<div style="border-bottom: 1px solid #888888;text-align:center">
 		<div id="nav">
 			<ul>
+				% if not overall_view:
 				<li${newest_id}><a href="/view?t=newest&f=${f}">Newest Ads</a></li>
-				<li${reviewed_id}><a href="/view?t=reviewed&f=${f}">Ads I've Rated/Noted</a></li>
-				<li${hidden_id}><a href="/view?t=hidden&f=${f}">Hidden Ads</a></li>
+				% endif
+				<li${reviewed_id}><a href="/view?t=reviewed&f=${f}">${txt_all}Ads Rated/Noted Ads</a></li>
+				<li${hidden_id}><a href="/view?t=hidden&f=${f}">${txt_all}Hidden Ads</a></li>
 			</ul>
 		</div>
 		<p id="viewing">Viewing ${page_type} ads ${first_ad_num} to ${last_ad_num} (page ${page_txt}):
@@ -48,9 +60,10 @@
 			(<a href="${request.path}?t=${page_type}&f=${f}&next=${more}&page=${page+1}">next ${ADS_PER_PAGE} results</a>)
 		% endif
 		</p>
-
-		<p style="margin:auto;max-width:750px"><b>Searching:</b> ${search_desc}</p>
-		<div class="minor" id="agewrap" style="margin:auto;max-width:750px">(ads for this search last retrieved from Craigslist <span id="age">${age}</span>)</div>
+		% if not overall_view:
+			<p style="margin:auto;max-width:750px"><b>Searching:</b> ${search_desc}</p>
+			<div class="minor" id="agewrap" style="margin:auto;max-width:750px">(ads for this search last retrieved from Craigslist <span id="age">${age}</span>)</div>
+		% endif
 	</div>
 </%def>
 

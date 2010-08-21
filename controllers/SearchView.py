@@ -21,37 +21,47 @@ class SearchView(webapp.RequestHandler):
             return self.redirect(REDIR_URL)
         uid = session['my_id']
 
-        feed_key_name = self.request.get('f')
-        if not feed_key_name:
-            return self.redirect('/tracker')
-        fhid = Feed.hashed_id_from_pk(feed_key_name)
-
-        # get the user's name for this feed
-        name = get_search_name(self, feed_key_name)
-        if name is None:
-            return self.redirect('/tracker')  # user is no longer tracking this feed
-        elif name is False:
-            return self.redirect('/') # login related error
-
-        # compute how old the data is
-        feed_dt_updated = dt_feed_last_updated(feed_key_name)
-        if not feed_dt_updated:
-            return self.redirect('/tracker?err=That%20feed%20no%20longer%20exists.')
         now = datetime.datetime.now()
-        age = str_age(feed_dt_updated, now)
-        td = now - feed_dt_updated
-        updating_shortly = td.days>0 or td.seconds>MAX_AGE_MIN*60
-        if updating_shortly:
-            age += ' - update in progress'
+        feed_key_name = self.request.get('f')
+        t = self.request.get('t')
+        overall_view = (not feed_key_name and t != 'newest')
+        if feed_key_name:
+            fhid = Feed.hashed_id_from_pk(feed_key_name)
 
-        # update the feed if we haven't retrieved the latest ads recently
-        updating = update_feed_if_needed(feed_key_name)
-        if updating is None:
-            return self.redirect('/tracker?err=The%20requested%20feed%20does%20not%20exist.')
+            # get the user's name for this feed
+            name = get_search_name(self, feed_key_name)
+            if name is None:
+                return self.redirect('/tracker')  # user is no longer tracking this feed
+            elif name is False:
+                return self.redirect('/') # login related error
+
+            # compute how old the data is
+            feed_dt_updated = dt_feed_last_updated(feed_key_name)
+            if not feed_dt_updated:
+                return self.redirect('/tracker?err=That%20feed%20no%20longer%20exists.')
+            age = str_age(feed_dt_updated, now)
+            td = now - feed_dt_updated
+            updating_shortly = td.days>0 or td.seconds>MAX_AGE_MIN*60
+            if updating_shortly:
+                age += ' - update in progress'
+
+            # update the feed if we haven't retrieved the latest ads recently
+            updating = update_feed_if_needed(feed_key_name)
+            if updating is None:
+                return self.redirect('/tracker?err=The%20requested%20feed%20does%20not%20exist.')
+        elif overall_view:
+            age = desc = fhid = None
+            updating_shortly = False
+            if t == 'hidden':
+                name = "All Hidden Ads"
+            else:
+                name = "All Rated/Noted Ads"
+        else:
+            # t=newest and feed=all doesn't make sense together
+            return self.redirect('/tracker')
 
         # determine which set of ads to show
         next = self.request.get('next')
-        t = self.request.get('t')
         if t == 'newest':
             # show the newest ads (regardless of whether the user has commented on them or not)
             q = Ad.all().filter('feeds =', fhid).order('-update_dt')
@@ -66,7 +76,9 @@ class SearchView(webapp.RequestHandler):
         else:
             # show ads this user has commented on/rated (whether to show hidden ads or not depends on t)
             hidden = (t == 'hidden')
-            q = UserCmt.all().filter('feeds =', fhid)
+            q = UserCmt.all()
+            if fhid:
+                q.filter('feeds =', fhid)
             if hidden:
                 q.filter('dt_hidden >', DT_PRESITE).order('-dt_hidden')
             else:
@@ -105,9 +117,10 @@ class SearchView(webapp.RequestHandler):
             more = None
 
         # get a description of the search we're viewing
-        tmp_feed = Feed(key_name=feed_key_name)
-        tmp_feed.extract_values()
-        desc = tmp_feed.desc()
+        if fhid:
+            tmp_feed = Feed(key_name=feed_key_name)
+            tmp_feed.extract_values()
+            desc = tmp_feed.desc()
 
         if not next:
             page = 1
@@ -119,4 +132,4 @@ class SearchView(webapp.RequestHandler):
 
         self.response.headers['Content-Type'] = 'text/html'
         self.response.out.write(MakoLoader.render('search_view.html', request=self.request,
-                                                  ADS_PER_PAGE=ADS_PER_PAGE, ads=ad_infos, more=more, age=age, now=now, search_desc=desc, title_extra=title_extra, page=page, name=name, updating_shortly=updating_shortly))
+                                                  ADS_PER_PAGE=ADS_PER_PAGE, ads=ad_infos, more=more, age=age, now=now, search_desc=desc, title_extra=title_extra, page=page, name=name, updating_shortly=updating_shortly, overall_view=overall_view))
