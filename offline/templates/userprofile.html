@@ -1,5 +1,15 @@
 <%def name="title()">Your Searches</%def>
 <%inherit file="base.html"/>
+<%def name="head()">
+<style type="text/css">
+	th {border-bottom-width:2px;}
+	#manual td, #manual th {
+		border-top-width:2px;
+		border-bottom-width:3px;
+	}
+	#combined th {border-bottom-width:1px;}
+</style>
+</%def>
 % if feed_infos:
 <table>
 	<tr style="background-color:#EEE">
@@ -34,7 +44,18 @@
 		</td>
 	</tr>
 	% endfor
-	<tr style="background-color:#EFE">
+	<tr style="background-color:#FFE" id="manual">
+		<th>Manual</th>
+		<td colspan="4" style="border-right:0">
+			<a href="/view?t=reviewed&amp;f=manual">View ads you manually added</a><br/>
+			<a href="/view?t=hidden&amp;f=manual">View ads you manually added and hid</a>
+		</td>
+		<td colspan="4" style="border-left:0">
+			<i>Want to track a specific ad?</i><br/>
+			<a href="/track/specific_ad">Click here to start tracking it.</a>
+		</td>
+	</tr>
+	<tr style="background-color:#EFE" id="combined">
 		<th>Combined Views</th>
 		<td colspan="8">
 			<a href="/view?t=reviewed&amp;f=">View ALL ads you've rated/noted</a><br/>

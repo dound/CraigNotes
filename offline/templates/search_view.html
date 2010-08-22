@@ -48,7 +48,7 @@
 	<div style="border-bottom: 1px solid #888888;text-align:center">
 		<div id="nav">
 			<ul>
-				% if not overall_view:
+				% if not overall_view and f!='manual':
 				<li${newest_id}><a href="/view?t=newest&amp;f=${f}">Newest Ads</a></li>
 				% endif
 				<li${reviewed_id}><a href="/view?t=reviewed&amp;f=${f}">${txt_all}Ads Rated/Noted Ads</a></li>
@@ -60,7 +60,7 @@
 			(<a href="${request.path}?t=${page_type}&amp;f=${f}&amp;next=${more}&amp;page=${page+1}">next ${ADS_PER_PAGE} results</a>)
 		% endif
 		</p>
-		% if not overall_view:
+		% if not overall_view and f!='manual':
 			<p style="margin:auto;max-width:750px"><b>Searching:</b> ${search_desc}</p>
 			<div class="minor" id="agewrap" style="margin:auto;max-width:750px">(ads for this search last retrieved from Craigslist <span id="age">${age}</span>)</div>
 		% endif

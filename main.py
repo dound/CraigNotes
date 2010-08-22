@@ -14,6 +14,7 @@ url_mappings = [
     ('/rpx_response',         'controllers.RPX.RPX'),
     ('/profile/update',       'controllers.UserProfileEdit.UserProfileEdit'),
     ('/tracker',              'controllers.UserProfile.UserProfile'),
+    ('/track/specific_ad',    'controllers.TrackAd.TrackAd'),
 
     # search pages
     ('/new',                  'controllers.SearchNew.SearchNew'),

@@ -26,7 +26,17 @@ class SearchView(webapp.RequestHandler):
         feed_key_name = self.request.get('f')
         t = self.request.get('t')
         overall_view = (not feed_key_name and t != 'newest')
-        if feed_key_name:
+        if feed_key_name == 'manual':
+            fhid = 'manual'
+            age = desc = None
+            updating_shortly = False
+            if t == 'hidden':
+                name = "Manually-Added Ads that were Hidden"
+            elif t == 'newest':
+                return self.redirect('/tracker')
+            else:
+                name = "Manually-Added Ads"
+        elif feed_key_name:
             fhid = Feed.hashed_id_from_pk(feed_key_name)
 
             # get the user's name for this feed
@@ -103,6 +113,9 @@ class SearchView(webapp.RequestHandler):
         # check that each UserCmt.feeds field is up to date with Ad.feeds (can
         # only do this when we're searching by Ad, i.e., t=newest)
         if t == 'newest':
+            # TODO: only mark as outdated if they are inequal EXCEPT 'manual'
+            # TODO: when updating cmt.feeds, don't copy over 'manual' (user-specific)
+            # TODO: reconsider this code ...
             outdated = [(ad,cmt) for ad, cmt in ad_infos if cmt and ad.feeds!=cmt.feeds]
             if outdated:
                 # update any out of date comments
@@ -118,7 +131,7 @@ class SearchView(webapp.RequestHandler):
             more = None
 
         # get a description of the search we're viewing
-        if fhid:
+        if fhid and fhid!='manual':
             tmp_feed = Feed(key_name=feed_key_name)
             tmp_feed.extract_values()
             desc = tmp_feed.desc()

@@ -1,0 +1,21 @@
+<%def name="title()">Track a Specific Ad</%def>
+<%inherit file="base.html"/>
+<form action="/track/specific_ad" method="post" id="form">
+	<table class="form">
+		<tr>
+			<th><label for="ad_url">URL of the Ad to Track</label></th>
+			<td>
+				<input class="text" type="text" name="ad_url" id="ad_url" maxlength="1000" value="${request.get('ad_url')|h}"/>
+			</td>
+			<td class="error">${request.get('error_ad_url')}</td>
+		</tr>
+		<tr><td colspan="2">
+			<input class="button" id="submit" type="submit" value="Track this Ad"/>
+		</td></tr>
+	</table>
+	<p><a href="/tracker">Cancel</a></p>
+
+	<p><i>Hint:</i> Just browse to the ad you want to track on Craigslist, and
+	then copy the URL (from the location bar at the top of your window) and paste
+	it into the above form.</p>
+</form>
