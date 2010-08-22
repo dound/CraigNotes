@@ -112,7 +112,7 @@ class TrackAd(FormHandler):
         m = RE_DESC.search(html)
         if not m:
             logging.warn('Unable to extract description from Craigslist ad page: %s' % url)
-            desc = ''
+            desc = 'unknown'
         else:
             desc = clean_html(m.group(1))
 

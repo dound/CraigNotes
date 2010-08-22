@@ -56,8 +56,8 @@ class UpdateFeed(webapp.RequestHandler):
                 continue
             cid = int(m_cid.groups()[0])
             ad_key = db.Key.from_path('Ad', cid)
-            title = clean_html(e['title'], [], [])  # not tags allowed
-            desc = clean_html(e['summary'])         # default tags allowed
+            title = filter(onlyascii, clean_html(e['title'], [], []))  # not tags allowed
+            desc = filter(onlyascii, clean_html(e['summary']))         # default tags allowed
             updated_str = e['updated']
             try:
                 offset = int(updated_str[-5:][:2])
@@ -70,8 +70,13 @@ class UpdateFeed(webapp.RequestHandler):
             except ValueError:
                 logging.error('unable to parse the datetime for link=%s: %s' % (link, updated_str))
                 updated = now
-            ad = Ad(key=ad_key, feeds=[fhid], title=filter(onlyascii,title), desc=filter(onlyascii,desc), update_dt=updated, url=link)
-            ads.append(ad)
+            if not title:
+                logging.warn('Got Ad (%s) with no title from RSS feed' % link)
+            elif not desc:
+                logging.warn('Got Ad (%s) with no desc from RSS feed' % link)
+            else:
+                ad = Ad(key=ad_key, feeds=[fhid], title=title, desc=desc, update_dt=updated, url=link)
+                ads.append(ad)
 
         # determine which ads already exist in the datastore
         ads_to_put = []
