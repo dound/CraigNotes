@@ -30,6 +30,7 @@ class RPX(webapp.RequestHandler):
         if session.is_active():
             session.terminate()
 
+        redir_to = self.request.get('redir_to')
         if json['stat'] == 'ok':
             # extract some useful fields
             info = json['profile']
@@ -52,11 +53,14 @@ class RPX(webapp.RequestHandler):
             session['my_last_seen'] = int(time.mktime(user.last_seen.timetuple()))
             session['my_email'] = user.email
 
-            redir_to = self.request.get('redir_to')
             if not redir_to:
                 self.redirect('/tracker')
             else:
                 self.redirect(redir_to.replace('@$@', '&'))
         else:
             msg = json['err']['msg']
-            self.redirect('/?' + urllib.urlencode(dict(login_error=msg, redir_to=redir_to)))
+            if not redir_to:
+                qp = dict(login_error=msg)
+            else:
+                qp = dict(login_error=msg, redir_to=redir_to)
+            self.redirect('/?' + urllib.urlencode(qp))
