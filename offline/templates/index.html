@@ -38,6 +38,9 @@
 		Please sign-in to start using the site:
 	% endif
 	</h2>
+	% if not user_is_anon:
+	<table class="form"><tr><td>
+	% endif
 	% if request.get('login_error'):
 		<div class="error">Login failed: ${request.get('login_error')}</div>
 	% endif
@@ -46,7 +49,9 @@
 			style="width:400px;height:240px">
 	</iframe>
 	% if not user_is_anon:
-		<p style="margin:10px 0 0 33px;">Or <a href="/anonymous_login">try it out anonymously</a>.
+	</td><td>
+		<p style="margin-top:30px"><i>Or</i> <a href="/anonymous_login">try it out anonymously</a>.</p>
+	</td></tr></table>
 	% endif
 % endif
 % if user_is_logged_in:
