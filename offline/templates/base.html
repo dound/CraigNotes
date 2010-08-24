@@ -81,7 +81,7 @@ ${next.head()}
 					<div id="anonhdr"><span style="color:#080"><b><i>Anonymous account options:</i></b></span>
 					<ul>
 					<li><a href="/">sign up</a> <i>(your data comes with you)</i></li>
-					<li style="margin-top:9px"><a href="/logout">delete this account</a></li></ul>
+					<li style="margin-top:9px"><a href="/logout" onclick="javascript:if(confirm('Are you sure you want to logout?  You will lose any data associated with this anonymous account.  Press cancel to stay logged in anonymously.')){this.disabled=true}else{return false}">delete this account</a></li></ul>
 					</div>
 				% endif
             </div>
