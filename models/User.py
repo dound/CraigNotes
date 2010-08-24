@@ -22,14 +22,22 @@ class User(db.Model):
     feed_names      = db.ListProperty(str, indexed=False)  # user-specified names of feeds the user is watching
 
     @staticmethod
-    def make_key_name(oid):
+    def make_key_name(oid, anon=False):
+        """All and only anonymous accounts are prefixed with a 'Z'."""
         m = hashlib.sha1(oid)
         m.update('mr#9S$98K') # SALT
-        return m.hexdigest()[:UID_LEN]
+        if anon:
+            return 'Z' + m.hexdigest()[:UID_LEN-1]
+        else:
+            return m.hexdigest()[:UID_LEN]
 
     def hashed_id(self):
         """Returns the key_name associated with this User."""
         return self.key().name()
+
+    def is_anon(self):
+        """Returns True if this User is anonymous (not logged in via RPX)."""
+        return self.hashed_id()[0]=='Z'
 
     @staticmethod
     def note_user_activity(key_name, last_seen):

@@ -22,17 +22,13 @@ h3 {
 h3 {
     margin-top: 0;
 }
-.subheading {
-    font-size: 138.5%; /* 18px */
-    font-style: italic;
-    margin-top: 1.5em;
-}
 
 ol, ul {
     margin-bottom: 0;
     margin-top: 0;
 }
 
+.anonmsg,
 .errmsg,
 .infomsg {
     border-bottom: 3px solid black;
@@ -42,6 +38,9 @@ ol, ul {
     height: 30px;
     line-height: 30px;
     padding-left: 10px;
+}
+.anonmsg {
+    background-color: #FFE;
 }
 .errmsg {
     background-color: #A44;
@@ -64,6 +63,17 @@ ol, ul {
     height: 30px;
     padding-left: 10px;
     padding-bottom: 20px;
+}
+#anonhdr {
+    color:black;
+    font-style: italic;
+    font-weight:bold;
+    padding-left:10px;
+}
+#anonhdr a {
+    font-style:normal;
+    font-weight:normal;
+    padding: 0;
 }
 
 #logo {

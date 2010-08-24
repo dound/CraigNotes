@@ -2,7 +2,6 @@
     from controller_functions import is_logged_in
     from gaesessions import get_current_session
     from models.User import User
-    from view_functions import make_user_header_html
 %>
 <%
     session = get_current_session()
@@ -16,6 +15,9 @@
             logging.warn("terminating session which specified an invalid user ID %s (should only happen if a user is deleted and then they access the site w/o clearing their cookies)" % session['my_id'])
             session.terminate()  # user no longer exists
             user_is_logged_in = False
+        user_is_anon = session['my_id'][0]=='Z'
+    else:
+        user_is_anon = None
 %>
 <%def name="title_sep()"> - </%def>
 <%def name="page_title()">${next.title()}</%def>
@@ -65,9 +67,23 @@ ${next.head()}
 		% endif
 		<div id="header">
             <div class="hf-links" id="header-links">
-                ${make_user_header_html(user_is_logged_in, session, request.path)} |
-                <a href="/">about</a> |
+				% if user_is_anon:
+					&nbsp; logged in <a href="/tracker" style="padding-left:0"><i>anonymously</i></a>
+				% elif user_is_logged_in:
+					&nbsp; logged in as <a href="/tracker" style="padding-left:0">${session['my_dname']|h}</a> |
+					<a href="/logout">logout</a>
+				% else:
+					<a href="/">login</a>
+				% endif
+                | <a href="/">about</a> |
                 <a href="/faq">faq</a>
+				% if user_is_anon:
+					<div id="anonhdr"><span style="color:#080">Anonymous account options:</span>
+					<ul>
+					<li><a href="/">merge into permanent account</a></li>
+					<li><a href="/logout">delete this account</a></li></ul>
+					</div>
+				% endif
             </div>
         </div>
         <div id="titles">
@@ -80,6 +96,9 @@ ${next.head()}
         % endif
         % if request.get('info'):
         <div class="infomsg">${request.get('info') | h}</div>
+        % endif
+        % if user_is_anon:
+        <div class="anonmsg">You are logged in anonymously.  Please <a href="/">login</a> to save your work.</div>
         % endif
 		${next.header2()}
         <div id="main">

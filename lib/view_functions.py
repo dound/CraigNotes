@@ -75,10 +75,3 @@ def make_js_cal_params(date, select_date=True):
         except:
             pass
     return ret
-
-def make_user_header_html(user_is_logged_in, session, path):
-    """Returns the HTML to use for the user info portion of the header bar."""
-    if not user_is_logged_in:
-        return '<a href="/?redir_to=%s">login</a>' % path
-    else:
-        return '&nbsp; logged in as <a href="/tracker" style="padding-left:0">' + html_escape(session['my_dname']) + '</a> | <a href="/logout">logout</a>'

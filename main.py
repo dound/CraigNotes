@@ -10,6 +10,7 @@ url_mappings = [
     ('/',                     'controllers.Home.Home'),
 
     # user pages
+    ('/anonymous_login',      'controllers.AnonLogin.AnonLogin'),
     ('/logout',               'controllers.Logout.Logout'),
     ('/rpx_response',         'controllers.RPX.RPX'),
     ('/profile/update',       'controllers.UserProfileEdit.UserProfileEdit'),
