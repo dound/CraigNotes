@@ -1,6 +1,6 @@
 import os
 
-DEBUG = True
+DEBUG = False
 ON_LOCALHOST = ('Development' == os.environ.get('SERVER_SOFTWARE','')[:11])
 if ON_LOCALHOST:
     DOMAIN = 'localhost:8080'

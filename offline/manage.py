@@ -62,6 +62,7 @@ def _copy_files(files, src_path, dst_path, minify):
 JS_FILES = ['view.js']
 CSS_FILES = ['base.css']
 def copy_js(minify):
+    minify = False  # TODO, tmp
     _copy_files(JS_FILES, 'offline/js/', 'static/js/', minify)
 def copy_css(minify):
     _copy_files(CSS_FILES, 'offline/css/', 'static/css/', minify)
