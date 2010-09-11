@@ -60,7 +60,7 @@ class RPX(webapp.RequestHandler):
 
             # if the user was logged in anonymously, merge their info into this account
             more = ''
-            if old_uid[0] == 'Z':
+            if old_uid and old_uid[0] == 'Z':
                 # 1) Add User.feeds and feed_names into this User
                 old_feed_infos = [(of_name, of_feed.key().name()) for of_name, of_feed in old_feed_infos]
                 new_feed_infos = zip(user.feed_names, user.feeds)
