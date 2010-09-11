@@ -36,8 +36,17 @@ CATEGORIES = {
 }
 
 CITIES = {
+    'inlandempire': 'Inland Empire',
+    'kansascity': 'Kansas City',
+    'lasvegas': 'Las Vegas',
+    'losangeles': 'Los Angeles',
+    'newyork': 'New York',
+    'orangecounty': 'Orange County',
     'sandiego': 'San Diego',
-    'sfbay': 'San Francisco / Bay Area'
+    'sfbay': 'San Francisco / Bay Area',
+    'stlouis': 'St. Louis',
+    'tampa': 'Tampa Bay',
+    'washingtondc': 'Washington DC'
 }
 
 FID_LEN = 20
@@ -110,7 +119,7 @@ class Feed(db.Model):
         try:
             return CITIES[cabbr]
         except KeyError:
-            return cabbr
+            return cabbr.title()
 
     @property
     def category(self):
