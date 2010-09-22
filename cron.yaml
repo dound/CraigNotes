@@ -1,0 +1,5 @@
+cron:
+- description: daily session cleanup
+  url: /cron/cleanup_sessions
+  schedule: every day 10:00   # time in UTC => runs b/w 0200PST/0300PDT to 0500EST/0600EDT
+
