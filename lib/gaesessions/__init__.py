@@ -28,9 +28,9 @@ DEFAULT_LIFETIME = datetime.timedelta(days=7)
 SID_LEN = 43  # timestamp (10 chars) + underscore + md5 (32 hex chars)
 SIG_LEN = 44  # base 64 encoded HMAC-SHA256
 MAX_COOKIE_LEN = 4096
-EXPIRE_COOKIE_FMT = ' %s=; expires=Wed, 31-Dec-1969 19:00:00 PST; Domain=' + COOKIE_DOMAIN + '; Path=' + COOKIE_PATH
-COOKIE_FMT = ' ' + COOKIE_NAME_PREFIX + '%02d="%s"; expires=%s; Domain=' + COOKIE_DOMAIN + '; Path=' + COOKIE_PATH
-COOKIE_DATE_FMT = '%a, %d-%b-%Y %H:%M:%S PST'
+EXPIRE_COOKIE_FMT = ' %s=; expires=Wed, 01-Jan-1970 00:00:00 GMT; Domain=' + COOKIE_DOMAIN + '; Path=' + COOKIE_PATH
+COOKIE_FMT = ' ' + COOKIE_NAME_PREFIX + '%02d="%s"; expires=%s; Domain=' + COOKIE_DOMAIN + '; Path=' + COOKIE_PATH + '; HttpOnly'
+COOKIE_DATE_FMT = '%a, %d-%b-%Y %H:%M:%S GMT'
 COOKIE_OVERHEAD = len(COOKIE_FMT % (0, '', '')) + 29 + 150  # 29=date len, 150=safety margin (e.g., in case browser uses 4000 instead of 4096)
 MAX_DATA_PER_COOKIE = MAX_COOKIE_LEN - COOKIE_OVERHEAD
 
@@ -231,7 +231,7 @@ class Session(object):
         if self.sid:
             self.__clear_data()
         self.sid = sid
-        self.db_key = db.Key.from_path(SessionModel.kind(), sid)
+        self.db_key = db.Key.from_path(SessionModel.kind(), sid, namespace='')
 
         # set the cookie if requested
         if make_cookie:
@@ -240,7 +240,7 @@ class Session(object):
     def __clear_data(self):
         """Deletes this session from memcache and the datastore."""
         if self.sid:
-            memcache.delete(self.sid) # not really needed; it'll go away on its own
+            memcache.delete(self.sid, namespace='') # not really needed; it'll go away on its own
             try:
                 db.delete(self.db_key)
             except:
@@ -250,7 +250,7 @@ class Session(object):
         """Sets the data associated with this session after retrieving it from
         memcache or the datastore.  Assumes self.sid is set.  Checks for session
         expiration after getting the data."""
-        pdump = memcache.get(self.sid)
+        pdump = memcache.get(self.sid, namespace='')
         if pdump is None:
             # memcache lost it, go to the datastore
             if self.no_datastore:
@@ -298,7 +298,7 @@ class Session(object):
             # latest data will only be in the backend, so expire data cookies we set
             self.cookie_data = ''
 
-        memcache.set(self.sid, pdump)  # may fail if memcache is down
+        memcache.set(self.sid, pdump, namespace='')  # may fail if memcache is down
 
         # persist the session to the datastore
         if dirty is Session.DIRTY_BUT_DONT_PERSIST_TO_DB or self.no_datastore:
@@ -392,7 +392,10 @@ class SessionMiddleware(object):
 
     ``cookie_key`` - A key used to secure cookies so users cannot modify their
     content.  Keys should be at least 32 bytes (RFC2104).  Tip: generate your
-    key using ``os.urandom(64)``.
+    key using ``os.urandom(64)`` but do this OFFLINE and copy/paste the output
+    into a string which you pass in as ``cookie_key``.  If you use ``os.urandom()``
+    to dynamically generate your key at runtime then any existing sessions will
+    become junk every time your app starts up!
 
     ``lifetime`` - ``datetime.timedelta`` that specifies how long a session may last.  Defaults to 7 days.
 
@@ -456,14 +459,14 @@ class DjangoSessionMiddleware(object):
 
 def delete_expired_sessions():
     """Deletes expired sessions from the datastore.
-    If there are more than 1000 expired sessions, only 1000 will be removed.
+    If there are more than 500 expired sessions, only 500 will be removed.
     Returns True if all expired sessions have been removed.
     """
     now_str = unicode(int(time.time()))
-    q = db.Query(SessionModel, keys_only=True)
-    key = db.Key.from_path('SessionModel', now_str + u'\ufffd')
+    q = db.Query(SessionModel, keys_only=True, namespace='')
+    key = db.Key.from_path('SessionModel', now_str + u'\ufffd', namespace='')
     q.filter('__key__ < ', key)
-    results = q.fetch(1000)
+    results = q.fetch(500)
     db.delete(results)
     logging.info('gae-sessions: deleted %d expired sessions from the datastore' % len(results))
-    return len(results)<1000
+    return len(results)<500
