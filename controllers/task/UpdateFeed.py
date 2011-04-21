@@ -13,12 +13,6 @@ from models.Feed import Feed
 
 RE_CID = re.compile(r'.*/(\d+)[.]html')
 
-def onlyascii(char):
-    if ord(char) < 0 or ord(char) > 127:
-        return ''
-    else:
-        return char
-
 class UpdateFeed(webapp.RequestHandler):
     def post(self):
         feed_key_name = self.request.get('f')
@@ -56,8 +50,8 @@ class UpdateFeed(webapp.RequestHandler):
                 continue
             cid = int(m_cid.groups()[0])
             ad_key = db.Key.from_path('Ad', cid)
-            title = filter(onlyascii, clean_html(e['title'], [], []))  # not tags allowed
-            desc = filter(onlyascii, clean_html(e['summary']))         # default tags allowed
+            title = clean_html(e['title'], [], [])  # not tags allowed
+            desc = clean_html(e['summary'])         # default tags allowed
             updated_str = e['updated']
             try:
                 offset = int(updated_str[-5:][:2])
