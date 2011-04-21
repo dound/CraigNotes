@@ -4,6 +4,8 @@ runtime: python
 api_version: 1
 derived_file_type:
 - python_precompiled
+inbound_services:
+- warmup
 
 handlers:
 - url: /css

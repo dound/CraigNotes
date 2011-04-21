@@ -6,6 +6,11 @@ from gaesessions import SessionMiddleware
 from LazyControllerLoader import url_list
 import settings
 
+class Warmup(webapp.RequestHandler):
+    """This handler warms up the instance (imports modules, etc.)."""
+    def get(self):
+        pass
+
 url_mappings = [
     ('/',                     'controllers.Home.Home'),
 
@@ -34,6 +39,7 @@ url_mappings = [
     ('/(faq)',                'controllers.DirectToTemplate.DirectToTemplate'),
     ('/(legal)',              'controllers.DirectToTemplate.DirectToTemplate'),
     ('/(privacy)',            'controllers.DirectToTemplate.DirectToTemplate'),
+    ('/_ah/warmup',           'main.Warmup'),
 
     # tasks (admin-only URLs: protected by app.yaml)
     ('/task/update_feed',     'controllers.task.UpdateFeed.UpdateFeed'),
