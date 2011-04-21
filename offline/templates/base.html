@@ -24,8 +24,6 @@
 <%def name="subtitle()"></%def>
 <%def name="head()"></%def>
 <%def name="header2()"></%def>
-<%def name="sidebar_body()"></%def>
-<%def name="sidebar()"><div id="sidebar">${next.sidebar_body()}</div></%def>
 <%def name="footer()"></%def>
 <%def name="get_if_present(var_name)">
 	% if context.get(var_name, None):
@@ -104,7 +102,6 @@ ${next.head()}
         <div id="main">
             ${next.body()}
         </div>
-        ${next.sidebar()}
         <div id="base"></div>
     </div>
 

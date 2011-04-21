@@ -163,14 +163,7 @@ ol, ul {
     float:left;
     min-height:450px;
     padding: 10px;
-    width: 720px;
-}
-
-#sidebar {
-    background-color: white;
-    float:right;
-    padding:10px 10px 10px 0;
-    width:160px;
+    width: 940px;
 }
 
 #base {
@@ -278,7 +271,7 @@ ol, ul {
 }
 .cidplus {
     border-left:0;
-    width:140px;
+    width:155px;
 }
 .cid {
     font-weight:bold;
@@ -291,7 +284,7 @@ ol, ul {
     max-height: 255px;
     overflow-x: auto;
     overflow-y: auto;
-    width: 720px;
+    width: 927px;
 }
 .descval table,
 .descval td {
@@ -364,7 +357,6 @@ ol, ul {
     border-right:0;
     font-size: 138.5%;
     font-weight:bold;
-    width:456px;
 }
 .updated {
     font-style:italic;
