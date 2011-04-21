@@ -2,8 +2,7 @@ import datetime
 import hashlib
 import urllib
 
-from google.appengine.api import memcache
-from google.appengine.api.labs import taskqueue
+from google.appengine.api import memcache, taskqueue
 from google.appengine.ext import db
 
 CATEGORIES = {
