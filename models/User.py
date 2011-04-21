@@ -58,7 +58,7 @@ class User(db.Model):
         return None
 
     def __repr__(self):
-        return 'User(uid=%s dname=%s email=%s gender=%s last_seen=%s rep=%s date_reg=%s)' % (self.hashed_id(), self.display_name, self.email, self.gender, self.last_seen, self.reputation, self.date_registered)
+        return 'User(uid=%s dname=%s email=%s last_seen=%s date_reg=%s)' % (self.hashed_id(), self.display_name, self.email, self.last_seen, self.date_registered)
 
 def get_feed_infos(handler):
     """Returns an array of 2-tuples (feed_name, feed_key) for the current user,
