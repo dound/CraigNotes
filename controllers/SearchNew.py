@@ -31,6 +31,8 @@ def parse_rss_url(url):
 def parse_rss_url_params(qparams):
     if not qparams:
         return ('', '', '', '', '', '', '', [], '', '')
+    if qparams[0] == '?':
+        qparams = qparams[1:]
     params = parse_qs(qparams)
     return (params.get('catAbb',[''])[0],    params.get('minAsk',[''])[0],
             params.get('maxAsk',[''])[0],    params.get('bedrooms',[''])[0],
