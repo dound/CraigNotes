@@ -114,7 +114,7 @@
 						context.write('<span class="star" id="star%d_%s"></span>' % (i,ad.cid))
 			%>
 		</td>
-		<td class="title">${ad.title.encode('ISO-8859-1')}</td>
+		<td class="title"><% __M_writer(ad.title.encode('utf-8')) %></td>
 		<td class="cidplus">
 			<div class="cid">Ad #<a href="${ad.url}" target="_blank">${ad.cid}</a></div>
 			<div class="updated">updated ${str_age(ad.update_dt, now)}</div>
@@ -131,7 +131,7 @@
 			<table style="margin:0"><tr><td style="padding:0">
 			<% # NOTE: this crap is to try to contain broken HTML in ad.desc
 			%>
-			${ad.desc}
+			<% __M_writer(ad.desc.encode('utf-8')) %>
 			</td></tr></table>
 			</div>
 		</td>
