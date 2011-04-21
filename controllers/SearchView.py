@@ -88,6 +88,7 @@ class SearchView(webapp.RequestHandler):
             # show ads this user has commented on/rated (whether to show hidden ads or not depends on t)
             hidden = (t == 'hidden')
             q = UserCmt.all()
+            q.filter('uid =', session['my_id'])
             if fhid:
                 q.filter('feeds =', fhid)
             if hidden:

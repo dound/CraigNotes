@@ -1,5 +1,6 @@
 from google.appengine.ext import db
 
+from aetycoon import DerivedProperty
 from models.User import UID_LEN
 
 MIN_RATING = 0
@@ -13,7 +14,7 @@ class UserCmt(db.Expando):
     cmt = db.TextProperty(required=False, default='')
     dt_hidden = db.DateTimeProperty(required=False, indexed=True)  # None if not hidden
 
-    @property
+    @DerivedProperty(required=False, indexed=True)
     def uid(self):
         return self.key().name()[:UID_LEN]
 
