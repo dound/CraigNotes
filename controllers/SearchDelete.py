@@ -16,7 +16,11 @@ class SearchDelete(webapp.RequestHandler):
         # remove the feed from this user's record
         user = User.get_by_key_name(session['my_id'])
         n = len(user.feeds)
-        user.feeds = [f for f in user.feeds if f!=feed_key_name]
+        for i in xrange(len(user.feeds)):
+            if user.feeds[i] == feed_key_name:
+                user.feed_names = user.feed_names[:i-1] + user.feed_names[i+1:]
+                user.feeds = user.feeds[:i-1] + user.feeds[i+1:]
+                break
         user.put()
         if n > len(user.feeds):
             self.redirect('/tracker?info=Success', 30*60)
