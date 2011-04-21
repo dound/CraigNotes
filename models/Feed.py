@@ -265,6 +265,7 @@ class Feed(db.Model):
         return s
 
     def __repr__(self):
+        self.extract_values()
         return 'Feed(city=%s cat=%s area=%s $=%s-%s num_br=%s cats=%s dogs=%s neighbs=%s q_type=%s q=%s updated=%s)' % \
                (self.city, self.category, self.area, self.min_ask, self.max_ask, self.num_bedrooms, self.allow_cats, self.allow_dogs, self.neighborhoods, self.search_type, self.query, self.last_update)
 
