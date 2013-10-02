@@ -47,7 +47,7 @@ url_mappings = [
     # send everything else to the page not found handler
     ('/.*',           'controllers.PageNotFound.PageNotFound'),
     ]
-COOKIE_KEY = '\xff\xbbL\x10/\xd2\x89\xd9\x1b0H]w\xc4\xca\x9e8\x1ch\xe4.\xf3\x9acU.\xe9\xc4\xd6\xf9\x155o\x9bCR\xef\x18\xca\x0e\x0f\xaf\x16<c\xc1\xc3\xf0(\xcc\xef\x91\xfbA\x9f\xc2\xd7r \xca\xb18\xce\xdd'
+COOKIE_KEY = 'no_longer_relevant (still in the history, not that it will do you any good)'
 app = webapp.WSGIApplication(url_list(url_mappings), debug=settings.DEBUG)
 app = SessionMiddleware(app, COOKIE_KEY)
 
