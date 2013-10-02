@@ -6,11 +6,6 @@ from settings import DOMAIN
 
 class Home(webapp.RequestHandler):
     def get(self):
-        session = get_current_session()
-        if session.has_key('my_id'):
-            redir_to = self.request.get('redir_to')
-            if redir_to:
-                self.redirect(redir_to)
-
         self.response.headers['Content-Type'] = 'text/html'
-        self.response.out.write(MakoLoader.render('index.html', request=self.request, base_url=DOMAIN))
+        self.response.headers['Cache-Control'] = 'max-age=86400, public'
+        self.response.out.write(MakoLoader.render('shutdown.html', request=self.request))

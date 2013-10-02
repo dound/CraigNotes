@@ -12,44 +12,9 @@ class Warmup(webapp.RequestHandler):
         pass
 
 url_mappings = [
-    ('/',                     'controllers.Home.Home'),
-
-    # user pages
-    ('/anonymous_login',      'controllers.AnonLogin.AnonLogin'),
-    ('/logout',               'controllers.Logout.Logout'),
-    ('/rpx_response',         'controllers.RPX.RPX'),
-    ('/profile/update',       'controllers.UserProfileEdit.UserProfileEdit'),
-    ('/tracker',              'controllers.UserProfile.UserProfile'),
-    ('/track/specific_ad',    'controllers.TrackAd.TrackAd'),
-
-    # search pages
-    ('/new',                  'controllers.SearchNew.SearchNew'),
-    ('/delete',               'controllers.SearchDelete.SearchDelete'),
-    ('/search/rename',        'controllers.SearchRename.SearchRename'),
-    ('/view',                 'controllers.SearchView.SearchView'),
-
-    # ajax pages
-    ('/ajax/is_feed_ready',   'controllers.ajax.IsFeedReady.IsFeedReady'),
-    ('/ajax/comment/(\d+)',   'controllers.ajax.Comment.Comment'),
-    ('/ajax/(un)?hide/(\d+)', 'controllers.ajax.Hide.Hide'),
-    ('/ajax/rate/(\d+)/(\d+)', 'controllers.ajax.Rate.Rate'),
-
-    # simple pages
-    ('/(contact)',            'controllers.DirectToTemplate.DirectToTemplate'),
-    ('/(faq)',                'controllers.DirectToTemplate.DirectToTemplate'),
-    ('/(legal)',              'controllers.DirectToTemplate.DirectToTemplate'),
-    ('/(privacy)',            'controllers.DirectToTemplate.DirectToTemplate'),
-    ('/_ah/warmup',           'main.Warmup'),
-
-    # tasks (admin-only URLs: protected by app.yaml)
-    ('/task/update_feed',     'controllers.task.UpdateFeed.UpdateFeed'),
-
-    # send everything else to the page not found handler
-    ('/.*',           'controllers.PageNotFound.PageNotFound'),
+    ('.*',                     'controllers.Home.Home'),
     ]
-COOKIE_KEY = 'no_longer_relevant (still in the history, not that it will do you any good)'
 app = webapp.WSGIApplication(url_list(url_mappings), debug=settings.DEBUG)
-app = SessionMiddleware(app, COOKIE_KEY)
 
 if settings.USE_APP_STATS:
     from google.appengine.ext.appstats import recording

@@ -1,23 +1,9 @@
 <%!
     from controller_functions import is_logged_in
-    from gaesessions import get_current_session
     from models.User import User
 %>
 <%
-    session = get_current_session()
-    user_is_logged_in = is_logged_in() is not False
-    if user_is_logged_in:
-        ret = User.note_user_activity(session['my_id'], session['my_last_seen'])
-        if ret:
-            session['my_last_seen'] = ret
-        elif ret is False:
-            import logging
-            logging.warn("terminating session which specified an invalid user ID %s (should only happen if a user is deleted and then they access the site w/o clearing their cookies)" % session['my_id'])
-            session.terminate()  # user no longer exists
-            user_is_logged_in = False
-        user_is_anon = session['my_id'][0]=='Z'
-    else:
-        user_is_anon = None
+    user_is_anon = None
 %>
 <%def name="title_sep()"> - </%def>
 <%def name="page_title()">${next.title()}</%def>
@@ -65,15 +51,8 @@ ${next.head()}
 		% endif
 		<div id="header">
             <div class="hf-links" id="header-links">
-				% if user_is_anon:
-					&nbsp; logged in <a href="/tracker" style="padding-left:0"><i>anonymously</i></a>
-				% elif user_is_logged_in:
-					&nbsp; logged in as <a href="/tracker" style="padding-left:0">${session['my_dname']|h}</a> |
-					<a href="/logout">logout</a>
-				% else:
-					<a href="/">login</a>
-				% endif
-                | <a href="/">about</a> |
+				
+                 <a href="/">about</a> |
                 <a href="/faq">faq</a>
 				% if user_is_anon:
 					<div id="anonhdr"><span style="color:#080"><b><i>Anonymous account options:</i></b></span>
